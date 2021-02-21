@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:context=".controller.AddReunionActivity">
+
+    <RelativeLayout
+        android:id="@+id/activity_add_reunion_Date"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/activity_add_reunion_inputDate"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/activity_add_reunion_editDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:ems="10"
+            android:hint="Enter Date"
+            android:inputType="date"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/activity_add_reunion_btnGetDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/activity_add_reunion_inputDate"
+            android:layout_centerHorizontal="true"
+            android:text="@string/btn_get_date" />
+        <TextView
+            android:id="@+id/activity_add_reunion_textViewDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/activity_add_reunion_btnGetDate"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:textSize="18dp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/activity_add_reunion_inputHour"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/activity_add_reunion_textViewDate"
+            android:layout_marginTop="20dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/activity_add_reunion_editHour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:hint="Enter Time"
+            android:inputType="datetime"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/activity_add_reunion_btnGetHour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/activity_add_reunion_inputHour"
+            android:layout_centerHorizontal="true"
+            android:text="Get Date" />
+        <TextView
+            android:id="@+id/activity_add_reunion_textViewHour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/activity_add_reunion_btnGetHour"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:textSize="18dp"/>
+
+        <TextView
+            android:id="@+id/activity_add_reunion_Room"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/activity_add_reunion_textViewHour"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="@string/room_name"
+            android:textStyle="bold"
+            android:textSize="15dp" />
+
+        <Spinner
+            android:id="@+id/activity_add_reunion_spinnerRoom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/activity_add_reunion_Room"
+            android:layout_toRightOf="@+id/activity_add_reunion_Room" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/activity_add_reunion_SubjectReunion"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="20dp"
+            android:layout_below="@+id/activity_add_reunion_Room"
+            android:layout_marginTop="40dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/activity_add_reunion_ReunionName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:ems="10"
+                android:hint="@string/reunion_name"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <EditText
+            android:id="@+id/activity_add_reunion_editText_participant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/activity_add_reunion_SubjectReunion"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+             />
+
+        <Button
+            android:id="@+id/activity_add_reunion_btnAdd_participant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/activity_add_reunion_editText_participant"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:text="Add"
+            />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/activity_add_reunion_chipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/activity_add_reunion_btnAdd_participant"
+            android:layout_marginTop="20dp"
+            android:background="#F3EEEE"
+             />
+
+        <Button
+            android:id="@+id/activity_add_reunion_btn_showParticipant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/activity_add_reunion_chipGroup"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:text="Show Selections"
+             />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/activity_add_reunion_btn_createReunion"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/activity_add_reunion_btn_showParticipant"
+            android:layout_centerHorizontal="true"
+            android:enabled="false"
+            android:layout_gravity="center"
+            app:cornerRadius="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="@string/add_reunion"/>
+
+    </RelativeLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
