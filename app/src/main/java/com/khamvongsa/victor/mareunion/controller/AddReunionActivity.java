@@ -31,6 +31,8 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputLayout;
 import com.khamvongsa.victor.mareunion.R;
 import com.khamvongsa.victor.mareunion.model.Reunion;
+import com.khamvongsa.victor.mareunion.model.Salle;
+import com.khamvongsa.victor.mareunion.service.ReunionApiService;
 
 import java.util.Calendar;
 
@@ -70,8 +72,12 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
     @BindView(R.id.activity_add_reunion_btn_showParticipant)
     Button mButtonShowParticipant;
 
+    private ReunionApiService mReunionApiService;
     private DatePickerDialog mDatePicker;
     private TimePickerDialog mTimePicker;
+    private Calendar mStartDate = Calendar.getInstance();
+    private ExempleSalle mSalle;
+
 
     private String[] rooms = {"Mario", "Luigi", "Peach", "DonkeyKong", "Yoshi"};
 
@@ -96,7 +102,9 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                mStartDate.set(year,monthOfYear, dayOfMonth);
                                 mEditDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                                mTextViewDate.setText("Selected Date: " + mEditDate.getText());
                             }
                         }, year, month, day);
                 mDatePicker.show();
@@ -162,6 +170,7 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Toast.makeText(getApplicationContext(), "Selected User: "+rooms[position] , Toast.LENGTH_SHORT).show();
+        // mSalle = rooms[position];
     }
 
     @Override
@@ -178,10 +187,14 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
         return super.onOptionsItemSelected(item);
     }
 
-    // @OnClick(R.id.activity_add_reunion_btn_createReunion)
-    // void addReunion() {
-    //    Reunion reunion = new Reunion(0,)
-    // }
+     //@OnClick(R.id.activity_add_reunion_btn_createReunion)
+     //void addReunion() {
+     //Reunion reunion = new Reunion(
+     //         System.currentTimeMillis(),
+     // );
+     //      mReunionApiService.createReunion(reunion);
+     //      finish();
+     //}
 
     public static void navigate (FragmentActivity activity){
         Intent intent = new Intent(activity, AddReunionActivity.class);
@@ -201,7 +214,7 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
             // Create a Chip from Layout.
             Chip newChip = (Chip) inflater.inflate(R.layout.layout_chip_entry, this.mChipGroupParticipant, false);
             newChip.setText(keyword);
-
+            newChip.setTag(keyword);
             //
             // Other methods:
             //
@@ -263,6 +276,7 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
     private void handleChipCloseIconClicked(Chip chip) {
         ChipGroup parent = (ChipGroup) chip.getParent();
         parent.removeView(chip);
+        chip.getTag();
     }
 
     // Chip Checked Changed

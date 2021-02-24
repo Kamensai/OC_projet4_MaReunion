@@ -1,6 +1,5 @@
 package com.khamvongsa.victor.mareunion.controller;
 
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +7,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.khamvongsa.victor.mareunion.R;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +23,7 @@ import butterknife.ButterKnife;
 public class MyReunionRecyclerViewAdapter extends RecyclerView.Adapter<MyReunionRecyclerViewAdapter.ViewHolder> {
 
     private final ExempleReunion mReunions;
+    SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yy");
 
     public MyReunionRecyclerViewAdapter(ExempleReunion item) { mReunions = item;
     }
@@ -32,8 +39,10 @@ public class MyReunionRecyclerViewAdapter extends RecyclerView.Adapter<MyReunion
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mSalleName.setText(mReunions.getSalle().getNom());
-
+        holder.mSalleColor.setBackgroundColor(mReunions.getSalle().getCouleur());
         holder.mSujet.setText(mReunions.getSujet());
+        holder.mDateDebut.setText(formater.format(mReunions.getDebut()));
+        holder.mParticipants.setText(mReunions.getParticipant().toString());
     }
 
     @Override
