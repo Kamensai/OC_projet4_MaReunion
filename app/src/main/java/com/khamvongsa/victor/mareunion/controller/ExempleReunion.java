@@ -3,6 +3,7 @@ package com.khamvongsa.victor.mareunion.controller;
 import com.khamvongsa.victor.mareunion.model.Salle;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -12,9 +13,7 @@ public class ExempleReunion {
 
     private Date debut;
 
-    private Date fin;
-
-    private Salle salle;
+    private ExempleSalle salle;
 
     private String sujet;
 
@@ -24,11 +23,10 @@ public class ExempleReunion {
     /**
      * Constructor
      */
-    public ExempleReunion(long id, Date debut, Date fin, Salle salle, String sujet,
+    public ExempleReunion(long id, Date debut, ExempleSalle salle, String sujet,
                    List<String> participant) {
         this.id = id;
         this.debut = debut;
-        this.fin = fin;
         this.salle = salle;
         this.sujet = sujet;
         this.participant = participant;
@@ -50,19 +48,11 @@ public class ExempleReunion {
         this.debut = debut;
     }
 
-    public Date getFin() {
-        return fin;
-    }
-
-    public void setFin(Date fin) {
-        this.fin = fin;
-    }
-
-    public Salle getSalle() {
+    public ExempleSalle getSalle() {
         return salle;
     }
 
-    public void setSalle(Salle salle) {
+    public void setSalle(ExempleSalle salle) {
         this.salle = salle;
     }
 

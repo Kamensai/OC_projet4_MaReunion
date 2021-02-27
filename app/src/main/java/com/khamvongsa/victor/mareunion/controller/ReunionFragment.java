@@ -7,8 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.khamvongsa.victor.mareunion.R;
+import com.khamvongsa.victor.mareunion.di.DI;
 import com.khamvongsa.victor.mareunion.model.Reunion;
 import com.khamvongsa.victor.mareunion.model.Salle;
+import com.khamvongsa.victor.mareunion.service.FakeReunionApiService;
+import com.khamvongsa.victor.mareunion.service.ReunionApiService;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -27,13 +30,7 @@ import static android.graphics.Color.RED;
 
 public class ReunionFragment extends Fragment {
 
-
-    private Date mDateDebut = Calendar.getInstance().getTime();
-    private Date mDateFin = new Date();
-    private List<String> mparticipants = Arrays.asList("Jean", "Baptiste");
-    private Salle mMario = new Salle (0, "Mario", RED);
-
-    public ExempleReunion mReunion;
+    private ReunionApiService mReunionApiService;
     private RecyclerView mRecyclerView;
 
     public static ReunionFragment newInstance() {
@@ -43,7 +40,7 @@ public class ReunionFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mReunion = new ExempleReunion(0,mDateDebut, mDateFin, mMario, "Essai", mparticipants);
+        mReunionApiService = DI.getReunionApiService();
     }
 
     @Override
@@ -57,11 +54,11 @@ public class ReunionFragment extends Fragment {
         return view;
     }
     private void initList() {
-        mRecyclerView.setAdapter(new MyReunionRecyclerViewAdapter(mReunion));
+        List<ExempleReunion> mReunions = mReunionApiService.getReunions();
+        mRecyclerView.setAdapter(new MyReunionRecyclerViewAdapter(mReunions));
     }
 
     public void deleteReunion(Reunion reunion){
-
         initList();
     }
 
@@ -70,7 +67,4 @@ public class ReunionFragment extends Fragment {
         super.onResume();
         initList();
     }
-
-
-
 }

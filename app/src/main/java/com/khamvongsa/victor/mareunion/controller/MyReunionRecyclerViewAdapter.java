@@ -13,6 +13,7 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
@@ -22,10 +23,10 @@ import butterknife.ButterKnife;
 
 public class MyReunionRecyclerViewAdapter extends RecyclerView.Adapter<MyReunionRecyclerViewAdapter.ViewHolder> {
 
-    private final ExempleReunion mReunions;
+    private final List<ExempleReunion> mReunions;
     SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yy");
 
-    public MyReunionRecyclerViewAdapter(ExempleReunion item) { mReunions = item;
+    public MyReunionRecyclerViewAdapter(List<ExempleReunion> item) { mReunions = item;
     }
 
     @NonNull
@@ -38,16 +39,18 @@ public class MyReunionRecyclerViewAdapter extends RecyclerView.Adapter<MyReunion
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mSalleName.setText(mReunions.getSalle().getNom());
-        holder.mSalleColor.setBackgroundColor(mReunions.getSalle().getCouleur());
-        holder.mSujet.setText(mReunions.getSujet());
-        holder.mDateDebut.setText(formater.format(mReunions.getDebut()));
-        holder.mParticipants.setText(mReunions.getParticipant().toString());
+        ExempleReunion reunion = mReunions.get(position);
+        holder.mSalleName.setText(reunion.getSalle().getNom());
+        holder.mSalleColor.setBackgroundColor(reunion.getSalle().getCouleur());
+        holder.mSujet.setText(reunion.getSujet());
+        holder.mDateDebut.setText(formater.format(reunion.getDebut()));
+        holder.mParticipants.setText(reunion.getParticipant().toString());
+        holder.mParticipants.setText(reunion.getParticipant().toString());
     }
 
     @Override
     public int getItemCount() {
-        return 1;
+        return mReunions.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
