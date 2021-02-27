@@ -46,6 +46,8 @@ public class MyReunionRecyclerViewAdapter extends RecyclerView.Adapter<MyReunion
         holder.mDateDebut.setText(formater.format(reunion.getDebut()));
         holder.mParticipants.setText(reunion.getParticipant().toString());
         holder.mParticipants.setText(reunion.getParticipant().toString());
+
+
     }
 
     @Override

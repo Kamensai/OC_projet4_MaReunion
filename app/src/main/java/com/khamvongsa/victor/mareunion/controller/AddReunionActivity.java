@@ -250,8 +250,7 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
             // newChip.setElevation(15);
 
             this.mChipGroupParticipant.addView(newChip);
-            String newParticipant = (String) newChip.getTag(Integer.parseInt(participant));
-            mlistParticipant.add(newParticipant);
+
 
             // Set Listener for the Chip:
             newChip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -271,10 +270,14 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
 
             this.mEditTextParticipant.setText("");
 
+            String newParticipant = (String) newChip.getTag();
+            mlistParticipant.add(newParticipant);
+
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
+
     }
 
     // User click on "Show Selections" button.

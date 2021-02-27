@@ -58,7 +58,9 @@ public class ReunionFragment extends Fragment {
         mRecyclerView.setAdapter(new MyReunionRecyclerViewAdapter(mReunions));
     }
 
+    // TODO : Ajouter une méthode de suppression de réunion
     public void deleteReunion(Reunion reunion){
+
         initList();
     }
 
