@@ -8,24 +8,15 @@ import android.view.ViewGroup;
 
 import com.khamvongsa.victor.mareunion.R;
 import com.khamvongsa.victor.mareunion.di.DI;
-import com.khamvongsa.victor.mareunion.model.Reunion;
-import com.khamvongsa.victor.mareunion.model.Salle;
 import com.khamvongsa.victor.mareunion.service.FakeReunionApiService;
 import com.khamvongsa.victor.mareunion.service.ReunionApiService;
 
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.time.format.*;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import static android.graphics.Color.RED;
 
 
 public class ReunionFragment extends Fragment {
@@ -55,18 +46,23 @@ public class ReunionFragment extends Fragment {
     }
     private void initList() {
         List<ExempleReunion> mReunions = mReunionApiService.getReunions();
-        mRecyclerView.setAdapter(new MyReunionRecyclerViewAdapter(mReunions));
-    }
-
-    // TODO : Ajouter une méthode de suppression de réunion
-    public void deleteReunion(Reunion reunion){
-
-        initList();
+        final MyReunionRecyclerViewAdapter adapter = (MyReunionRecyclerViewAdapter) mRecyclerView.getAdapter();
+        if (adapter != null) {
+            adapter.updateList(mReunions);
+        }
+        else {
+            mRecyclerView.setAdapter(new MyReunionRecyclerViewAdapter(mReunions, reunion -> clickOnDeleteListener(reunion)));
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
         initList();
+    }
+
+    // TODO : Ajouter une méthode de suppression de réunion
+    public void clickOnDeleteListener(ExempleReunion reunion) {
+        mReunionApiService.clickOnDeleteListener(reunion);
     }
 }

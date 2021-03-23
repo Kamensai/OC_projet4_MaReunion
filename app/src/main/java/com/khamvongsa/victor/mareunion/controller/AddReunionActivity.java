@@ -44,6 +44,7 @@ import com.khamvongsa.victor.mareunion.service.ReunionApiService;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 
 public class AddReunionActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -184,21 +185,14 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
                 addNewChip();
             }
         });
-        this.mButtonShowParticipant.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showSelections();
-            }
-        });
-
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Toast.makeText(getApplicationContext(), "Selected User: "+ listSalles.get(position) , Toast.LENGTH_SHORT).show();
+        final String salleChoisie = listSalles.get(position);
         for (int i = 0; i < mSallesDisponibles.size(); i++) {
-            String salleChoisie = listSalles.get(position);
-            if(salleChoisie == mSallesDisponibles.get(i).getNom()) {
+            if(salleChoisie.equalsIgnoreCase(mSallesDisponibles.get(i).getNom())) {
                 mSalle = mSallesDisponibles.get(i);
             }
         }
@@ -206,7 +200,6 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
     }
 
     @Override
@@ -270,8 +263,7 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
 
             this.mEditTextParticipant.setText("");
 
-            String newParticipant = (String) newChip.getTag();
-            mlistParticipant.add(newParticipant);
+            mlistParticipant.add(participant);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -280,26 +272,6 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
 
     }
 
-    // User click on "Show Selections" button.
-    private void showSelections()  {
-        int count = this.mChipGroupParticipant.getChildCount();
-
-        String s = null;
-        for(int i=0;i< count; i++) {
-        Chip child = (Chip) this.mChipGroupParticipant.getChildAt(i);
-
-            if(!child.isChecked()) {
-                continue;
-            }
-
-            if(s == null)  {
-                s = child.getText().toString();
-            } else {
-                s += ", " + child.getText().toString();
-            }
-        }
-        Toast.makeText(this, s, Toast.LENGTH_LONG).show();
-    }
 
     // User close a Chip.
     private void handleChipCloseIconClicked(Chip chip) {
@@ -307,10 +279,12 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
         parent.removeView(chip);
 
         String deletedChip = (String) chip.getTag();
-        for (int i = 0; i < mlistParticipant.size(); i++) {
-            String participant = mlistParticipant.get(i);
-            if (deletedChip == participant) {
-                mlistParticipant.remove(participant);
+        Iterator i = mlistParticipant.iterator();
+        while (i.hasNext()) {
+            String participant = (String) i.next();
+            if (deletedChip.equalsIgnoreCase(participant)) {
+                i.remove();
+                break;
             }
         }
     }

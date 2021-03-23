@@ -4,26 +4,23 @@ package com.khamvongsa.victor.mareunion.service;
 import com.khamvongsa.victor.mareunion.controller.ExempleReunion;
 import com.khamvongsa.victor.mareunion.controller.ExempleSalle;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class FakeReunionApiService implements ReunionApiService {
+public class FakeReunionApiService implements ReunionApiService, DeleteListener {
 
     private final List<ExempleReunion> reunions = FakeReunion.generateExempleReunions();
     private final List<ExempleSalle> salles = FakeSalle.getSallesDisponibles();
 
     @Override
     public List<ExempleSalle> getSalles() {
-        return salles;
+        return new ArrayList<>(salles) ;
     }
 
     @Override
     public List<ExempleReunion> getReunions() {
-        return reunions;
-    }
-
-    @Override
-    public void deleteReunion(ExempleReunion reunion) {
-        reunions.remove(reunion);
+        return new ArrayList<>(reunions) ;
+        // pour protéger les données dans la partie service
     }
 
     @Override
@@ -31,4 +28,8 @@ public class FakeReunionApiService implements ReunionApiService {
         reunions.add(reunion);
     }
 
+    @Override
+    public void clickOnDeleteListener(ExempleReunion reunion) {
+         reunions.remove(reunion);
+    }
 }

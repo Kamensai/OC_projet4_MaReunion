@@ -11,7 +11,10 @@ public interface ReunionApiService {
 
     List<ExempleReunion> getReunions();
 
-    void deleteReunion(ExempleReunion reunion);
+    // Get reunionbyDate
+
+    void clickOnDeleteListener(ExempleReunion reunion);
 
     void createReunion(ExempleReunion reunion);
+
 }

@@ -3,18 +3,16 @@ package com.khamvongsa.victor.mareunion.controller;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.khamvongsa.victor.mareunion.R;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
+import com.khamvongsa.victor.mareunion.service.DeleteListener;
+import com.khamvongsa.victor.mareunion.service.ReunionApiService;
 
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,10 +21,19 @@ import butterknife.ButterKnife;
 
 public class MyReunionRecyclerViewAdapter extends RecyclerView.Adapter<MyReunionRecyclerViewAdapter.ViewHolder> {
 
-    private final List<ExempleReunion> mReunions;
+
+    private List<ExempleReunion> mReunions;
+    private final DeleteListener mDeleteListener;
     SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yy");
 
-    public MyReunionRecyclerViewAdapter(List<ExempleReunion> item) { mReunions = item;
+    public MyReunionRecyclerViewAdapter(List<ExempleReunion> item, DeleteListener mDeleteListener) { mReunions = item;
+    this.mDeleteListener = mDeleteListener;
+    }
+
+    public void updateList(List<ExempleReunion> item) {
+        mReunions.clear();
+        mReunions.addAll(item);
+       notifyDataSetChanged();
     }
 
     @NonNull
@@ -47,7 +54,15 @@ public class MyReunionRecyclerViewAdapter extends RecyclerView.Adapter<MyReunion
         holder.mParticipants.setText(reunion.getParticipant().toString());
         holder.mParticipants.setText(reunion.getParticipant().toString());
 
-
+        holder.mDeleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO : Faire un listener pour supprimer
+            mDeleteListener.clickOnDeleteListener(reunion);
+            mReunions.remove(position);
+            notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -66,6 +81,11 @@ public class MyReunionRecyclerViewAdapter extends RecyclerView.Adapter<MyReunion
         public TextView mDateDebut;
         @BindView(R.id.item_list_participants)
         public TextView mParticipants;
+
+        @BindView(R.id.item_list_delete_button)
+        public ImageButton mDeleteButton;
+
+
 
         public ViewHolder(@NonNull View view) {
             super(view);

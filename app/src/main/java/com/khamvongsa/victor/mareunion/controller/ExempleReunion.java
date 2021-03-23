@@ -1,9 +1,11 @@
 package com.khamvongsa.victor.mareunion.controller;
 
+import com.khamvongsa.victor.mareunion.model.Reunion;
 import com.khamvongsa.victor.mareunion.model.Salle;
 
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +33,14 @@ public class ExempleReunion {
         this.sujet = sujet;
         this.participant = participant;
     }
+
+    public static Comparator<ExempleReunion> ReunionDateComparator = new Comparator<ExempleReunion>() {
+        @Override
+        public int compare(ExempleReunion r1, ExempleReunion r2) {
+
+            return r1.getDebut().compareTo(r2.getDebut());
+        }
+    };
 
     public long getId() {
         return id;
