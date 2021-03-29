@@ -44,23 +44,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.sort_menu,menu);
-
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.menu_Date:
-                //sort by Date
-                Toast.makeText(MainActivity.this,"sort by Date", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.menu_Salle:
-                Toast.makeText(MainActivity.this,"sort by Salle", Toast.LENGTH_SHORT).show();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @OnClick(R.id.add_Reunion)
     void addReunion() {

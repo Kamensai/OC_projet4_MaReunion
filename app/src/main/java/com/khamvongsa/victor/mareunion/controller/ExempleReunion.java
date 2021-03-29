@@ -2,6 +2,7 @@ package com.khamvongsa.victor.mareunion.controller;
 
 import com.khamvongsa.victor.mareunion.model.Reunion;
 import com.khamvongsa.victor.mareunion.model.Salle;
+import com.khamvongsa.victor.mareunion.service.DeleteListener;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -34,13 +35,21 @@ public class ExempleReunion {
         this.participant = participant;
     }
 
-    public static Comparator<ExempleReunion> ReunionDateComparator = new Comparator<ExempleReunion>() {
+    public static Comparator<ExempleReunion> ReunionSalleNameComparator = new Comparator<ExempleReunion>() {
         @Override
         public int compare(ExempleReunion r1, ExempleReunion r2) {
 
+            return r1.getSalle().getNom().compareTo(r2.getSalle().getNom());
+        }
+    };
+
+    public static Comparator<ExempleReunion> ReunionDateComparator = new Comparator<ExempleReunion>() {
+        @Override
+        public int compare(ExempleReunion r1, ExempleReunion r2) {
             return r1.getDebut().compareTo(r2.getDebut());
         }
     };
+
 
     public long getId() {
         return id;

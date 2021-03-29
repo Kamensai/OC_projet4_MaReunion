@@ -3,6 +3,7 @@ package com.khamvongsa.victor.mareunion.service;
 import com.khamvongsa.victor.mareunion.controller.ExempleReunion;
 import com.khamvongsa.victor.mareunion.controller.ExempleSalle;
 
+import java.util.Calendar;
 import java.util.List;
 
 public interface ReunionApiService {
@@ -11,9 +12,16 @@ public interface ReunionApiService {
 
     List<ExempleReunion> getReunions();
 
-    // Get reunionbyDate
+    // TODO : Get reunionbyDate
 
-    void clickOnDeleteListener(ExempleReunion reunion);
+    // TODO : Get reunionbySalle
+
+
+    void deleteReunion(ExempleReunion reunion);
+
+    List<ExempleReunion> getReunionsBySalle(String salleChoisie);
+
+    List<ExempleReunion> getReunionsByDate(Calendar dateChoisie);
 
     void createReunion(ExempleReunion reunion);
 

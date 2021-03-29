@@ -127,6 +127,8 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
                             }
                         }, year, month, day);
                 mDatePicker.show();
+
+
             }
         });
         mButtonGetDate.setOnClickListener(new View.OnClickListener() {

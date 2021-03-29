@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+    android:id="@+id/menu_All"
+    android:title="Toutes"
+    />
+    <item
         android:id="@+id/menu_Date"
         android:title="Date"
         />
     <item
-        android:id="@+id/menu_Salle"
-        android:title="Salle"
+        android:id="@+id/menu_Salle_Mario"
+        android:title="Mario"
          />
+    <item
+        android:id="@+id/menu_Salle_Luigi"
+        android:title="Luigi"
+        />
+    <item
+        android:id="@+id/menu_Salle_Peach"
+        android:title="Peach"
+        />
 </menu>
