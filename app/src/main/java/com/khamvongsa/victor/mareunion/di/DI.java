@@ -17,5 +17,4 @@ public class DI {
         public static ReunionApiService getReunionApiService() {
             return service;
         }
-
     }

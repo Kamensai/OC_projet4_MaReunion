@@ -1,10 +1,5 @@
 package com.khamvongsa.victor.mareunion.controller;
 
-import com.khamvongsa.victor.mareunion.model.Reunion;
-import com.khamvongsa.victor.mareunion.model.Salle;
-import com.khamvongsa.victor.mareunion.service.DeleteListener;
-
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
@@ -16,6 +11,10 @@ public class ExempleReunion {
 
     private Date debut;
 
+    private Date startHour;
+
+    private Date endHour;
+
     private ExempleSalle salle;
 
     private String sujet;
@@ -26,10 +25,11 @@ public class ExempleReunion {
     /**
      * Constructor
      */
-    public ExempleReunion(long id, Date debut, ExempleSalle salle, String sujet,
-                   List<String> participant) {
+    public ExempleReunion(long id, Date debut, Date startHour, Date endHour, ExempleSalle salle, String sujet, List<String> participant) {
         this.id = id;
         this.debut = debut;
+        this.startHour = startHour;
+        this.endHour = endHour;
         this.salle = salle;
         this.sujet = sujet;
         this.participant = participant;
@@ -50,7 +50,6 @@ public class ExempleReunion {
         }
     };
 
-
     public long getId() {
         return id;
     }
@@ -65,6 +64,22 @@ public class ExempleReunion {
 
     public void setDebut(Date debut) {
         this.debut = debut;
+    }
+
+    public Date getStartHour() {
+        return startHour;
+    }
+
+    public void setStartHour(Date startHour) {
+        this.startHour = startHour;
+    }
+
+    public Date getEndHour() {
+        return endHour;
+    }
+
+    public void setEndHour(Date endHour) {
+        this.endHour = endHour;
     }
 
     public ExempleSalle getSalle() {

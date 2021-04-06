@@ -56,7 +56,7 @@
             android:textSize="18dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/activity_add_reunion_inputHour"
+            android:id="@+id/activity_add_reunion_inputStartHour"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
             android:layout_marginTop="20dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/activity_add_reunion_editHour"
+            android:id="@+id/activity_add_reunion_editStartHour"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -76,27 +76,65 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/activity_add_reunion_btnGetHour"
+            android:id="@+id/activity_add_reunion_btnGetStartHour"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/activity_add_reunion_inputHour"
+            android:layout_below="@+id/activity_add_reunion_inputStartHour"
             android:layout_centerHorizontal="true"
             android:text="Get Date" />
         <TextView
-            android:id="@+id/activity_add_reunion_textViewHour"
+            android:id="@+id/activity_add_reunion_textViewStartHour"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/activity_add_reunion_btnGetHour"
+            android:layout_below="@+id/activity_add_reunion_btnGetStartHour"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:textStyle="bold"
             android:textSize="18dp"/>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/activity_add_reunion_inputEndHour"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/activity_add_reunion_textViewStartHour"
+            android:layout_marginTop="20dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/activity_add_reunion_editEndHour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:ems="10"
+                android:hint="Enter Time"
+                android:inputType="datetime"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/activity_add_reunion_btnGetEndHour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/activity_add_reunion_inputEndHour"
+            android:layout_centerHorizontal="true"
+            android:text="Get Date" />
+        <TextView
+            android:id="@+id/activity_add_reunion_textViewEndHour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/activity_add_reunion_btnGetEndHour"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:textSize="18dp"/>
+
+
         <TextView
             android:id="@+id/activity_add_reunion_Room"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/activity_add_reunion_textViewHour"
+            android:layout_below="@+id/activity_add_reunion_textViewEndHour"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:text="@string/room_name"

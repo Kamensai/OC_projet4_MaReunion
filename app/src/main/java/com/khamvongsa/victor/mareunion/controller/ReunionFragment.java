@@ -81,25 +81,24 @@ public class ReunionFragment extends Fragment {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 mStartDate.set(year,monthOfYear, dayOfMonth);
+                                filterByDate(mStartDate);
                             }
                         }, year, month, day);
                 mDatePicker.show();
-                mListFiltered = mReunionApiService.getReunionsByDate(mStartDate);
-                mRecyclerView.setAdapter(new MyReunionRecyclerViewAdapter(mListFiltered, reunion -> clickOnDeleteListener(reunion)));
                 return true;
             case R.id.menu_Salle_Mario:
                 Toast.makeText(this.getContext(),"Filter only Mario", Toast.LENGTH_SHORT).show();
-                mListFiltered = mReunionApiService.getReunionsBySalle("Mario");
+                mListFiltered = mReunionApiService.getReunionsByRooms("Mario");
                 mRecyclerView.setAdapter(new MyReunionRecyclerViewAdapter(mListFiltered, reunion -> clickOnDeleteListener(reunion)));
                 return true;
             case R.id.menu_Salle_Luigi:
                 Toast.makeText(this.getContext(),"Filter only Luigi", Toast.LENGTH_SHORT).show();
-                mListFiltered = mReunionApiService.getReunionsBySalle("Luigi");
+                mListFiltered = mReunionApiService.getReunionsByRooms("Luigi");
                 mRecyclerView.setAdapter(new MyReunionRecyclerViewAdapter(mListFiltered, reunion -> clickOnDeleteListener(reunion)));
                 return true;
             case R.id.menu_Salle_Peach:
                 Toast.makeText(this.getContext(),"Filter only Peach", Toast.LENGTH_SHORT).show();
-                mListFiltered = mReunionApiService.getReunionsBySalle("Peach");
+                mListFiltered = mReunionApiService.getReunionsByRooms("Peach");
                 mRecyclerView.setAdapter(new MyReunionRecyclerViewAdapter(mListFiltered, reunion -> clickOnDeleteListener(reunion)));
                 return true;
             case R.id.menu_All:
@@ -128,9 +127,14 @@ public class ReunionFragment extends Fragment {
         initList();
     }
 
-    // TODO : Ajouter une méthode de suppression de réunion
     public void clickOnDeleteListener(ExempleReunion reunion) {
         mReunionApiService.deleteReunion(reunion);
         initList();
+    }
+
+    private void filterByDate(Calendar dateChoisie) {
+        List<ExempleReunion> mListFiltered;
+        mListFiltered = mReunionApiService.getReunionsByDate(dateChoisie);
+        mRecyclerView.setAdapter(new MyReunionRecyclerViewAdapter(mListFiltered, reunion -> clickOnDeleteListener(reunion)));
     }
 }

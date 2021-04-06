@@ -12,16 +12,13 @@ public interface ReunionApiService {
 
     List<ExempleReunion> getReunions();
 
-    // TODO : Get reunionbyDate
-
-    // TODO : Get reunionbySalle
-
-
     void deleteReunion(ExempleReunion reunion);
 
-    List<ExempleReunion> getReunionsBySalle(String salleChoisie);
+    List<ExempleReunion> getReunionsByRooms(String salleChoisie);
 
     List<ExempleReunion> getReunionsByDate(Calendar dateChoisie);
+
+    List<String> FilterAvailableRooms(List<ExempleReunion> reunions, List<ExempleSalle> rooms, Calendar startDate, Calendar startHour, Calendar EndHour);
 
     void createReunion(ExempleReunion reunion);
 

@@ -42,11 +42,31 @@
         android:id="@+id/item_list_dateDebut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="15dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/item_list_sujet"
         app:layout_constraintStart_toEndOf="@+id/item_list_sujet"
         app:layout_constraintTop_toTopOf="@+id/item_list_sujet"/>
+
+    <TextView
+        android:id="@+id/item_list_startHour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/item_list_dateDebut"
+        app:layout_constraintStart_toEndOf="@+id/item_list_dateDebut"
+        app:layout_constraintTop_toTopOf="@+id/item_list_dateDebut"/>
+
+    <TextView
+        android:id="@+id/item_list_EndHour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/item_list_dateDebut"
+        app:layout_constraintTop_toBottomOf="@+id/item_list_startHour"/>
 
     <TextView
         android:id="@+id/item_list_participants"

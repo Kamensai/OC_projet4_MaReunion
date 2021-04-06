@@ -24,7 +24,8 @@ public class MyReunionRecyclerViewAdapter extends RecyclerView.Adapter<MyReunion
 
     private List<ExempleReunion> mReunions;
     private final DeleteListener mDeleteListener;
-    SimpleDateFormat formater = new SimpleDateFormat("yy-MM-dd");
+    SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yy");
+    SimpleDateFormat formaterHour = new SimpleDateFormat("HH mm");
 
     public MyReunionRecyclerViewAdapter(List<ExempleReunion> item, DeleteListener mDeleteListener) { mReunions = item;
     this.mDeleteListener = mDeleteListener;
@@ -51,13 +52,14 @@ public class MyReunionRecyclerViewAdapter extends RecyclerView.Adapter<MyReunion
         holder.mSalleColor.setBackgroundColor(reunion.getSalle().getCouleur());
         holder.mSujet.setText(reunion.getSujet());
         holder.mDateDebut.setText(formater.format(reunion.getDebut()));
+        holder.mStartHour.setText(formaterHour.format(reunion.getStartHour()));
+        holder.mEndHour.setText(formaterHour.format(reunion.getEndHour()));
         holder.mParticipants.setText(reunion.getParticipant().toString());
         holder.mParticipants.setText(reunion.getParticipant().toString());
 
         holder.mDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO : Faire un listener pour supprimer
             mDeleteListener.clickOnDeleteListener(reunion);
             }
         });
@@ -77,6 +79,10 @@ public class MyReunionRecyclerViewAdapter extends RecyclerView.Adapter<MyReunion
         public TextView mSujet;
         @BindView(R.id.item_list_dateDebut)
         public TextView mDateDebut;
+        @BindView(R.id.item_list_startHour)
+        public TextView mStartHour;
+        @BindView(R.id.item_list_EndHour)
+        public TextView mEndHour;
         @BindView(R.id.item_list_participants)
         public TextView mParticipants;
 

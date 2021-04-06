@@ -11,13 +11,8 @@ import butterknife.OnClick;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.khamvongsa.victor.mareunion.R;
-import com.khamvongsa.victor.mareunion.service.DeleteListener;
-import com.khamvongsa.victor.mareunion.service.FakeReunionApiService;
-import com.khamvongsa.victor.mareunion.service.ReunionApiService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
     ViewPager mViewPager;
 
     ListReunionPagerAdapter mPagerAdapter;
-    Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

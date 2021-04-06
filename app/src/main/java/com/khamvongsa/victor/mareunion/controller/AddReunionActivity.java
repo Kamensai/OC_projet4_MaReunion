@@ -28,24 +28,22 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputLayout;
 import com.khamvongsa.victor.mareunion.R;
 import com.khamvongsa.victor.mareunion.di.DI;
-import com.khamvongsa.victor.mareunion.model.Reunion;
-import com.khamvongsa.victor.mareunion.model.Salle;
-import com.khamvongsa.victor.mareunion.service.FakeReunionApiService;
-import com.khamvongsa.victor.mareunion.service.FakeSalle;
+import com.khamvongsa.victor.mareunion.service.CalculTime;
+import com.khamvongsa.victor.mareunion.service.CalculTimeService;
 import com.khamvongsa.victor.mareunion.service.ReunionApiService;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
+
+import static android.widget.Toast.LENGTH_SHORT;
 
 public class AddReunionActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -59,14 +57,24 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
     @BindView(R.id.activity_add_reunion_textViewDate)
     TextView mTextViewDate;
 
-    @BindView(R.id.activity_add_reunion_inputHour)
-    TextInputLayout mHourInput;
-    @BindView(R.id.activity_add_reunion_editHour)
-    EditText mEditHour;
-    @BindView(R.id.activity_add_reunion_btnGetHour)
-    Button mButtonGetHour;
-    @BindView(R.id.activity_add_reunion_textViewHour)
-    TextView mTextViewHour;
+    // Start Hour Reunion
+    @BindView(R.id.activity_add_reunion_inputStartHour)
+    TextInputLayout mStartHourInput;
+    @BindView(R.id.activity_add_reunion_editStartHour)
+    EditText mEditStartHour;
+    @BindView(R.id.activity_add_reunion_btnGetStartHour)
+    Button mButtonGetStartHour;
+    @BindView(R.id.activity_add_reunion_textViewStartHour)
+    TextView mTextViewStartHour;
+    // End Hour Reunion
+    @BindView(R.id.activity_add_reunion_inputEndHour)
+    TextInputLayout mEndHourInput;
+    @BindView(R.id.activity_add_reunion_editEndHour)
+    EditText mEditEndHour;
+    @BindView(R.id.activity_add_reunion_btnGetEndHour)
+    Button mButtonGetEndHour;
+    @BindView(R.id.activity_add_reunion_textViewEndHour)
+    TextView mTextViewEndHour;
 
     @BindView(R.id.activity_add_reunion_spinnerRoom)
     Spinner mSpinnerRoom;
@@ -87,12 +95,15 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
     MaterialButton addButton;
 
     private ReunionApiService mReunionApiService;
+    private CalculTimeService mCalculTimeService;
     private DatePickerDialog mDatePicker;
     private TimePickerDialog mTimePicker;
     private List<String> mlistParticipant = new ArrayList<String>();
     private Calendar mStartDate = Calendar.getInstance();
     private Calendar mStartHour = Calendar.getInstance();
+    private Calendar mEndHour = Calendar.getInstance();
     private ExempleSalle mSalle;
+    private List<ExempleReunion> mReunions;
 
     private List<ExempleSalle> mSallesDisponibles;
     private List<String> listSalles = new ArrayList<String>();
@@ -105,7 +116,10 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mReunionApiService = DI.getReunionApiService();
-        init();
+        mCalculTimeService = new CalculTime();
+        mSpinnerRoom.setEnabled(false);
+        enableAddButton();
+        launchEnableSpinner();
 
         // DATE
         mEditDate.setInputType(InputType.TYPE_NULL);
@@ -127,8 +141,6 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
                             }
                         }, year, month, day);
                 mDatePicker.show();
-
-
             }
         });
         mButtonGetDate.setOnClickListener(new View.OnClickListener() {
@@ -138,9 +150,10 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
             }
         });
 
-        //HOUR
-        mEditHour.setInputType(InputType.TYPE_NULL);
-        mEditHour.setOnClickListener(new View.OnClickListener() {
+        //HOUR START
+        mEditStartHour.setEnabled(false);
+        mEditStartHour.setInputType(InputType.TYPE_NULL);
+        mEditStartHour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Calendar cldr = Calendar.getInstance();
@@ -151,32 +164,52 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
-                                mEditHour.setText(sHour + ":" + sMinute);
+                                mEditStartHour.setText(sHour + ":" + sMinute);
                                 mStartHour.set(0,0,0,sHour,sMinute);
-                                mTextViewHour.setText("Selected Time: " + mEditHour.getText());
+                                mTextViewStartHour.setText("Selected Time: " + mEditStartHour.getText());
                             }
                         }, hour, minutes, true);
                 mTimePicker.show();
             }
         });
-        mButtonGetHour.setOnClickListener(new View.OnClickListener() {
+        mButtonGetStartHour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mTextViewHour.setText("Selected Time: " + mEditHour.getText());
+                mTextViewStartHour.setText("Selected Time: " + mEditStartHour.getText());
+            }
+        });
+
+        // HOUR END
+        mEditEndHour.setEnabled(false);
+        mEditEndHour.setInputType(InputType.TYPE_NULL);
+        mEditEndHour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar cldr = Calendar.getInstance();
+                int hour = cldr.get(Calendar.HOUR_OF_DAY);
+                int minutes = cldr.get(Calendar.MINUTE);
+                // time picker dialog
+                mTimePicker = new TimePickerDialog(AddReunionActivity.this,
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
+                                mEditEndHour.setText(sHour + ":" + sMinute);
+                                mEndHour.set(0,0,0,sHour,sMinute);
+                                mTextViewEndHour.setText("Selected Time: " + mEditEndHour.getText());
+                                availableRoom();
+                            }
+                        }, hour, minutes, true);
+                mTimePicker.show();
+            }
+        });
+        mButtonGetEndHour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTextViewEndHour.setText("Selected Time: " + mEditEndHour.getText());
             }
         });
 
         // AVAILABLE_ROOM
-        mSallesDisponibles = mReunionApiService.getSalles();
-        for (int i = 0; i < mSallesDisponibles.size(); i++) {
-            String salle = mSallesDisponibles.get(i).getNom();
-            listSalles.add(salle);
-            }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, listSalles);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSpinnerRoom.setAdapter(adapter);
-        mSpinnerRoom.setOnItemSelectedListener(this);
 
         // REUNION SUBJECT
 
@@ -188,6 +221,28 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
             }
         });
     }
+
+    public void availableRoom() {
+
+        int mReunionHourTime = mEndHour.get(Calendar.HOUR_OF_DAY) - mStartHour.get(Calendar.HOUR_OF_DAY);
+        int mReunionMinuteTime = (mEndHour.get(Calendar.HOUR_OF_DAY)*60 + mEndHour.get(Calendar.MINUTE)) - (mStartHour.get(Calendar.HOUR_OF_DAY)*60 + mStartHour.get(Calendar.MINUTE));
+
+        int mReunionMinuteTimeLeft = mCalculTimeService.calculMinuteLeft(mReunionMinuteTime, mReunionHourTime);
+        int mReunionHourTimeLeft = mCalculTimeService.calculHourLeft(mReunionMinuteTime, mReunionHourTime);
+
+        mReunions = mReunionApiService.getReunions();
+        mSallesDisponibles = mReunionApiService.getSalles();
+        listSalles = mReunionApiService.FilterAvailableRooms(mReunions, mSallesDisponibles, mStartDate, mStartHour, mEndHour);
+
+        Toast.makeText(this, "Temps de réunion : "+ mReunionHourTimeLeft+"h "+ mReunionMinuteTimeLeft,LENGTH_SHORT).show();
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, listSalles);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpinnerRoom.setAdapter(adapter);
+        mSpinnerRoom.setOnItemSelectedListener(this);
+    }
+
+    // TODO : Calculer la différence d'heures
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -213,13 +268,6 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
         return super.onOptionsItemSelected(item);
     }
 
-
-
-    public static void navigate (FragmentActivity activity){
-        Intent intent = new Intent(activity, AddReunionActivity.class);
-        ActivityCompat.startActivity(activity, intent, null);
-    }
-
     private void addNewChip() {
         String participant = this.mEditTextParticipant.getText().toString();
         if (participant == null || participant.isEmpty()) {
@@ -234,18 +282,8 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
             Chip newChip = (Chip) inflater.inflate(R.layout.layout_chip_entry, this.mChipGroupParticipant, false);
             newChip.setText(participant);
             newChip.setTag(participant);
-            //
-            // Other methods:
-            //
-            // newChip.setCloseIconVisible(true);
-            // newChip.setCloseIconResource(R.drawable.your_icon);
-            // newChip.setChipIconResource(R.drawable.your_icon);
-            // newChip.setChipBackgroundColorResource(R.color.red);
-            // newChip.setTextAppearanceResource(R.style.ChipTextStyle);
-            // newChip.setElevation(15);
 
             this.mChipGroupParticipant.addView(newChip);
-
 
             // Set Listener for the Chip:
             newChip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -262,9 +300,7 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
                 }
             });
 
-
             this.mEditTextParticipant.setText("");
-
             mlistParticipant.add(participant);
 
         } catch (Exception e) {
@@ -273,7 +309,6 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
         }
 
     }
-
 
     // User close a Chip.
     private void handleChipCloseIconClicked(Chip chip) {
@@ -297,17 +332,15 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
 
     // TODO : L'utilisateur doit remplir tous les champs pour pouvoir créer la réunion
 
-    private void init() {
+    private void enableAddButton() {
 
         mInputSubjectReunion.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
-
             @Override
             public void afterTextChanged(Editable s) {
                 addButton.setEnabled(s.length() > 0);
@@ -315,10 +348,56 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
         });
     }
 
+    private void launchEnableSpinner() {
+        mDateInput.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                mEditStartHour.setEnabled(s.length()>0);
+            }
+        });
+
+        mStartHourInput.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) { mEditEndHour.setEnabled(s.length() > 0);
+            }
+        });
+
+        mEndHourInput.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                mSpinnerRoom.setEnabled(s.length() > 0);
+            }
+        });
+    }
+
+    public static void navigate (FragmentActivity activity){
+        Intent intent = new Intent(activity, AddReunionActivity.class);
+        ActivityCompat.startActivity(activity, intent, null);
+    }
+
     @OnClick(R.id.activity_add_reunion_btn_createReunion)
     void addReunion() {
         ExempleReunion reunion = new ExempleReunion(
-                System.currentTimeMillis(), mStartDate.getTime(), mSalle, mInputSubjectReunion.getEditText().getText().toString(), mlistParticipant
+                System.currentTimeMillis(), mStartDate.getTime(), mStartHour.getTime(), mEndHour.getTime(), mSalle, mInputSubjectReunion.getEditText().getText().toString(), mlistParticipant
         );
         mReunionApiService.createReunion(reunion);
         finish();
