@@ -208,9 +208,6 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
                 mTextViewEndHour.setText("Selected Time: " + mEditEndHour.getText());
             }
         });
-
-        // AVAILABLE_ROOM
-
         // REUNION SUBJECT
 
         // PARTICIPANTS
@@ -222,6 +219,8 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
         });
     }
 
+    // TODO : Calculer la différence d'heures
+    // AVAILABLE_ROOM
     public void availableRoom() {
 
         int mReunionHourTime = mEndHour.get(Calendar.HOUR_OF_DAY) - mStartHour.get(Calendar.HOUR_OF_DAY);
@@ -241,8 +240,6 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
         mSpinnerRoom.setAdapter(adapter);
         mSpinnerRoom.setOnItemSelectedListener(this);
     }
-
-    // TODO : Calculer la différence d'heures
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

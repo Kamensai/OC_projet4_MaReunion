@@ -10,8 +10,7 @@ public class CalculTime implements CalculTimeService{
         int mTotalHour;
 
         if (totalMinute >= 60 && totalHour > 1) {
-            mTotalHour = totalHour - 1;
-            mReunionMinuteTime = totalMinute - 60*mTotalHour;
+            mReunionMinuteTime = totalMinute - 60*totalHour;
             return mReunionMinuteTime;
         }
         else if (totalMinute >= 60) {
@@ -26,13 +25,15 @@ public class CalculTime implements CalculTimeService{
     @Override
     public int calculHourLeft(int totalMinute, int totalHour) {
         int mReunionHourTime;
-        if (totalMinute <= 60 && totalHour == 1) {
+        if (totalMinute < 60 && totalHour == 1) {
             mReunionHourTime = totalHour - 1;
             return mReunionHourTime;
         }
+        else if (totalMinute == 60 && totalHour == 1) {
+            return totalHour;
+        }
         else if (totalMinute >= 60 && totalHour > 1){
-            mReunionHourTime = totalHour - 1;
-            return mReunionHourTime;
+            return totalHour;
         }
         else {
             return totalHour;
