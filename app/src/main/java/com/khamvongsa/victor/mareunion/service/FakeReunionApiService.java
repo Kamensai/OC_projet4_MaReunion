@@ -168,7 +168,6 @@ public class FakeReunionApiService implements ReunionApiService {
                         && mStartHourChosen == mStart.get(Calendar.HOUR_OF_DAY)
                         && mStartHourChosen < mEnd.get(Calendar.HOUR_OF_DAY)
                         && mStartMinuteChosen >= mStart.get(Calendar.MINUTE)) {
-                    // TODO : Demander à faire un toast pour demander à changer le champ
                     Log.d(TAG, "REMOVE " + salle + " from list !!!!");
                     listRooms.remove(salle); }
 
@@ -180,8 +179,42 @@ public class FakeReunionApiService implements ReunionApiService {
                         && mStartHourChosen > mStart.get(Calendar.HOUR_OF_DAY)
                         && mStartHourChosen < mEnd.get(Calendar.HOUR_OF_DAY)) {
                     Log.d(TAG, "REMOVE " + salle + " from list !!!!");
-                    listRooms.remove(salle); }
+                    listRooms.remove(salle);
+                }
 
+                // Si la réunion choisie commence avant une réunion déjà présente et finit après
+                else if (salle.equalsIgnoreCase(reunion.getSalle().getNom())
+                        && startDate.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH)
+                        && startDate.get(Calendar.MONTH) == date.get(Calendar.MONTH)
+                        && startDate.get(Calendar.YEAR) == date.get(Calendar.YEAR)
+                        && mStartHourChosen < mStart.get(Calendar.HOUR_OF_DAY)
+                        && mEndHourChosen > mEnd.get(Calendar.HOUR_OF_DAY)) {
+                    Log.d(TAG, "REMOVE " + salle + " from list !!!!");
+                    listRooms.remove(salle);
+                }
+
+                // Si la réunion choisie commence avant une réunion déjà présente et finit à la même heure, mais plus tard
+                else if (salle.equalsIgnoreCase(reunion.getSalle().getNom())
+                        && startDate.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH)
+                        && startDate.get(Calendar.MONTH) == date.get(Calendar.MONTH)
+                        && startDate.get(Calendar.YEAR) == date.get(Calendar.YEAR)
+                        && mStartHourChosen < mStart.get(Calendar.HOUR_OF_DAY)
+                        && mEndHourChosen == mEnd.get(Calendar.HOUR_OF_DAY)) {
+                    Log.d(TAG, "REMOVE " + salle + " from list !!!!");
+                    listRooms.remove(salle);
+                }
+
+                // Si la réunion choisie commence avant une réunion déjà présente et finit après
+                else if (salle.equalsIgnoreCase(reunion.getSalle().getNom())
+                        && startDate.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH)
+                        && startDate.get(Calendar.MONTH) == date.get(Calendar.MONTH)
+                        && startDate.get(Calendar.YEAR) == date.get(Calendar.YEAR)
+                        && mStartHourChosen < mStart.get(Calendar.HOUR_OF_DAY)
+                        && mEndHourChosen > mStart.get(Calendar.HOUR_OF_DAY)
+                        && mEndHourChosen < mEnd.get(Calendar.HOUR_OF_DAY)) {
+                    Log.d(TAG, "REMOVE " + salle + " from list !!!!");
+                    listRooms.remove(salle);
+                }
             }
         }
         return listRooms;

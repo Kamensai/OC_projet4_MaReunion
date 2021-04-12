@@ -222,12 +222,13 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
     // TODO : Calculer la différence d'heures
     // AVAILABLE_ROOM
     public void availableRoom() {
-
+        int mStartReunionMinuteChosen = mStartHour.get(Calendar.MINUTE);
+        int mEndReunionMinuteChosen = mEndHour.get(Calendar.MINUTE);
         int mReunionHourTime = mEndHour.get(Calendar.HOUR_OF_DAY) - mStartHour.get(Calendar.HOUR_OF_DAY);
         int mReunionMinuteTime = (mEndHour.get(Calendar.HOUR_OF_DAY)*60 + mEndHour.get(Calendar.MINUTE)) - (mStartHour.get(Calendar.HOUR_OF_DAY)*60 + mStartHour.get(Calendar.MINUTE));
 
-        int mReunionMinuteTimeLeft = mCalculTimeService.calculMinuteLeft(mReunionMinuteTime, mReunionHourTime);
-        int mReunionHourTimeLeft = mCalculTimeService.calculHourLeft(mReunionMinuteTime, mReunionHourTime);
+        int mReunionMinuteTimeLeft = mCalculTimeService.calculMinuteLeft(mReunionMinuteTime, mReunionHourTime,mStartReunionMinuteChosen, mEndReunionMinuteChosen);
+        int mReunionHourTimeLeft = mCalculTimeService.calculHourLeft(mReunionMinuteTime, mReunionHourTime,mStartReunionMinuteChosen, mEndReunionMinuteChosen);
 
         mReunions = mReunionApiService.getReunions();
         mSallesDisponibles = mReunionApiService.getSalles();
