@@ -52,29 +52,19 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
     TextInputLayout mDateInput;
     @BindView(R.id.activity_add_reunion_editDate)
     EditText mEditDate;
-    @BindView(R.id.activity_add_reunion_btnGetDate)
-    Button mButtonGetDate;
-    @BindView(R.id.activity_add_reunion_textViewDate)
-    TextView mTextViewDate;
 
     // Start Hour Reunion
     @BindView(R.id.activity_add_reunion_inputStartHour)
     TextInputLayout mStartHourInput;
     @BindView(R.id.activity_add_reunion_editStartHour)
     EditText mEditStartHour;
-    @BindView(R.id.activity_add_reunion_btnGetStartHour)
-    Button mButtonGetStartHour;
-    @BindView(R.id.activity_add_reunion_textViewStartHour)
-    TextView mTextViewStartHour;
+
     // End Hour Reunion
     @BindView(R.id.activity_add_reunion_inputEndHour)
     TextInputLayout mEndHourInput;
     @BindView(R.id.activity_add_reunion_editEndHour)
     EditText mEditEndHour;
-    @BindView(R.id.activity_add_reunion_btnGetEndHour)
-    Button mButtonGetEndHour;
-    @BindView(R.id.activity_add_reunion_textViewEndHour)
-    TextView mTextViewEndHour;
+
 
     @BindView(R.id.activity_add_reunion_spinnerRoom)
     Spinner mSpinnerRoom;
@@ -88,8 +78,6 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
     ChipGroup mChipGroupParticipant;
     @BindView(R.id.activity_add_reunion_btnAdd_participant)
     Button mButtonAddParticipant;
-    @BindView(R.id.activity_add_reunion_btn_showParticipant)
-    Button mButtonShowParticipant;
 
     @BindView(R.id.activity_add_reunion_btn_createReunion)
     MaterialButton addButton;
@@ -137,22 +125,37 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 mStartDate.set(year,monthOfYear, dayOfMonth);
                                 mEditDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                                mTextViewDate.setText("Selected Date: " + mEditDate.getText());
                             }
                         }, year, month, day);
+                mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
                 mDatePicker.show();
             }
         });
-        mButtonGetDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mTextViewDate.setText("Selected Date: " + mEditDate.getText());
-            }
-        });
+
 
         //HOUR START
         mEditStartHour.setEnabled(false);
         mEditStartHour.setInputType(InputType.TYPE_NULL);
+        hourStart();
+
+
+        // HOUR END
+        mEditEndHour.setEnabled(false);
+        mEditEndHour.setInputType(InputType.TYPE_NULL);
+        endHour();
+
+        // REUNION SUBJECT
+
+        // PARTICIPANTS
+        this.mButtonAddParticipant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addNewChip();
+            }
+        });
+    }
+
+    public void hourStart() {
         mEditStartHour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,23 +168,21 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
                             @Override
                             public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
                                 mEditStartHour.setText(sHour + ":" + sMinute);
-                                mStartHour.set(0,0,0,sHour,sMinute);
-                                mTextViewStartHour.setText("Selected Time: " + mEditStartHour.getText());
+                                mStartHour.set(0, 0, 0, sHour, sMinute);
+                                if (sHour < hour || (sHour == hour && sMinute < minutes)) {
+                                    mEditStartHour.setError("This time is already passed. Provide a positive hour please.");
+                                }
+                                else {
+                                    mEditStartHour.setError(null);
+                                }
                             }
                         }, hour, minutes, true);
                 mTimePicker.show();
             }
         });
-        mButtonGetStartHour.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mTextViewStartHour.setText("Selected Time: " + mEditStartHour.getText());
-            }
-        });
+    }
 
-        // HOUR END
-        mEditEndHour.setEnabled(false);
-        mEditEndHour.setInputType(InputType.TYPE_NULL);
+    public void endHour() {
         mEditEndHour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -193,28 +194,20 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
+                                int mStartReunionHourChosen = mStartHour.get(Calendar.HOUR_OF_DAY);
+                                int mStartReunionMinuteChosen = mStartHour.get(Calendar.MINUTE);
                                 mEditEndHour.setText(sHour + ":" + sMinute);
                                 mEndHour.set(0,0,0,sHour,sMinute);
-                                mTextViewEndHour.setText("Selected Time: " + mEditEndHour.getText());
+                                if (mStartReunionHourChosen > sHour || (mStartReunionHourChosen == sHour && mStartReunionMinuteChosen > sMinute)) {
+                                    mEditEndHour.setError("You can't end before the start of the meeting. Provide another hour please.");
+                                }
+                                else {
+                                    mEditEndHour.setError(null);
+                                }
                                 availableRoom();
                             }
                         }, hour, minutes, true);
                 mTimePicker.show();
-            }
-        });
-        mButtonGetEndHour.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mTextViewEndHour.setText("Selected Time: " + mEditEndHour.getText());
-            }
-        });
-        // REUNION SUBJECT
-
-        // PARTICIPANTS
-        this.mButtonAddParticipant.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addNewChip();
             }
         });
     }
@@ -234,8 +227,11 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
         mSallesDisponibles = mReunionApiService.getSalles();
         listSalles = mReunionApiService.FilterAvailableRooms(mReunions, mSallesDisponibles, mStartDate, mStartHour, mEndHour);
 
-        Toast.makeText(this, "Temps de réunion : "+ mReunionHourTimeLeft+"h "+ mReunionMinuteTimeLeft,LENGTH_SHORT).show();
-
+        if ((mReunionHourTimeLeft == 0 && mReunionMinuteTimeLeft > 0)
+                || (mReunionHourTimeLeft > 0 && mReunionMinuteTimeLeft > 0)
+                || (mReunionHourTimeLeft > 0 && mReunionMinuteTimeLeft == 0) ) {
+            Toast.makeText(this, "Temps de réunion : " + mReunionHourTimeLeft + "h " + mReunionMinuteTimeLeft, LENGTH_SHORT).show();
+        }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, listSalles);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinnerRoom.setAdapter(adapter);
@@ -272,7 +268,6 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
             Toast.makeText(this, "Please enter the participants!", Toast.LENGTH_LONG).show();
             return;
         }
-
         try {
             LayoutInflater inflater = LayoutInflater.from(this);
 
@@ -305,7 +300,6 @@ public class AddReunionActivity extends AppCompatActivity implements AdapterView
             e.printStackTrace();
             Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
-
     }
 
     // User close a Chip.

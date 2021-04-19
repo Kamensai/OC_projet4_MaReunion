@@ -12,6 +12,7 @@
         <activity
             android:name=".controller.AddReunionActivity"
             android:label="@string/activity_add_reunion"
+            android:configChanges="keyboardHidden|orientation|screenSize"
         />
         <activity
             android:name=".controller.MainActivity"
@@ -19,7 +20,6 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

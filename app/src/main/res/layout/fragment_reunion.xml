@@ -1,22 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="5dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="6dp">
+
+<androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/item_reunion"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:padding="5dp">
 
     <ImageView
         android:id="@+id/item_list_color"
-        android:layout_width="50dp"
+        android:layout_width="3dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/item_reunion"
+        app:layout_constraintStart_toStartOf="@+id/item_reunion"
+        app:layout_constraintBottom_toBottomOf="@+id/item_reunion"
+        />
+
+    <ImageView
+        android:id="@+id/item_list_separator"
+        android:layout_width="1dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="160dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toTopOf="@+id/item_reunion"
+        app:layout_constraintStart_toStartOf="@+id/item_reunion"
+        app:layout_constraintBottom_toBottomOf="@+id/item_reunion"
+        />
 
     <TextView
         android:id="@+id/item_list_salle"
@@ -24,60 +42,60 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/item_list_color"
         app:layout_constraintStart_toEndOf="@+id/item_list_color"
-        app:layout_constraintTop_toTopOf="@+id/item_list_color" />
+        app:layout_constraintTop_toTopOf="@+id/item_reunion"
+        tools:text="list Salle"/>
 
     <TextView
         android:id="@+id/item_list_sujet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="170dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/item_list_salle"
-        app:layout_constraintStart_toEndOf="@+id/item_list_salle"
-        app:layout_constraintTop_toTopOf="@+id/item_list_salle" />
+        app:layout_constraintStart_toStartOf="@+id/item_reunion"
+        app:layout_constraintTop_toTopOf="@+id/item_list_salle"
+        tools:text="sujet"/>
 
     <TextView
         android:id="@+id/item_list_dateDebut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/item_list_sujet"
-        app:layout_constraintStart_toEndOf="@+id/item_list_sujet"
-        app:layout_constraintTop_toTopOf="@+id/item_list_sujet"/>
+        app:layout_constraintTop_toTopOf="@+id/item_reunion"
+        app:layout_constraintStart_toStartOf="@+id/item_list_salle"
+        app:layout_constraintBottom_toBottomOf="@+id/item_reunion"
+        tools:text="Date début"/>
 
     <TextView
         android:id="@+id/item_list_startHour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="20dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/item_list_dateDebut"
-        app:layout_constraintStart_toEndOf="@+id/item_list_dateDebut"
-        app:layout_constraintTop_toTopOf="@+id/item_list_dateDebut"/>
+        app:layout_constraintStart_toStartOf="@+id/item_list_separator"
+        app:layout_constraintTop_toTopOf="@+id/item_list_separator"
+        tools:text="15h20"/>
 
     <TextView
         android:id="@+id/item_list_EndHour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="20dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/item_list_dateDebut"
-        app:layout_constraintTop_toBottomOf="@+id/item_list_startHour"/>
+        app:layout_constraintStart_toStartOf="@+id/item_list_separator"
+        app:layout_constraintTop_toBottomOf="@+id/item_list_startHour"
+        tools:text="18h40"/>
 
     <TextView
         android:id="@+id/item_list_participants"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/item_list_salle"
-        app:layout_constraintTop_toBottomOf="@+id/item_list_salle" />
+        app:layout_constraintStart_toStartOf="@+id/item_list_salle"
+        app:layout_constraintTop_toBottomOf="@+id/item_list_EndHour"
+        tools:text="participants"/>
 
     <ImageButton
         android:id="@+id/item_list_delete_button"
@@ -85,9 +103,10 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:background="@null"
-        app:layout_constraintBottom_toBottomOf="@+id/item_list_dateDebut"
+        app:layout_constraintBottom_toBottomOf="@+id/item_reunion"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/item_list_dateDebut"
+        app:layout_constraintTop_toTopOf="@+id/item_reunion"
         app:srcCompat="@drawable/ic_delete" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

@@ -25,7 +25,7 @@ public class MyReunionRecyclerViewAdapter extends RecyclerView.Adapter<MyReunion
     private List<ExempleReunion> mReunions;
     private final DeleteListener mDeleteListener;
     SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yy");
-    SimpleDateFormat formaterHour = new SimpleDateFormat("HH mm");
+    SimpleDateFormat formaterHour = new SimpleDateFormat("HH'h ' mm'm'");
 
     public MyReunionRecyclerViewAdapter(List<ExempleReunion> item, DeleteListener mDeleteListener) { mReunions = item;
     this.mDeleteListener = mDeleteListener;
