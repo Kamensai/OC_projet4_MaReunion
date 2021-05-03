@@ -153,8 +153,6 @@
                 android:background="#F3EEEE"
                 />
 
-
-
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/activity_add_reunion_btn_createReunion"
                 style="@style/Widget.MaterialComponents.Button"

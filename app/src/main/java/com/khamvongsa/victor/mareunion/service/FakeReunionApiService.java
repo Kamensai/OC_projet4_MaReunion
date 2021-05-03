@@ -66,6 +66,7 @@ public class FakeReunionApiService implements ReunionApiService {
         int mEndHourChosen = endHour.get(Calendar.HOUR_OF_DAY);
         int mEndMinuteChosen = endHour.get(Calendar.MINUTE);
 
+        /*
         Log.d(TAG, "############################################");
         Log.d(TAG, "Information about my choosen date:");
         Log.d(TAG, "YEAR: " + startDate.get(Calendar.YEAR));
@@ -76,7 +77,7 @@ public class FakeReunionApiService implements ReunionApiService {
         Log.d(TAG, "HOUR fin: " + mEndHourChosen);
         Log.d(TAG, "MINUTE fin: " + mEndMinuteChosen);
         Log.d(TAG, "############################################");
-
+        */
         for (int i = 0; i < rooms.size(); i++) {
             String salle = rooms.get(i).getNom();
             Log.d(TAG, "ADD " + salle + " into list !!!!");
@@ -93,7 +94,7 @@ public class FakeReunionApiService implements ReunionApiService {
                 mEnd.setTime(reunion.getEndHour());
 
                 // TODO : Vérifier le tri des salles
-
+            /*
                 Log.d(TAG, "------------------------------------------");
                 Log.d(TAG, "Information about a reunion:");
                 Log.d(TAG, "YEAR: " + date.get(Calendar.YEAR));
@@ -119,7 +120,7 @@ public class FakeReunionApiService implements ReunionApiService {
                 Log.d(TAG, "Minute de fin choisie : "+ mEndMinuteChosen +" est supérieure à la minute de départ de la réunion : "+ mStart.get(Calendar.MINUTE) +" -- RESULTAT : " + (mEndMinuteChosen > mStart.get(Calendar.MINUTE)));
                 Log.d(TAG, "Minute de fin choisie : "+ mEndMinuteChosen +" est supérieure à la minute de fin de la réunion : "+ mEnd.get(Calendar.MINUTE) +" -- RESULTAT : " + (mEndMinuteChosen <=  mEnd.get(Calendar.MINUTE)));
                 Log.d(TAG, "###########################################");
-
+                */
                 // Même heure, mais la réunion choisie commence en même temps ou pendant l'heure d'une réunion déjà présente
                 if (salle.equalsIgnoreCase(reunion.getSalle().getNom())
                         && startDate.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH)

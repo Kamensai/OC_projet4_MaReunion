@@ -12,7 +12,6 @@
         <activity
             android:name=".controller.AddReunionActivity"
             android:label="@string/activity_add_reunion"
-            android:configChanges="keyboardHidden|orientation|screenSize"
         />
         <activity
             android:name=".controller.MainActivity"
