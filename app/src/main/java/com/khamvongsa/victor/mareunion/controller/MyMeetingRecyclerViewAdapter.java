@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.khamvongsa.victor.mareunion.R;
 import com.khamvongsa.victor.mareunion.service.DeleteListener;
-import com.khamvongsa.victor.mareunion.service.ReunionApiService;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -19,19 +18,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MyReunionRecyclerViewAdapter extends RecyclerView.Adapter<MyReunionRecyclerViewAdapter.ViewHolder> {
+public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeetingRecyclerViewAdapter.ViewHolder> {
 
 
-    private List<ExempleReunion> mReunions;
+    private List<ExampleMeeting> mReunions;
     private final DeleteListener mDeleteListener;
     SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yy");
     SimpleDateFormat formaterHour = new SimpleDateFormat("HH'h ' mm'm'");
 
-    public MyReunionRecyclerViewAdapter(List<ExempleReunion> item, DeleteListener mDeleteListener) { mReunions = item;
+    public MyMeetingRecyclerViewAdapter(List<ExampleMeeting> item, DeleteListener mDeleteListener) { mReunions = item;
     this.mDeleteListener = mDeleteListener;
     }
 
-    public void updateList(List<ExempleReunion> item) {
+    public void updateList(List<ExampleMeeting> item) {
         mReunions.clear();
         mReunions.addAll(item);
        notifyDataSetChanged();
@@ -47,10 +46,10 @@ public class MyReunionRecyclerViewAdapter extends RecyclerView.Adapter<MyReunion
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        ExempleReunion reunion = mReunions.get(position);
-        holder.mSalleName.setText(reunion.getSalle().getNom());
-        holder.mSalleColor.setBackgroundColor(reunion.getSalle().getCouleur());
-        holder.mSujet.setText(reunion.getSujet());
+        ExampleMeeting reunion = mReunions.get(position);
+        holder.mSalleName.setText(reunion.getRoom().getNom());
+        holder.mSalleColor.setBackgroundColor(reunion.getRoom().getCouleur());
+        holder.mSujet.setText(reunion.getSubject());
         holder.mDateDebut.setText(formater.format(reunion.getDebut()));
         holder.mStartHour.setText(formaterHour.format(reunion.getStartHour()));
         holder.mEndHour.setText(formaterHour.format(reunion.getEndHour()));

@@ -1,11 +1,10 @@
 package com.khamvongsa.victor.mareunion.model;
 
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 
-public class Reunion {
+public class Meeting {
 
     private long id;
 
@@ -13,7 +12,7 @@ public class Reunion {
 
     private Date fin;
 
-    private Salle salle;
+    private Room mRoom;
 
     private String sujet;
 
@@ -23,12 +22,12 @@ public class Reunion {
     /**
      * Constructor
      */
-    public Reunion(long id, Date debut, Date fin, Salle salle, String sujet,
+    public Meeting(long id, Date debut, Date fin, Room room, String sujet,
                    List<String> participant) {
         this.id = id;
         this.debut = debut;
         this.fin = fin;
-        this.salle = salle;
+        this.mRoom = room;
         this.sujet = sujet;
         this.participant = participant;
     }
@@ -57,12 +56,12 @@ public class Reunion {
         this.fin = fin;
     }
 
-    public Salle getSalle() {
-        return salle;
+    public Room getRoom() {
+        return mRoom;
     }
 
-    public void setSalle(Salle salle) {
-        this.salle = salle;
+    public void setRoom(Room room) {
+        this.mRoom = room;
     }
 
     public String getSujet() {

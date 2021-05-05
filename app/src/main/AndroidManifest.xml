@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaReunion">
         <activity
-            android:name=".controller.AddReunionActivity"
+            android:name=".controller.AddMeetingActivity"
             android:label="@string/activity_add_reunion"
         />
         <activity

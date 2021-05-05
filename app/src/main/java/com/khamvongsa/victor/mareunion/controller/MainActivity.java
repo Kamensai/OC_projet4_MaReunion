@@ -1,6 +1,5 @@
 package com.khamvongsa.victor.mareunion.controller;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
@@ -21,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.container)
     ViewPager mViewPager;
 
-    ListReunionPagerAdapter mPagerAdapter;
+    ListMeetingPagerAdapter mPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(mToolbar);
-        mPagerAdapter = new ListReunionPagerAdapter(getSupportFragmentManager());
+        mPagerAdapter = new ListMeetingPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mPagerAdapter);
     }
 
@@ -44,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.add_Reunion)
     void addReunion() {
-        AddReunionActivity.navigate(this);
+        AddMeetingActivity.navigate(this);
     }
 
 }

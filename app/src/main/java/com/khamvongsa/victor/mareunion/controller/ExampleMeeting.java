@@ -1,12 +1,11 @@
 package com.khamvongsa.victor.mareunion.controller;
 
-import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 
-public class ExempleReunion {
+public class ExampleMeeting {
     private long id;
 
     private Date debut;
@@ -15,9 +14,9 @@ public class ExempleReunion {
 
     private Date endHour;
 
-    private ExempleSalle salle;
+    private ExampleRoom room;
 
-    private String sujet;
+    private String subject;
 
     private List<String> participant;
 
@@ -25,27 +24,27 @@ public class ExempleReunion {
     /**
      * Constructor
      */
-    public ExempleReunion(long id, Date debut, Date startHour, Date endHour, ExempleSalle salle, String sujet, List<String> participant) {
+    public ExampleMeeting(long id, Date debut, Date startHour, Date endHour, ExampleRoom room, String subject, List<String> participant) {
         this.id = id;
         this.debut = debut;
         this.startHour = startHour;
         this.endHour = endHour;
-        this.salle = salle;
-        this.sujet = sujet;
+        this.room = room;
+        this.subject = subject;
         this.participant = participant;
     }
 
-    public static Comparator<ExempleReunion> ReunionSalleNameComparator = new Comparator<ExempleReunion>() {
+    public static Comparator<ExampleMeeting> MeetingRoomNameComparator = new Comparator<ExampleMeeting>() {
         @Override
-        public int compare(ExempleReunion r1, ExempleReunion r2) {
+        public int compare(ExampleMeeting r1, ExampleMeeting r2) {
 
-            return r1.getSalle().getNom().compareTo(r2.getSalle().getNom());
+            return r1.getRoom().getNom().compareTo(r2.getRoom().getNom());
         }
     };
 
-    public static Comparator<ExempleReunion> ReunionDateComparator = new Comparator<ExempleReunion>() {
+    public static Comparator<ExampleMeeting> MeetingDateComparator = new Comparator<ExampleMeeting>() {
         @Override
-        public int compare(ExempleReunion r1, ExempleReunion r2) {
+        public int compare(ExampleMeeting r1, ExampleMeeting r2) {
             return r1.getDebut().compareTo(r2.getDebut());
         }
     };
@@ -82,20 +81,20 @@ public class ExempleReunion {
         this.endHour = endHour;
     }
 
-    public ExempleSalle getSalle() {
-        return salle;
+    public ExampleRoom getRoom() {
+        return room;
     }
 
-    public void setSalle(ExempleSalle salle) {
-        this.salle = salle;
+    public void setRoom(ExampleRoom room) {
+        this.room = room;
     }
 
-    public String getSujet() {
-        return sujet;
+    public String getSubject() {
+        return subject;
     }
 
-    public void setSujet(String sujet) {
-        this.sujet = sujet;
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
     public List<String> getParticipant() {

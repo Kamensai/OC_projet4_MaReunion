@@ -1,9 +1,7 @@
-package com.khamvongsa.victor.mareunion.model;
-
-import java.util.Date;
+package com.khamvongsa.victor.mareunion.controller;
 
 
-public class Salle {
+public class ExampleRoom {
 
     private long id;
 
@@ -11,7 +9,7 @@ public class Salle {
 
     private int couleur;
 
-    public Salle (long id, String nom, int couleur) {
+    public ExampleRoom(long id, String nom, int couleur) {
 
         this.id = id;
         this.nom = nom;

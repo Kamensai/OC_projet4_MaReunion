@@ -5,16 +5,16 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-public class ListReunionPagerAdapter extends FragmentPagerAdapter {
+public class ListMeetingPagerAdapter extends FragmentPagerAdapter {
 
 
-    public ListReunionPagerAdapter(@NonNull FragmentManager fm) {
+    public ListMeetingPagerAdapter(@NonNull FragmentManager fm) {
         super(fm);
     }
 
     @Override
     public Fragment getItem(int position) {
-        return ReunionFragment.newInstance();
+        return MeetingFragment.newInstance();
     }
 
 
