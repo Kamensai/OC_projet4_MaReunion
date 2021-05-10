@@ -2,7 +2,7 @@
     <string name="app_name">Ma Réunion</string>
     <string name="activity_add_reunion">Nouvelle réunion</string>
     <string name="btn_get_date">Get Date</string>
-    <string name="room_name">Salles disponibles:</string>
+    <string name="room_name">Salles disponibles :</string>
     <string name="reunion_name">Sujet de la Réunion</string>
     <string name="add_reunion">Ajouter Réunion</string>
 </resources>

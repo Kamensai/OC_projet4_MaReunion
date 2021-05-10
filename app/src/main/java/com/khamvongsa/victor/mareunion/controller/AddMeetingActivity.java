@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.khamvongsa.victor.mareunion.R;
 import com.khamvongsa.victor.mareunion.di.DI;
@@ -50,22 +51,29 @@ import static android.widget.Toast.LENGTH_SHORT;
 public class AddMeetingActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     // UI COMPONENTS
+    // DATE Reunion
     @BindView(R.id.activity_add_reunion_inputDate)
     TextInputLayout mDateInput;
     @BindView(R.id.activity_add_reunion_editDate)
     EditText mEditDate;
+    @BindView(R.id.activity_add_reunion_btnAdd_Date)
+    FloatingActionButton mBtnDate;
 
     // Start Hour Reunion
     @BindView(R.id.activity_add_reunion_inputStartHour)
     TextInputLayout mStartHourInput;
     @BindView(R.id.activity_add_reunion_editStartHour)
     EditText mEditStartHour;
+    @BindView(R.id.activity_add_reunion_btnAdd_StartHour)
+    FloatingActionButton mBtnStartHour;
 
     // End Hour Reunion
     @BindView(R.id.activity_add_reunion_inputEndHour)
     TextInputLayout mEndHourInput;
     @BindView(R.id.activity_add_reunion_editEndHour)
     EditText mEditEndHour;
+    @BindView(R.id.activity_add_reunion_btnAdd_EndHour)
+    FloatingActionButton mBtnEndHour;
 
     @BindView(R.id.activity_add_reunion_Room)
     TextView mTextViewRoom;
@@ -128,11 +136,9 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         mMeetingApiService = DI.getReunionApiService();
         mCalculTimeService = new CalculTime();
 
-
         // DATE
         mEditDate.setInputType(InputType.TYPE_NULL);
         dateStart();
-
 
         //HOUR START
         mEditStartHour.setInputType(InputType.TYPE_NULL);
@@ -156,7 +162,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
     }
 
     public void dateStart() {
-        mEditDate.setOnClickListener(new View.OnClickListener() {
+        mBtnDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mStartDate = null;
@@ -184,7 +190,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         });
     }
     public void hourStart() {
-        mEditStartHour.setOnClickListener(new View.OnClickListener() {
+        mBtnStartHour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!mAddMeetingViewModel.isStartDateFilled()) {
@@ -225,7 +231,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
     }
 
     public void endHour() {
-        mEditEndHour.setOnClickListener(new View.OnClickListener() {
+        mBtnEndHour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!mAddMeetingViewModel.isStartHourFilled()) {
@@ -311,9 +317,6 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         super.onRestoreInstanceState(in);
         mEditSubjectReunion.setText(in.getString(REUNION_SUBJECT));
         mEditDate.setText(in.getString(DATE));
-        Log.d(TAG, "############################################");
-        Log.d(TAG, "StartDate: " + mAddMeetingViewModel.getStartDate());
-        Log.d(TAG, "############################################");
         if(!mEditDate.getText().toString().isEmpty()) {
             mStartDate = Calendar.getInstance();
             mStartDate.set(in.getInt(DATE_YEAR), in.getInt(DATE_MONTH), in.getInt(DATE_DAY));
@@ -341,6 +344,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         }
         mEditTextParticipant.setText(in.getString(PARTICIPANT));
 
+        /*
         Log.d(TAG, "############################################");
         Log.d(TAG, "Info onRestore:");
         Log.d(TAG, "ReunionSubject: " + mEditSubjectReunion.getText().toString());
@@ -349,6 +353,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         Log.d(TAG, "EndHour: " + mEndHour.get(Calendar.HOUR_OF_DAY)+":"+ mEndHour.get(Calendar.MINUTE));
         Log.d(TAG, "Participant: " + mEditTextParticipant.getText().toString());
         Log.d(TAG, "############################################");
+        */
     }
 
     // AVAILABLE_ROOM
