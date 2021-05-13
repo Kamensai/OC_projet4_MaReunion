@@ -40,7 +40,7 @@ public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeeting
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_reunion, parent, false);
+                .inflate(R.layout.fragment_meeting, parent, false);
         return new ViewHolder(view);
     }
 
@@ -87,7 +87,6 @@ public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeeting
 
         @BindView(R.id.item_list_delete_button)
         public ImageButton mDeleteButton;
-
 
 
         public ViewHolder(@NonNull View view) {

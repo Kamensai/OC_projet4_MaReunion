@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class FakeRMeetingApiService implements MeetingApiService {
+public class FakeMeetingApiService implements MeetingApiService {
 
     private final List<ExampleMeeting> reunions = FakeMeeting.generateExempleReunions();
     private final List<ExampleRoom> salles = FakeRoom.getSallesDisponibles();
-    private final static String TAG = FakeRMeetingApiService.class.getSimpleName();
+    private final static String TAG = FakeMeetingApiService.class.getSimpleName();
 
 
     @Override

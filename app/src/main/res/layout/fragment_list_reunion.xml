@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list_reunion"
+    android:id="@+id/list_meeting"
     android:name="com.khamvongsa.victor.mareunion.controller.ReunionFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,4 +11,4 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context=".controller.MeetingFragment"
-    tools:listitem="@layout/fragment_reunion" />
+    tools:listitem="@layout/fragment_meeting" />

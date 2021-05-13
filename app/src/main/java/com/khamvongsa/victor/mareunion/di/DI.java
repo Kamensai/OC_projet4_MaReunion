@@ -1,6 +1,6 @@
 package com.khamvongsa.victor.mareunion.di;
 
-import com.khamvongsa.victor.mareunion.service.FakeRMeetingApiService;
+import com.khamvongsa.victor.mareunion.service.FakeMeetingApiService;
 import com.khamvongsa.victor.mareunion.service.MeetingApiService;
 
 /**
@@ -8,7 +8,7 @@ import com.khamvongsa.victor.mareunion.service.MeetingApiService;
  */
 public class DI {
 
-        private static final MeetingApiService service = new FakeRMeetingApiService();
+        private static final MeetingApiService service = new FakeMeetingApiService();
 
         /**
          * Get an instance on @{@link MeetingApiService}

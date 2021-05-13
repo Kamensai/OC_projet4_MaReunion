@@ -10,7 +10,7 @@
     app:cardElevation="6dp">
 
 <androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/item_reunion"
+    android:id="@+id/item_meeting"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="5dp">
@@ -20,9 +20,9 @@
         android:layout_width="3dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
-        app:layout_constraintTop_toTopOf="@+id/item_reunion"
-        app:layout_constraintStart_toStartOf="@+id/item_reunion"
-        app:layout_constraintBottom_toBottomOf="@+id/item_reunion"
+        app:layout_constraintTop_toTopOf="@+id/item_meeting"
+        app:layout_constraintStart_toStartOf="@+id/item_meeting"
+        app:layout_constraintBottom_toBottomOf="@+id/item_meeting"
         />
 
     <ImageView
@@ -31,9 +31,9 @@
         android:layout_height="40dp"
         android:layout_marginStart="160dp"
         android:background="@color/black"
-        app:layout_constraintTop_toTopOf="@+id/item_reunion"
-        app:layout_constraintStart_toStartOf="@+id/item_reunion"
-        app:layout_constraintBottom_toBottomOf="@+id/item_reunion"
+        app:layout_constraintTop_toTopOf="@+id/item_meeting"
+        app:layout_constraintStart_toStartOf="@+id/item_meeting"
+        app:layout_constraintBottom_toBottomOf="@+id/item_meeting"
         />
 
     <TextView
@@ -43,7 +43,7 @@
         android:layout_marginStart="24dp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/item_list_color"
-        app:layout_constraintTop_toTopOf="@+id/item_reunion"
+        app:layout_constraintTop_toTopOf="@+id/item_meeting"
         tools:text="list Salle"/>
 
     <TextView
@@ -53,7 +53,7 @@
         android:layout_marginStart="170dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/item_list_salle"
-        app:layout_constraintStart_toStartOf="@+id/item_reunion"
+        app:layout_constraintStart_toStartOf="@+id/item_meeting"
         app:layout_constraintTop_toTopOf="@+id/item_list_salle"
         tools:text="sujet"/>
 
@@ -62,9 +62,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="@+id/item_reunion"
+        app:layout_constraintTop_toTopOf="@+id/item_meeting"
         app:layout_constraintStart_toStartOf="@+id/item_list_salle"
-        app:layout_constraintBottom_toBottomOf="@+id/item_reunion"
+        app:layout_constraintBottom_toBottomOf="@+id/item_meeting"
         tools:text="Date début"/>
 
     <TextView
@@ -103,9 +103,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:background="@null"
-        app:layout_constraintBottom_toBottomOf="@+id/item_reunion"
+        app:layout_constraintBottom_toBottomOf="@+id/item_meeting"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/item_reunion"
+        app:layout_constraintTop_toTopOf="@+id/item_meeting"
         app:srcCompat="@drawable/ic_delete" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
