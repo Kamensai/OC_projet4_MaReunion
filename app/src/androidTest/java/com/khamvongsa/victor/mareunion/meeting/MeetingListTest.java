@@ -117,8 +117,7 @@ public class MeetingListTest {
         onView(withText("Date")).perform(click());
         //Choisi la date
         onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2022,9,5));
-
-        // Click on the "OK" button to confirm and close the dialog
+        // Clique sur ok pour confirmer et fermier le dialog
         onView(anyOf(withText(android.R.string.ok), withId(android.R.id.button1))).inRoot(isDialog()).perform(click());
         // Une seule réunion qui est prévue à la date choisie le 05/09/22
         onView(allOf(withId(R.id.list_meeting), withParentIndex(0))).check(withItemCount(ITEMS_COUNT - 3));

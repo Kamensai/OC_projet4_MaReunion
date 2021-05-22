@@ -8,18 +8,18 @@ import java.util.List;
 
 public interface MeetingApiService {
 
-    List<ExampleRoom> getSalles();
+    List<ExampleRoom> getRooms();
 
-    List<ExampleMeeting> getReunions();
+    List<ExampleMeeting> getMeetings();
 
-    void deleteReunion(ExampleMeeting reunion);
+    void deleteMeeting(ExampleMeeting reunion);
 
-    List<ExampleMeeting> getReunionsByRooms(String salleChoisie);
+    List<ExampleMeeting> getMeetingsByRooms(String salleChoisie);
 
-    List<ExampleMeeting> getReunionsByDate(Calendar dateChoisie);
+    List<ExampleMeeting> getMeetingsByDate(Calendar dateChoisie);
 
-    List<String> FilterAvailableRooms(List<ExampleMeeting> reunions, List<ExampleRoom> rooms, Calendar startDate, Calendar startHour, Calendar EndHour);
+    List<String> filterAvailableRooms(List<ExampleMeeting> reunions, List<ExampleRoom> rooms, Calendar startDate, Calendar startHour, Calendar EndHour);
 
-    void createReunion(ExampleMeeting reunion);
+    void createMeeting(ExampleMeeting reunion);
 
 }

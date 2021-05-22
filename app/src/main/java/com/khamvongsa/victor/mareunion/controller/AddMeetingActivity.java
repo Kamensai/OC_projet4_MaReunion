@@ -12,8 +12,6 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,7 +40,6 @@ import com.khamvongsa.victor.mareunion.service.MeetingApiService;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -52,47 +49,47 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
 
     // UI COMPONENTS
     // DATE Reunion
-    @BindView(R.id.activity_add_reunion_inputDate)
+    @BindView(R.id.activity_add_meeting_inputDate)
     TextInputLayout mDateInput;
-    @BindView(R.id.activity_add_reunion_editDate)
+    @BindView(R.id.activity_add_meeting_editDate)
     EditText mEditDate;
-    @BindView(R.id.activity_add_reunion_btnAdd_Date)
+    @BindView(R.id.activity_add_meeting_btnAdd_Date)
     FloatingActionButton mBtnDate;
 
     // Start Hour Reunion
-    @BindView(R.id.activity_add_reunion_inputStartHour)
+    @BindView(R.id.activity_add_meeting_inputStartHour)
     TextInputLayout mStartHourInput;
-    @BindView(R.id.activity_add_reunion_editStartHour)
+    @BindView(R.id.activity_add_meeting_editStartHour)
     EditText mEditStartHour;
-    @BindView(R.id.activity_add_reunion_btnAdd_StartHour)
+    @BindView(R.id.activity_add_meeting_btnAdd_StartHour)
     FloatingActionButton mBtnStartHour;
 
     // End Hour Reunion
-    @BindView(R.id.activity_add_reunion_inputEndHour)
+    @BindView(R.id.activity_add_meeting_inputEndHour)
     TextInputLayout mEndHourInput;
-    @BindView(R.id.activity_add_reunion_editEndHour)
+    @BindView(R.id.activity_add_meeting_editEndHour)
     EditText mEditEndHour;
-    @BindView(R.id.activity_add_reunion_btnAdd_EndHour)
+    @BindView(R.id.activity_add_meeting_btnAdd_EndHour)
     FloatingActionButton mBtnEndHour;
 
-    @BindView(R.id.activity_add_reunion_Room)
+    @BindView(R.id.activity_add_meeting_Room)
     TextView mTextViewRoom;
-    @BindView(R.id.activity_add_reunion_spinnerRoom)
+    @BindView(R.id.activity_add_meeting_spinnerRoom)
     Spinner mSpinnerRoom;
 
-    @BindView(R.id.activity_add_reunion_SubjectReunion)
+    @BindView(R.id.activity_add_meeting_inputSubjectMeeting)
     TextInputLayout mInputSubjectReunion;
-    @BindView(R.id.activity_add_reunion_ReunionName)
+    @BindView(R.id.activity_add_meeting_editSubjectMeeting)
     EditText mEditSubjectReunion;
 
-    @BindView(R.id.activity_add_reunion_editText_participant)
+    @BindView(R.id.activity_add_meeting_editText_participant)
     EditText mEditTextParticipant;
-    @BindView(R.id.activity_add_reunion_chipGroup)
+    @BindView(R.id.activity_add_meeting_chipGroup)
     ChipGroup mChipGroupParticipant;
-    @BindView(R.id.activity_add_reunion_btnAdd_participant)
+    @BindView(R.id.activity_add_meeting_btnAdd_participant)
     Button mButtonAddParticipant;
 
-    @BindView(R.id.activity_add_reunion_btn_createReunion)
+    @BindView(R.id.activity_add_meeting_btn_createMeeting)
     MaterialButton addButton;
 
     private AddMeetingViewModel mAddMeetingViewModel = new AddMeetingViewModel();
@@ -189,6 +186,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
             }
         });
     }
+
     public void hourStart() {
         mBtnStartHour.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -263,7 +261,6 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
                             }
                         }, hour, minutes, true);
                 mTimePicker.show();
-
             }
         });
     }
@@ -272,6 +269,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
     @Override
     public void onSaveInstanceState(Bundle out) {
         super.onSaveInstanceState(out);
+        // out.putParcelable("ViewModel", mAddMeetingViewModel);
         out.putString(REUNION_SUBJECT, mEditSubjectReunion.getText().toString());
 
         out.putString(DATE, mEditDate.getText().toString());
@@ -300,6 +298,8 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         out.putString(PARTICIPANT, mEditTextParticipant.getText().toString());
         out.putStringArrayList(LIST_PARTICIPANT, new ArrayList<>(mlistParticipant));
 
+
+
 /*
         Log.d(TAG, "############################################");
         Log.d(TAG, "Info onSave :");
@@ -315,6 +315,8 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
     @Override
     public void onRestoreInstanceState(Bundle in) {
         super.onRestoreInstanceState(in);
+        // mAddMeetingViewModel = in.getParcelable("ViewModel");
+        // Tout resetter !!
         mEditSubjectReunion.setText(in.getString(REUNION_SUBJECT));
         mEditDate.setText(in.getString(DATE));
         if(!mEditDate.getText().toString().isEmpty()) {
@@ -344,6 +346,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         }
         mEditTextParticipant.setText(in.getString(PARTICIPANT));
 
+
         /*
         Log.d(TAG, "############################################");
         Log.d(TAG, "Info onRestore:");
@@ -366,9 +369,9 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
             int mReunionMinuteTimeLeft = mCalculTimeService.calculMinuteLeft(mReunionMinuteTime, mReunionHourTime, mStartReunionMinuteChosen, mEndReunionMinuteChosen);
             int mReunionHourTimeLeft = mCalculTimeService.calculHourLeft(mReunionMinuteTime, mReunionHourTime, mStartReunionMinuteChosen, mEndReunionMinuteChosen);
 
-            mMeetings = mMeetingApiService.getReunions();
-            mAvailableRooms = mMeetingApiService.getSalles();
-            listRooms = mMeetingApiService.FilterAvailableRooms(mMeetings, mAvailableRooms, mStartDate, mStartHour, mEndHour);
+            mMeetings = mMeetingApiService.getMeetings();
+            mAvailableRooms = mMeetingApiService.getRooms();
+            listRooms = mMeetingApiService.filterAvailableRooms(mMeetings, mAvailableRooms, mStartDate, mStartHour, mEndHour);
 
             if ((mReunionHourTimeLeft == 0 && mReunionMinuteTimeLeft > 0)
                     || (mReunionHourTimeLeft > 0 && mReunionMinuteTimeLeft > 0)
@@ -387,6 +390,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         for (int i = 0; i < mAvailableRooms.size(); i++) {
             if(salleChoisie.equalsIgnoreCase(mAvailableRooms.get(i).getNom())) {
                 mRoom = mAvailableRooms.get(i);
+                mAddMeetingViewModel.setRoom(mAvailableRooms.get(i));
             }
         }
     }
@@ -435,7 +439,9 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
             });
 
             this.mEditTextParticipant.setText("");
+            // A retirer
             mlistParticipant.add(participant);
+            //mAddMeetingViewModel.getListParticipants().add(participant);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -468,7 +474,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         ActivityCompat.startActivity(activity, intent, null);
     }
 
-    @OnClick(R.id.activity_add_reunion_btn_createReunion)
+    @OnClick(R.id.activity_add_meeting_btn_createMeeting)
     void addReunion() {
         mAddMeetingViewModel.setSubject(mEditSubjectReunion.getText().toString());
         mAddMeetingViewModel.setParticipants(mlistParticipant);
@@ -492,7 +498,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         }
 
         ExampleMeeting reunion = new ExampleMeeting(System.currentTimeMillis(), mStartDate.getTime(), mStartHour.getTime(), mEndHour.getTime(), mRoom, mEditSubjectReunion.getText().toString(), mlistParticipant);
-        mMeetingApiService.createReunion(reunion);
+        mMeetingApiService.createMeeting(reunion);
         finish();
     }
 }

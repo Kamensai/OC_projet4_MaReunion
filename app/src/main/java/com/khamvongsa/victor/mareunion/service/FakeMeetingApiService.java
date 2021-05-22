@@ -11,54 +11,54 @@ import java.util.List;
 
 public class FakeMeetingApiService implements MeetingApiService {
 
-    private final List<ExampleMeeting> reunions = FakeMeeting.generateExempleReunions();
-    private final List<ExampleRoom> salles = FakeRoom.getSallesDisponibles();
+    private final List<ExampleMeeting> meetings = FakeMeeting.generateExempleReunions();
+    private final List<ExampleRoom> rooms = FakeRoom.getSallesDisponibles();
     private final static String TAG = FakeMeetingApiService.class.getSimpleName();
 
 
     @Override
-    public List<ExampleRoom> getSalles() {
-        return new ArrayList<>(salles) ;
+    public List<ExampleRoom> getRooms() {
+        return new ArrayList<>(rooms) ;
     }
 
     @Override
-    public List<ExampleMeeting> getReunions() {
-        return new ArrayList<>(reunions) ;
+    public List<ExampleMeeting> getMeetings() {
+        return new ArrayList<>(meetings) ;
         // pour protéger les données dans la partie service
     }
 
     @Override
-    public List<ExampleMeeting> getReunionsByRooms(String salleChoisie) {
-        List<ExampleMeeting> mListBySalle = new ArrayList<>();
-        for (int i = 0; i < reunions.size(); i++) {
-            ExampleMeeting reunionSalle = reunions.get(i);
-            if (salleChoisie.equalsIgnoreCase(reunionSalle.getRoom().getNom())) {
-                mListBySalle.add(reunionSalle);
+    public List<ExampleMeeting> getMeetingsByRooms(String roomChosen) {
+        List<ExampleMeeting> mListByRoom = new ArrayList<>();
+        for (int i = 0; i < meetings.size(); i++) {
+            ExampleMeeting meeting = meetings.get(i);
+            if (roomChosen.equalsIgnoreCase(meeting.getRoom().getNom())) {
+                mListByRoom.add(meeting);
             }
         }
-        return mListBySalle;
+        return mListByRoom;
     }
 
     @Override
-    public List<ExampleMeeting> getReunionsByDate(Calendar dateChoisie) {
+    public List<ExampleMeeting> getMeetingsByDate(Calendar chosenDate) {
         List<ExampleMeeting> mListByDate = new ArrayList<>();
 
-        for (int i = 0; i < reunions.size(); i++) {
-            ExampleMeeting reunionDate = reunions.get(i);
+        for (int i = 0; i < meetings.size(); i++) {
+            ExampleMeeting meetingDate = meetings.get(i);
             final Calendar instance = Calendar.getInstance();
-            instance.setTime(reunionDate.getDebut());
-            if (dateChoisie.get(Calendar.DAY_OF_MONTH) == instance.get(Calendar.DAY_OF_MONTH)
-            && dateChoisie.get(Calendar.YEAR) == instance.get(Calendar.YEAR)
-            && dateChoisie.get(Calendar.MONTH) == instance.get(Calendar.MONTH)
+            instance.setTime(meetingDate.getDebut());
+            if (chosenDate.get(Calendar.DAY_OF_MONTH) == instance.get(Calendar.DAY_OF_MONTH)
+            && chosenDate.get(Calendar.YEAR) == instance.get(Calendar.YEAR)
+            && chosenDate.get(Calendar.MONTH) == instance.get(Calendar.MONTH)
             ) {
-                mListByDate.add(reunionDate);
+                mListByDate.add(meetingDate);
             }
         }
         return mListByDate;
     }
 
     @Override
-    public List<String> FilterAvailableRooms(List<ExampleMeeting> reunions, List<ExampleRoom> rooms, Calendar startDate, Calendar startHour, Calendar endHour) {
+    public List<String> filterAvailableRooms(List<ExampleMeeting> reunions, List<ExampleRoom> rooms, Calendar startDate, Calendar startHour, Calendar endHour) {
         List<String> listRooms = new ArrayList<>();
         int mStartHourChosen = startHour.get(Calendar.HOUR_OF_DAY);
         int mStartMinuteChosen = startHour.get(Calendar.MINUTE);
@@ -79,7 +79,7 @@ public class FakeMeetingApiService implements MeetingApiService {
         */
         for (int i = 0; i < rooms.size(); i++) {
             String salle = rooms.get(i).getNom();
-            Log.d(TAG, "ADD " + salle + " into list !!!!");
+//            Log.d(TAG, "ADD " + salle + " into list !!!!");
             listRooms.add(salle);
 
             for (int y = 0; y < reunions.size(); y++) {
@@ -131,10 +131,10 @@ public class FakeMeetingApiService implements MeetingApiService {
                         && mEndHourChosen == mEnd.get(Calendar.HOUR_OF_DAY)
                         && mStartMinuteChosen >= mStart.get(Calendar.MINUTE)
                         && mStartMinuteChosen < mEnd.get(Calendar.MINUTE)) {
-                    Log.d(TAG, "REMOVE " + salle + " from list !!!!");
+                    //Log.d(TAG, "REMOVE " + salle + " from list !!!!");
                     listRooms.remove(salle); }
 
-                // Même heure, mais la réunion choisie commence avant, mais déborde sur la réunion déjà présente.
+                // Même heure de départ et de fin, mais la réunion choisie commence avant, mais déborde sur la réunion déjà présente.
                 else if (salle.equalsIgnoreCase(reunion.getRoom().getNom())
                         && startDate.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH)
                         && startDate.get(Calendar.MONTH) == date.get(Calendar.MONTH)
@@ -144,8 +144,9 @@ public class FakeMeetingApiService implements MeetingApiService {
                         && mEndHourChosen == mStart.get(Calendar.HOUR_OF_DAY)
                         && mEndHourChosen == mEnd.get(Calendar.HOUR_OF_DAY)
                         && mStartMinuteChosen < mEnd.get(Calendar.MINUTE)
+                        && mStartMinuteChosen < mStart.get(Calendar.MINUTE)
                         && mEndMinuteChosen > mStart.get(Calendar.MINUTE)) {
-                    Log.d(TAG, "REMOVE " + salle + " from list !!!!");
+                    //Log.d(TAG, "REMOVE " + salle + " from list !!!!");
                     listRooms.remove(salle);
                 }
 
@@ -157,7 +158,7 @@ public class FakeMeetingApiService implements MeetingApiService {
                         && mStartHourChosen < mStart.get(Calendar.HOUR_OF_DAY)
                         && mEndHourChosen >= mStart.get(Calendar.HOUR_OF_DAY)
                         && mEndMinuteChosen > mStart.get(Calendar.MINUTE)) {
-                    Log.d(TAG, "REMOVE " + salle + " from list !!!!");
+                    //Log.d(TAG, "REMOVE " + salle + " from list !!!!");
                     listRooms.remove(salle); }
 
                 // Si la réunion choisie commence pendant une réunion déjà présente à la même heure de départ
@@ -168,17 +169,30 @@ public class FakeMeetingApiService implements MeetingApiService {
                         && mStartHourChosen == mStart.get(Calendar.HOUR_OF_DAY)
                         && mStartHourChosen < mEnd.get(Calendar.HOUR_OF_DAY)
                         && mStartMinuteChosen >= mStart.get(Calendar.MINUTE)) {
-                    Log.d(TAG, "REMOVE " + salle + " from list !!!!");
+//                    Log.d(TAG, "REMOVE " + salle + " from list !!!!");
                     listRooms.remove(salle); }
 
-                // Si la réunion commence pendant une réunion déjà présente à une heure de départ différente
+                // Si la réunion commence pendant une réunion déjà présente à une heure de départ différente et inférieure à l'heure de fin
                 else if (salle.equalsIgnoreCase(reunion.getRoom().getNom())
                         && startDate.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH)
                         && startDate.get(Calendar.MONTH) == date.get(Calendar.MONTH)
                         && startDate.get(Calendar.YEAR) == date.get(Calendar.YEAR)
                         && mStartHourChosen > mStart.get(Calendar.HOUR_OF_DAY)
                         && mStartHourChosen < mEnd.get(Calendar.HOUR_OF_DAY)) {
-                    Log.d(TAG, "REMOVE " + salle + " from list !!!!");
+   //                 Log.d(TAG, "REMOVE " + salle + " from list !!!!");
+                    listRooms.remove(salle);
+                }
+
+                // Si la réunion commence pendant une réunion déjà présente à une heure de départ différente, mais la même heure de fin
+                else if (salle.equalsIgnoreCase(reunion.getRoom().getNom())
+                        && startDate.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH)
+                        && startDate.get(Calendar.MONTH) == date.get(Calendar.MONTH)
+                        && startDate.get(Calendar.YEAR) == date.get(Calendar.YEAR)
+                        && mStartHourChosen > mStart.get(Calendar.HOUR_OF_DAY)
+                        && mStartHourChosen == mEnd.get(Calendar.HOUR_OF_DAY)
+                        && mEndHourChosen == mEnd.get(Calendar.HOUR_OF_DAY)
+                        && mStartMinuteChosen < mEnd.get(Calendar.MINUTE)) {
+                    //Log.d(TAG, "REMOVE " + salle + " from list !!!!");
                     listRooms.remove(salle);
                 }
 
@@ -189,7 +203,7 @@ public class FakeMeetingApiService implements MeetingApiService {
                         && startDate.get(Calendar.YEAR) == date.get(Calendar.YEAR)
                         && mStartHourChosen < mStart.get(Calendar.HOUR_OF_DAY)
                         && mEndHourChosen > mEnd.get(Calendar.HOUR_OF_DAY)) {
-                    Log.d(TAG, "REMOVE " + salle + " from list !!!!");
+  //                  Log.d(TAG, "REMOVE " + salle + " from list !!!!");
                     listRooms.remove(salle);
                 }
 
@@ -200,7 +214,7 @@ public class FakeMeetingApiService implements MeetingApiService {
                         && startDate.get(Calendar.YEAR) == date.get(Calendar.YEAR)
                         && mStartHourChosen < mStart.get(Calendar.HOUR_OF_DAY)
                         && mEndHourChosen == mEnd.get(Calendar.HOUR_OF_DAY)) {
-                    Log.d(TAG, "REMOVE " + salle + " from list !!!!");
+   //                 Log.d(TAG, "REMOVE " + salle + " from list !!!!");
                     listRooms.remove(salle);
                 }
 
@@ -212,7 +226,7 @@ public class FakeMeetingApiService implements MeetingApiService {
                         && mStartHourChosen < mStart.get(Calendar.HOUR_OF_DAY)
                         && mEndHourChosen > mStart.get(Calendar.HOUR_OF_DAY)
                         && mEndHourChosen < mEnd.get(Calendar.HOUR_OF_DAY)) {
-                    Log.d(TAG, "REMOVE " + salle + " from list !!!!");
+    //                Log.d(TAG, "REMOVE " + salle + " from list !!!!");
                     listRooms.remove(salle);
                 }
             }
@@ -221,13 +235,13 @@ public class FakeMeetingApiService implements MeetingApiService {
     }
 
     @Override
-    public void createReunion(ExampleMeeting reunion) {
-        reunions.add(reunion);
+    public void createMeeting(ExampleMeeting reunion) {
+        meetings.add(reunion);
     }
 
     @Override
-    public void deleteReunion(ExampleMeeting reunion) {
-         reunions.remove(reunion);
+    public void deleteMeeting(ExampleMeeting reunion) {
+         meetings.remove(reunion);
     }
 
 

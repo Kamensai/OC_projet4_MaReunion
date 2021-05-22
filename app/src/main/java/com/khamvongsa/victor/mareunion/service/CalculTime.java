@@ -56,7 +56,7 @@ public class CalculTime implements CalculTimeService{
         else if (totalMinute > 60 && totalHour > 1 && startMinute == endMinute){
             return totalHour;
         }
-        else if (totalMinute > 60 && totalHour > 1){
+        else if (totalMinute > 60 && totalHour > 1 && startMinute > endMinute){
             mReunionHourTime = totalHour - 1;
             return mReunionHourTime;
         }
