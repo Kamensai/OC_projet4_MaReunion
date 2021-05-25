@@ -45,7 +45,7 @@ import static org.hamcrest.Matchers.anyOf;
 @RunWith(AndroidJUnit4.class)
 public class MeetingListTest {
 
-    private static final int ITEMS_COUNT = 4;
+    private static final int ITEMS_COUNT = 5;
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule =
@@ -80,7 +80,7 @@ public class MeetingListTest {
         // Clique sur Mario
         onView(withText("Mario")).perform(click());
         // Une seule réunion qui est prévue à la salle Mario
-        onView(allOf(withId(R.id.list_meeting), withParentIndex(0))).check(withItemCount(ITEMS_COUNT - 3));
+        onView(allOf(withId(R.id.list_meeting), withParentIndex(0))).check(withItemCount(ITEMS_COUNT - 4));
     }
 
     @Test
@@ -92,7 +92,7 @@ public class MeetingListTest {
         // Clique sur Luigi
         onView(withText("Luigi")).perform(click());
         // Une seule réunion qui est prévue à la salle Luigi
-        onView(allOf(withId(R.id.list_meeting), withParentIndex(0))).check(withItemCount(ITEMS_COUNT - 3));
+        onView(allOf(withId(R.id.list_meeting), withParentIndex(0))).check(withItemCount(ITEMS_COUNT - 4));
     }
 
     @Test
@@ -104,7 +104,7 @@ public class MeetingListTest {
         // Clique sur Peach
         onView(withText("Peach")).perform(click());
         // Une seule réunion qui est prévue à la salle Peach
-        onView(allOf(withId(R.id.list_meeting), withParentIndex(0))).check(withItemCount(ITEMS_COUNT - 2));
+        onView(allOf(withId(R.id.list_meeting), withParentIndex(0))).check(withItemCount(ITEMS_COUNT - 3));
     }
 
     @Test
@@ -120,7 +120,7 @@ public class MeetingListTest {
         // Clique sur ok pour confirmer et fermier le dialog
         onView(anyOf(withText(android.R.string.ok), withId(android.R.id.button1))).inRoot(isDialog()).perform(click());
         // Une seule réunion qui est prévue à la date choisie le 05/09/22
-        onView(allOf(withId(R.id.list_meeting), withParentIndex(0))).check(withItemCount(ITEMS_COUNT - 3));
+        onView(allOf(withId(R.id.list_meeting), withParentIndex(0))).check(withItemCount(ITEMS_COUNT - 4));
     }
 
     /**
