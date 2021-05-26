@@ -104,7 +104,7 @@ public class MeetingListTest {
         // Clique sur Peach
         onView(withText("Peach")).perform(click());
         // Une seule réunion qui est prévue à la salle Peach
-        onView(allOf(withId(R.id.list_meeting), withParentIndex(0))).check(withItemCount(ITEMS_COUNT - 3));
+        onView(allOf(withId(R.id.list_meeting), withParentIndex(0))).check(withItemCount(ITEMS_COUNT - 2));
     }
 
     @Test

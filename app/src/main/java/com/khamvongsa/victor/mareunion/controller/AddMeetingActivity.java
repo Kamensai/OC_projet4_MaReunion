@@ -516,14 +516,6 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
 
             this.mChipGroupParticipant.addView(newChip);
 
-            // Set Listener for the Chip:
-            newChip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    handleChipCheckChanged((Chip) buttonView, isChecked);
-                }
-            });
-
             newChip.setOnCloseIconClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -553,10 +545,6 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
                 break;
             }
         }
-    }
-
-    // Chip Checked Changed
-    private void handleChipCheckChanged(Chip chip, boolean isChecked) {
     }
 
     public static void navigate (FragmentActivity activity){

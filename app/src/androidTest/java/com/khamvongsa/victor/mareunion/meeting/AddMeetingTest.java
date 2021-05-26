@@ -183,6 +183,9 @@ public class AddMeetingTest {
         final String startTimeChosen = "14:30";
         final String endTimeChosen = "15:40";
 
+        // On vérifie le nombre de réunions (5)
+        onView(allOf(withId(R.id.list_meeting), withParentIndex(0))).check(withItemCount(MEETING_ITEMS_COUNT));
+
         // On va sur AddMeetingActivity
         onView(withId(R.id.add_Reunion)).perform(click());
 
@@ -230,7 +233,7 @@ public class AddMeetingTest {
 
         // Cliquer sur le bouton créer une réunion
         onView(withId(R.id.activity_add_meeting_btn_createMeeting)).perform(click());
-        // Il y a une réunion en plus (Il y a 5 réunions au départ)
+        // On vérifie qu'il y a une réunion en plus (5+1 = 6)
         onView(allOf(withId(R.id.list_meeting), withParentIndex(0))).check(withItemCount(MEETING_ITEMS_COUNT + 1));
     }
 
