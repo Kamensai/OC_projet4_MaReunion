@@ -83,6 +83,7 @@ public class MeetingFragment extends Fragment {
                                 filterByDate(mStartDate);
                             }
                         }, year, month, day);
+                mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
                 mDatePicker.show();
                 return true;
             case R.id.menu_Salle_Mario:

@@ -11,7 +11,10 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,6 +41,7 @@ import com.khamvongsa.victor.mareunion.service.CalculTime;
 import com.khamvongsa.victor.mareunion.service.CalculTimeService;
 import com.khamvongsa.victor.mareunion.service.MeetingApiService;
 
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -97,15 +101,17 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
     private CalculTimeService mCalculTimeService;
     private DatePickerDialog mDatePicker;
     private TimePickerDialog mTimePicker;
-    private List<String> mlistParticipant = new ArrayList<String>();
-    private Calendar mStartDate = null;
-    private Calendar mStartHour = null;
-    private Calendar mEndHour = null;
+    private List<String> mlistParticipant = new ArrayList<>();
+    private Calendar mStartDate;
+    private Calendar mStartHour;
+    private Calendar mEndHour;
     private ExampleRoom mRoom;
     private List<ExampleMeeting> mMeetings;
 
     private List<ExampleRoom> mAvailableRooms;
     private List<String> listRooms = new ArrayList<String>();
+
+    private final static String MEETING_VIEWMODEL = "MEETING_VIEWMODEL";
 
     private final static String TAG = AddMeetingActivity.class.getSimpleName();
     private final static String REUNION_SUBJECT = "REUNION_SUBJECT";
@@ -133,6 +139,9 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         mMeetingApiService = DI.getReunionApiService();
         mCalculTimeService = new CalculTime();
 
+        // REUNION SUBJECT
+        subjectChosen();
+
         // DATE
         mEditDate.setInputType(InputType.TYPE_NULL);
         dateStart();
@@ -145,15 +154,52 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         mEditEndHour.setInputType(InputType.TYPE_NULL);
         endHour();
 
-        // REUNION SUBJECT
-
         //SPINNER
 
         // PARTICIPANTS
+        writtenParticipant();
         this.mButtonAddParticipant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addNewChip(mEditTextParticipant.getText().toString());
+                mEditTextParticipant.setText("");
+                mAddMeetingViewModel.setParticipants(mlistParticipant);
+            }
+        });
+    }
+
+    public void subjectChosen() {
+        mEditSubjectReunion.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mAddMeetingViewModel.setSubject(mEditSubjectReunion.getText().toString());
+            }
+        });
+    }
+
+    public void writtenParticipant() {
+        mEditTextParticipant.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mAddMeetingViewModel.setWrittenParticipant(mEditTextParticipant.getText().toString());
             }
         });
     }
@@ -269,7 +315,13 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
     @Override
     public void onSaveInstanceState(Bundle out) {
         super.onSaveInstanceState(out);
-        // out.putParcelable("ViewModel", mAddMeetingViewModel);
+        out.putParcelable(MEETING_VIEWMODEL, mAddMeetingViewModel);
+        Log.d(TAG, "############################################");
+        Log.d(TAG, "Info onSave :");
+        Log.d(TAG, "ListParticipantSize :"+ mAddMeetingViewModel.getListParticipants().size());
+        Log.d(TAG, "WrittenParticipant :"+mAddMeetingViewModel.getWrittenParticipant());
+        Log.d(TAG, "############################################");
+        /*
         out.putString(REUNION_SUBJECT, mEditSubjectReunion.getText().toString());
 
         out.putString(DATE, mEditDate.getText().toString());
@@ -298,25 +350,63 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         out.putString(PARTICIPANT, mEditTextParticipant.getText().toString());
         out.putStringArrayList(LIST_PARTICIPANT, new ArrayList<>(mlistParticipant));
 
-
-
+         */
 /*
         Log.d(TAG, "############################################");
         Log.d(TAG, "Info onSave :");
-        Log.d(TAG, "ReunionSubject: " + mEditSubjectReunion.getText().toString());
-        Log.d(TAG, "StartDate: " + mStartDate.get(Calendar.YEAR) + "/"+ mStartDate.get(Calendar.MONTH) +"/"+mStartDate.get(Calendar.DAY_OF_MONTH));
+        Log.d(TAG, "ReunionSubject: " + mAddMeetingViewModel.getSubject());
+        Log.d(TAG, "StartDate: " + mAddMeetingViewModel.getStartDate().get(Calendar.YEAR) + "/"+ mAddMeetingViewModel.getStartDate().get(Calendar.MONTH) +"/"+mAddMeetingViewModel.getStartDate().get(Calendar.DAY_OF_MONTH));
         Log.d(TAG, "StartHour: " + mStartHour.get(Calendar.HOUR_OF_DAY)+":"+mStartHour.get(Calendar.MINUTE));
         Log.d(TAG, "EndHour: " + mEndHour.get(Calendar.HOUR_OF_DAY)+":"+ mEndHour.get(Calendar.MINUTE));
         Log.d(TAG, "Participant: " + mEditTextParticipant.getText().toString());
         Log.d(TAG, "############################################");
- */
+
+         */
     }
 
     @Override
     public void onRestoreInstanceState(Bundle in) {
         super.onRestoreInstanceState(in);
-        // mAddMeetingViewModel = in.getParcelable("ViewModel");
+        mAddMeetingViewModel = in.getParcelable(MEETING_VIEWMODEL);
         // Tout resetter !!
+
+        mEditSubjectReunion.setText(mAddMeetingViewModel.getSubject());
+        if (mAddMeetingViewModel.getStartDate() != null) {
+            mStartDate = Calendar.getInstance();
+            mStartDate.set(mAddMeetingViewModel.getStartDate().get(Calendar.YEAR),mAddMeetingViewModel.getStartDate().get(Calendar.MONTH), mAddMeetingViewModel.getStartDate().get(Calendar.DAY_OF_MONTH));
+            mEditDate.setText(mAddMeetingViewModel.getStartDate().get(Calendar.DAY_OF_MONTH) + "/" + (mAddMeetingViewModel.getStartDate().get(Calendar.MONTH) + 1) + "/" + mAddMeetingViewModel.getStartDate().get(Calendar.YEAR));
+        }
+        if (mAddMeetingViewModel.getStartHour() != null) {
+            mStartHour = Calendar.getInstance();
+            mStartHour.set(0,0,0,mAddMeetingViewModel.getStartHour().get(Calendar.HOUR_OF_DAY),mAddMeetingViewModel.getStartHour().get(Calendar.MINUTE));
+            mEditStartHour.setText(mAddMeetingViewModel.getStartHour().get(Calendar.HOUR_OF_DAY)+":"+mAddMeetingViewModel.getStartHour().get(Calendar.MINUTE));
+
+        }
+        if (mAddMeetingViewModel.getEndHour() != null) {
+            mEndHour = Calendar.getInstance();
+            mEndHour.set(0,0,0,mAddMeetingViewModel.getEndHour().get(Calendar.HOUR_OF_DAY),mAddMeetingViewModel.getEndHour().get(Calendar.MINUTE));
+            mEditEndHour.setText(mAddMeetingViewModel.getEndHour().get(Calendar.HOUR_OF_DAY)+":"+mAddMeetingViewModel.getEndHour().get(Calendar.MINUTE));
+        }
+
+        if(mAddMeetingViewModel.isStartDateFilled() && mAddMeetingViewModel.isStartHourFilled() && mAddMeetingViewModel.isEndHourFilled()) {
+            availableRoom();
+            mSpinnerRoom.setSelection((int) mAddMeetingViewModel.getRoom().getId());
+        }
+        Log.d(TAG, "############################################");
+        Log.d(TAG, "Info onRestore:");
+        Log.d(TAG, "ListParticipantSize :"+ mAddMeetingViewModel.getListParticipants().size());
+        Log.d(TAG, "WrittenParticipant :"+mAddMeetingViewModel.getWrittenParticipant());
+        Log.d(TAG, "############################################");
+
+        List<String> newListParticipant = mAddMeetingViewModel.getListParticipants();
+        for (int i = 0; i < newListParticipant.size(); i++) {
+            addNewChip(newListParticipant.get(i));
+        }
+        Log.d(TAG, "WrittenParticipant :"+mAddMeetingViewModel.getWrittenParticipant());
+        mEditTextParticipant.setText(mAddMeetingViewModel.getWrittenParticipant());
+
+
+        /*
         mEditSubjectReunion.setText(in.getString(REUNION_SUBJECT));
         mEditDate.setText(in.getString(DATE));
         if(!mEditDate.getText().toString().isEmpty()) {
@@ -346,8 +436,9 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         }
         mEditTextParticipant.setText(in.getString(PARTICIPANT));
 
+         */
 
-        /*
+/*
         Log.d(TAG, "############################################");
         Log.d(TAG, "Info onRestore:");
         Log.d(TAG, "ReunionSubject: " + mEditSubjectReunion.getText().toString());
@@ -356,7 +447,9 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         Log.d(TAG, "EndHour: " + mEndHour.get(Calendar.HOUR_OF_DAY)+":"+ mEndHour.get(Calendar.MINUTE));
         Log.d(TAG, "Participant: " + mEditTextParticipant.getText().toString());
         Log.d(TAG, "############################################");
-        */
+
+ */
+
     }
 
     // AVAILABLE_ROOM
@@ -438,10 +531,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
                 }
             });
 
-            this.mEditTextParticipant.setText("");
-            // A retirer
             mlistParticipant.add(participant);
-            //mAddMeetingViewModel.getListParticipants().add(participant);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -455,7 +545,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         parent.removeView(chip);
 
         String deletedChip = (String) chip.getTag();
-        Iterator i = mlistParticipant.iterator();
+        Iterator i = mAddMeetingViewModel.getListParticipants().iterator();
         while (i.hasNext()) {
             String participant = (String) i.next();
             if (deletedChip.equalsIgnoreCase(participant)) {
@@ -476,9 +566,6 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
 
     @OnClick(R.id.activity_add_meeting_btn_createMeeting)
     void addReunion() {
-        mAddMeetingViewModel.setSubject(mEditSubjectReunion.getText().toString());
-        mAddMeetingViewModel.setParticipants(mlistParticipant);
-        mAddMeetingViewModel.setRoom(mRoom);
 
         if (!mAddMeetingViewModel.isSubjectFilled()) {
             mEditSubjectReunion.setError("Choose a subject please.");
@@ -496,8 +583,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
             mEditTextParticipant.setError("Add a participant please.");
             return;
         }
-
-        ExampleMeeting reunion = new ExampleMeeting(System.currentTimeMillis(), mStartDate.getTime(), mStartHour.getTime(), mEndHour.getTime(), mRoom, mEditSubjectReunion.getText().toString(), mlistParticipant);
+        ExampleMeeting reunion = new ExampleMeeting(System.currentTimeMillis(), mAddMeetingViewModel.getStartDate().getTime(), mAddMeetingViewModel.getStartHour().getTime(), mAddMeetingViewModel.getEndHour().getTime(), mAddMeetingViewModel.getRoom(), mAddMeetingViewModel.getSubject(), mAddMeetingViewModel.getListParticipants());
         mMeetingApiService.createMeeting(reunion);
         finish();
     }

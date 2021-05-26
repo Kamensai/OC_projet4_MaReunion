@@ -182,7 +182,7 @@ public class AddMeetingTest {
         final String dateChosen = "10/8/2022";
         final String startTimeChosen = "14:30";
         final String endTimeChosen = "15:40";
-        final String roomMario = "Mario";
+
         // On va sur AddMeetingActivity
         onView(withId(R.id.add_Reunion)).perform(click());
 
@@ -212,15 +212,14 @@ public class AddMeetingTest {
         onView(withId(R.id.activity_add_meeting_btnAdd_EndHour)).perform(click());
         //Set EndTime
         onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(15,40));
-        // Clique sur ok pour confirmer et fermier le dialog
+        // Clique sur ok pour confirmer et fermer le dialog
         onView(anyOf(withText(android.R.string.ok), withId(android.R.id.button1))).inRoot(isDialog()).perform(click());
-        // vérifie que le endTime est bien notée
+        // vérifie que le endTime est bien noté
         onView(withId(R.id.activity_add_meeting_editEndHour)).check(matches(withText(endTimeChosen)));
 
-        //Check if the spinner shows String Item "Mario"
+        // On choisit la salle "Luigi" dans le Spinner
         onView(withId(R.id.activity_add_meeting_spinnerRoom)).perform(click());
         onData(allOf((instanceOf(String.class)))).atPosition(1).perform(click());
-
 
         // simulate user action to input some value into EditText et on ferme le clavier
         onView(withId(R.id.activity_add_meeting_editText_participant)).perform(typeText(PARTICIPANT), closeSoftKeyboard());

@@ -4,7 +4,7 @@ package com.khamvongsa.victor.mareunion.controller;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class ExampleRoom {
+public class ExampleRoom implements Parcelable{
 
     private long id;
 
@@ -18,7 +18,7 @@ public class ExampleRoom {
         this.nom = nom;
         this.couleur = couleur;
     }
-/*
+
     protected ExampleRoom(Parcel in) {
         id = in.readLong();
         nom = in.readString();
@@ -37,7 +37,7 @@ public class ExampleRoom {
         }
     };
 
- */
+
 
     public long getId() {
         return id;
@@ -62,7 +62,7 @@ public class ExampleRoom {
     public void setCouleur(int couleur) {
         this.couleur = couleur;
     }
-/*
+
     @Override
     public int describeContents() {
         return 0;
@@ -75,5 +75,5 @@ public class ExampleRoom {
         dest.writeInt(couleur);
     }
 
- */
+
 }

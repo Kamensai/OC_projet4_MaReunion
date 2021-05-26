@@ -7,21 +7,23 @@ import android.text.TextUtils;
 
 import com.khamvongsa.victor.mareunion.controller.ExampleRoom;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class AddMeetingViewModel  {
+public class AddMeetingViewModel implements Parcelable {
     // Toutes les infos pour l'écran
     private String subject;
     private Calendar startDate;
     private Calendar startHour;
     private Calendar endHour;
+    private String writtenParticipant;
     private ExampleRoom room;
-    private List<String> listParticipants;
+    private List<String> listParticipants = new ArrayList<>();
 
     public AddMeetingViewModel(){ }
-/*
+
     protected AddMeetingViewModel(Parcel in) {
         subject = in.readString();
         if (in.readBoolean()) {
@@ -29,6 +31,19 @@ public class AddMeetingViewModel  {
             startDate = Calendar.getInstance();
             startDate.setTimeInMillis(in.readLong());
         }
+
+        if (in.readBoolean()) {
+            // Tentative de récupération de startDate
+            startHour = Calendar.getInstance();
+            startHour.setTimeInMillis(in.readLong());
+        }
+
+        if (in.readBoolean()) {
+            // Tentative de récupération de startDate
+            endHour = Calendar.getInstance();
+            endHour.setTimeInMillis(in.readLong());
+        }
+        writtenParticipant = in.readString();
         room = in.readParcelable(ExampleRoom.class.getClassLoader());
         listParticipants = in.createStringArrayList();
     }
@@ -45,7 +60,7 @@ public class AddMeetingViewModel  {
         }
     };
 
- */
+
 
     public boolean isSubjectFilled() {
         if(!TextUtils.isEmpty(subject)) {
@@ -101,6 +116,10 @@ public class AddMeetingViewModel  {
         this.endHour = endHour;
     }
 
+    public void setWrittenParticipant(String writtenParticipant) {
+        this.writtenParticipant = writtenParticipant;
+    }
+
     public void setRoom(ExampleRoom room) {
         this.room = room;
     }
@@ -129,6 +148,10 @@ public class AddMeetingViewModel  {
         return endHour;
     }
 
+    public String getWrittenParticipant() {
+        return writtenParticipant;
+    }
+
     public ExampleRoom getRoom() {
         return room;
     }
@@ -136,7 +159,7 @@ public class AddMeetingViewModel  {
     public List<String> getListParticipants() {
         return listParticipants;
     }
-/*
+
     @Override
     public int describeContents() {
         return 0;
@@ -152,11 +175,28 @@ public class AddMeetingViewModel  {
         else {
             dest.writeBoolean(false);
         }
+
+        if (startHour != null) {
+            dest.writeBoolean(true);
+            dest.writeLong(startHour.getTimeInMillis());
+        }
+        else {
+            dest.writeBoolean(false);
+        }
+
+        if (endHour != null) {
+            dest.writeBoolean(true);
+            dest.writeLong(endHour.getTimeInMillis());
+        }
+        else {
+            dest.writeBoolean(false);
+        }
+
+        dest.writeString(writtenParticipant);
         dest.writeParcelable(room, flags);
         dest.writeStringList(listParticipants);
     }
 
- */
 }
 
 
