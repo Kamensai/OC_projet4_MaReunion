@@ -1,17 +1,17 @@
 package com.khamvongsa.victor.mareunion.controller;
 
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+
+import com.khamvongsa.victor.mareunion.R;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-
-import com.khamvongsa.victor.mareunion.R;
 
 public class MainActivity extends AppCompatActivity {
 

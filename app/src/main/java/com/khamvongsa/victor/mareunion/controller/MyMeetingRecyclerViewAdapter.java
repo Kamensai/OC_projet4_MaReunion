@@ -21,18 +21,18 @@ import butterknife.ButterKnife;
 public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeetingRecyclerViewAdapter.ViewHolder> {
 
 
-    private List<ExampleMeeting> mReunions;
+    private List<ExampleMeeting> mMeetings;
     private final DeleteListener mDeleteListener;
-    SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yy");
-    SimpleDateFormat formaterHour = new SimpleDateFormat("HH'h ' mm'm'");
+    SimpleDateFormat mFormat = new SimpleDateFormat("dd-MM-yy");
+    SimpleDateFormat mFormatHour = new SimpleDateFormat("HH'h ' mm'm'");
 
-    public MyMeetingRecyclerViewAdapter(List<ExampleMeeting> item, DeleteListener mDeleteListener) { mReunions = item;
+    public MyMeetingRecyclerViewAdapter(List<ExampleMeeting> item, DeleteListener mDeleteListener) { mMeetings = item;
     this.mDeleteListener = mDeleteListener;
     }
 
     public void updateList(List<ExampleMeeting> item) {
-        mReunions.clear();
-        mReunions.addAll(item);
+        mMeetings.clear();
+        mMeetings.addAll(item);
        notifyDataSetChanged();
     }
 
@@ -46,38 +46,38 @@ public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeeting
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        ExampleMeeting reunion = mReunions.get(position);
-        holder.mSalleName.setText(reunion.getRoom().getNom());
-        holder.mSalleColor.setBackgroundColor(reunion.getRoom().getCouleur());
-        holder.mSujet.setText(reunion.getSubject());
-        holder.mDateDebut.setText(formater.format(reunion.getDebut()));
-        holder.mStartHour.setText(formaterHour.format(reunion.getStartHour()));
-        holder.mEndHour.setText(formaterHour.format(reunion.getEndHour()));
-        holder.mParticipants.setText(reunion.getParticipant().toString());
-        holder.mParticipants.setText(reunion.getParticipant().toString());
+        ExampleMeeting meeting = mMeetings.get(position);
+        holder.mRoomName.setText(meeting.getRoom().getName());
+        holder.mRoomColor.setBackgroundColor(meeting.getRoom().getColor());
+        holder.mSubject.setText(meeting.getSubject());
+        holder.mDateStart.setText(mFormat.format(meeting.getStartDate()));
+        holder.mStartHour.setText(mFormatHour.format(meeting.getStartHour()));
+        holder.mEndHour.setText(mFormatHour.format(meeting.getEndHour()));
+        holder.mParticipants.setText(meeting.getParticipant().toString());
+        holder.mParticipants.setText(meeting.getParticipant().toString());
 
         holder.mDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            mDeleteListener.clickOnDeleteListener(reunion);
+            mDeleteListener.clickOnDeleteListener(meeting);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return mReunions.size();
+        return mMeetings.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.item_list_color)
-        public ImageView mSalleColor;
-        @BindView(R.id.item_list_salle)
-        public TextView mSalleName;
-        @BindView(R.id.item_list_sujet)
-        public TextView mSujet;
-        @BindView(R.id.item_list_dateDebut)
-        public TextView mDateDebut;
+        public ImageView mRoomColor;
+        @BindView(R.id.item_list_room)
+        public TextView mRoomName;
+        @BindView(R.id.item_list_subject)
+        public TextView mSubject;
+        @BindView(R.id.item_list_dateStart)
+        public TextView mDateStart;
         @BindView(R.id.item_list_startHour)
         public TextView mStartHour;
         @BindView(R.id.item_list_EndHour)

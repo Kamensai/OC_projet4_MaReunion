@@ -2,22 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
     android:id="@+id/menu_All"
-    android:title="Toutes"
+    android:title="@string/toutes"
     />
     <item
         android:id="@+id/menu_Date"
-        android:title="Date"
+        android:title="@string/date"
         />
     <item
         android:id="@+id/menu_Salle_Mario"
-        android:title="Mario"
+        android:title="@string/mario"
          />
     <item
         android:id="@+id/menu_Salle_Luigi"
-        android:title="Luigi"
+        android:title="@string/luigi"
         />
     <item
         android:id="@+id/menu_Salle_Peach"
-        android:title="Peach"
+        android:title="@string/peach"
         />
 </menu>

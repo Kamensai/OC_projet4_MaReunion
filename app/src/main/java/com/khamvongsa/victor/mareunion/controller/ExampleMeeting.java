@@ -8,7 +8,7 @@ import java.util.List;
 public class ExampleMeeting {
     private long id;
 
-    private Date debut;
+    private Date startDate;
 
     private Date startHour;
 
@@ -24,9 +24,9 @@ public class ExampleMeeting {
     /**
      * Constructor
      */
-    public ExampleMeeting(long id, Date debut, Date startHour, Date endHour, ExampleRoom room, String subject, List<String> participant) {
+    public ExampleMeeting(long id, Date startDate, Date startHour, Date endHour, ExampleRoom room, String subject, List<String> participant) {
         this.id = id;
-        this.debut = debut;
+        this.startDate = startDate;
         this.startHour = startHour;
         this.endHour = endHour;
         this.room = room;
@@ -38,14 +38,14 @@ public class ExampleMeeting {
         @Override
         public int compare(ExampleMeeting r1, ExampleMeeting r2) {
 
-            return r1.getRoom().getNom().compareTo(r2.getRoom().getNom());
+            return r1.getRoom().getName().compareTo(r2.getRoom().getName());
         }
     };
 
     public static Comparator<ExampleMeeting> MeetingDateComparator = new Comparator<ExampleMeeting>() {
         @Override
         public int compare(ExampleMeeting r1, ExampleMeeting r2) {
-            return r1.getDebut().compareTo(r2.getDebut());
+            return r1.getStartDate().compareTo(r2.getStartDate());
         }
     };
 
@@ -57,12 +57,12 @@ public class ExampleMeeting {
         this.id = id;
     }
 
-    public Date getDebut() {
-        return debut;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setDebut(Date debut) {
-        this.debut = debut;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
     public Date getStartHour() {

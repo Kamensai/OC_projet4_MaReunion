@@ -9,7 +9,6 @@ import com.khamvongsa.victor.mareunion.controller.ExampleRoom;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class AddMeetingViewModel implements Parcelable {

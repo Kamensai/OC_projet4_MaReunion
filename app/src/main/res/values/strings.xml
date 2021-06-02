@@ -1,8 +1,15 @@
 <resources>
     <string name="app_name">Ma Réunion</string>
     <string name="activity_add_reunion">Nouvelle réunion</string>
-    <string name="btn_get_date">Get Date</string>
     <string name="room_name">Salles disponibles :</string>
     <string name="reunion_name">Sujet de la Réunion</string>
     <string name="add_reunion">Ajouter Réunion</string>
+    <string name="ajouter">Ajouter</string>
+    <string name="fin">Fin</string>
+    <string name="depart">Début</string>
+    <string name="date">Date</string>
+    <string name="toutes">Toutes</string>
+    <string name="mario">Mario</string>
+    <string name="luigi">Luigi</string>
+    <string name="peach">Peach</string>
 </resources>

@@ -8,21 +8,21 @@ public class ExampleRoom implements Parcelable{
 
     private long id;
 
-    private String nom;
+    private String name;
 
-    private int couleur;
+    private int color;
 
-    public ExampleRoom(long id, String nom, int couleur) {
+    public ExampleRoom(long id, String name, int color) {
 
         this.id = id;
-        this.nom = nom;
-        this.couleur = couleur;
+        this.name = name;
+        this.color = color;
     }
 
     protected ExampleRoom(Parcel in) {
         id = in.readLong();
-        nom = in.readString();
-        couleur = in.readInt();
+        name = in.readString();
+        color = in.readInt();
     }
 
     public static final Creator<ExampleRoom> CREATOR = new Creator<ExampleRoom>() {
@@ -47,20 +47,20 @@ public class ExampleRoom implements Parcelable{
         this.id = id;
     }
 
-    public String getNom() {
-        return nom;
+    public String getName() {
+        return name;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public int getCouleur() {
-        return couleur;
+    public int getColor() {
+        return color;
     }
 
-    public void setCouleur(int couleur) {
-        this.couleur = couleur;
+    public void setColor(int color) {
+        this.color = color;
     }
 
     @Override
@@ -71,8 +71,8 @@ public class ExampleRoom implements Parcelable{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(id);
-        dest.writeString(nom);
-        dest.writeInt(couleur);
+        dest.writeString(name);
+        dest.writeInt(color);
     }
 
 

@@ -37,7 +37,7 @@
         />
 
     <TextView
-        android:id="@+id/item_list_salle"
+        android:id="@+id/item_list_room"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -47,23 +47,23 @@
         tools:text="list Salle"/>
 
     <TextView
-        android:id="@+id/item_list_sujet"
+        android:id="@+id/item_list_subject"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="170dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/item_list_salle"
+        app:layout_constraintBottom_toBottomOf="@+id/item_list_room"
         app:layout_constraintStart_toStartOf="@+id/item_meeting"
-        app:layout_constraintTop_toTopOf="@+id/item_list_salle"
+        app:layout_constraintTop_toTopOf="@+id/item_list_room"
         tools:text="sujet"/>
 
     <TextView
-        android:id="@+id/item_list_dateDebut"
+        android:id="@+id/item_list_dateStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="@+id/item_meeting"
-        app:layout_constraintStart_toStartOf="@+id/item_list_salle"
+        app:layout_constraintStart_toStartOf="@+id/item_list_room"
         app:layout_constraintBottom_toBottomOf="@+id/item_meeting"
         tools:text="Date début"/>
 
@@ -93,7 +93,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/item_list_salle"
+        app:layout_constraintStart_toStartOf="@+id/item_list_room"
         app:layout_constraintTop_toBottomOf="@+id/item_list_EndHour"
         tools:text="participants"/>
 

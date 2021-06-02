@@ -34,7 +34,7 @@
                 android:layout_centerHorizontal="true"
                 android:ems="10"
                 android:hint="@string/reunion_name"
-                android:inputType="text" />
+                android:inputType="text"/>
         </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -53,7 +53,7 @@
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlayExtended"
                 app:elevation="12dp"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:ignore="ContentDescription" />
+                tools:ignore="ContentDescription"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/activity_add_meeting_btnAdd_StartHour"
@@ -69,7 +69,7 @@
                 app:tint="@null"
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlayExtended"
                 app:elevation="12dp"
-                tools:ignore="ContentDescription" />
+                tools:ignore="ContentDescription"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/activity_add_meeting_btnAdd_EndHour"
@@ -86,8 +86,7 @@
                 app:tint="@null"
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlayExtended"
                 app:elevation="12dp"
-                tools:ignore="ContentDescription"
-                />
+                tools:ignore="ContentDescription" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/activity_add_meeting_inputDate"
@@ -98,17 +97,15 @@
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_toStartOf="@id/activity_add_meeting_inputStartHour"
-                >
+                android:layout_marginEnd="10dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/activity_add_meeting_editDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="6"
-                    android:hint="Date"
-                    android:inputType="date" />
+                    android:hint="@string/date"
+                    android:inputType="date"/>
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -122,16 +119,17 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_toStartOf="@id/activity_add_meeting_inputEndHour"
-            >
+            android:layout_toEndOf="@id/activity_add_meeting_inputDate">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/activity_add_meeting_editStartHour"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:ems="6"
-            android:hint="Heure de départ"
-            android:inputType="datetime"/>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/activity_add_meeting_editStartHour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center"
+                android:ems="5"
+                android:hint="@string/depart"
+                android:inputType="datetime"/>
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -144,17 +142,15 @@
             android:layout_below="@+id/activity_add_meeting_btnAdd_EndHour"
             android:layout_marginTop="20dp"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="20dp"
-            >
+            android:layout_marginEnd="30dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/activity_add_meeting_editEndHour"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
-                android:ems="6"
-                android:hint="Heure de fin"
+                android:ems="5"
+                android:hint="@string/fin"
                 android:inputType="datetime"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -167,7 +163,7 @@
             android:layout_centerHorizontal="true"
             android:text="@string/room_name"
             android:textStyle="bold"
-            android:textSize="15dp" />
+            android:textSize="15sp"/>
 
         <Spinner
             android:id="@+id/activity_add_meeting_spinnerRoom"
@@ -185,8 +181,7 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="30dp"
             android:ems="9"
-            android:inputType="textPersonName"
-             />
+            android:inputType="textPersonName"/>
 
         <Button
             android:id="@+id/activity_add_meeting_btnAdd_participant"
@@ -195,18 +190,16 @@
             android:layout_below="@+id/activity_add_meeting_editText_participant"
             android:layout_marginTop="35dp"
             android:layout_centerHorizontal="true"
-            android:text="Add"
-            />
+            android:text="@string/ajouter"/>
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/activity_add_meeting_chipGroup"
-            android:layout_width="300dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/activity_add_meeting_btnAdd_participant"
             android:layout_marginTop="30dp"
-            android:background="#F3EEEE"
-            />
+            android:backgroundTint="#F3EEEE"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/activity_add_meeting_btn_createMeeting"

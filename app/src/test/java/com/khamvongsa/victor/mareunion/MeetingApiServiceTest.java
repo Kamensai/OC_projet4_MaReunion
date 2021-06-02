@@ -86,7 +86,7 @@ public class MeetingApiServiceTest {
         ExampleMeeting meetingDateTest = service.getMeetings().get(3);
         ExampleMeeting meetingFalseDateTest = service.getMeetings().get(1);
         Calendar instance = Calendar.getInstance();
-        instance.setTime(meetingDateTest.getDebut());
+        instance.setTime(meetingDateTest.getStartDate());
         List<ExampleMeeting> mListByDate = service.getMeetingsByDate(instance);
         // Must return false because this meeting has the wrong date
         assertFalse(mListByDate.contains(meetingFalseDateTest));
@@ -110,11 +110,11 @@ public class MeetingApiServiceTest {
 
         List<String> listRoomsAvailable = service.filterAvailableRooms(mMeetingList,mRooms, mDateTest, mStartTimeTest, mEndTimeTest);
         // "Peach" ne fera pas partie des salles disponibles
-        assertFalse(listRoomsAvailable.contains(service.getMeetings().get(3).getRoom().getNom()));
-        assertFalse(listRoomsAvailable.contains(service.getMeetings().get(4).getRoom().getNom()));
+        assertFalse(listRoomsAvailable.contains(service.getMeetings().get(3).getRoom().getName()));
+        assertFalse(listRoomsAvailable.contains(service.getMeetings().get(4).getRoom().getName()));
         // "Mario" et "Luigi" feront partie des salles disponibles
-        assertTrue(listRoomsAvailable.contains(service.getMeetings().get(0).getRoom().getNom()));
-        assertTrue(listRoomsAvailable.contains(service.getMeetings().get(1).getRoom().getNom()));
+        assertTrue(listRoomsAvailable.contains(service.getMeetings().get(0).getRoom().getName()));
+        assertTrue(listRoomsAvailable.contains(service.getMeetings().get(1).getRoom().getName()));
     }
 
     // Même heure de départ et de fin, mais la réunion choisie commence avant, mais déborde sur la réunion déjà présente.
@@ -133,11 +133,11 @@ public class MeetingApiServiceTest {
 
         List<String> listRoomsAvailable = service.filterAvailableRooms(mMeetingList, mRooms, mDateTest, mStartTimeTest, mEndTimeTest);
         // "Peach" ne fera pas partie des salles disponibles
-        assertFalse(listRoomsAvailable.contains(service.getMeetings().get(4).getRoom().getNom()));
-        assertFalse(listRoomsAvailable.contains(service.getMeetings().get(3).getRoom().getNom()));
+        assertFalse(listRoomsAvailable.contains(service.getMeetings().get(4).getRoom().getName()));
+        assertFalse(listRoomsAvailable.contains(service.getMeetings().get(3).getRoom().getName()));
         // "Mario" et "Luigi" feront partie des salles disponibles
-        assertTrue(listRoomsAvailable.contains(service.getMeetings().get(0).getRoom().getNom()));
-        assertTrue(listRoomsAvailable.contains(service.getMeetings().get(1).getRoom().getNom()));
+        assertTrue(listRoomsAvailable.contains(service.getMeetings().get(0).getRoom().getName()));
+        assertTrue(listRoomsAvailable.contains(service.getMeetings().get(1).getRoom().getName()));
     }
 
     // Si la réunion choisie commence avant mais qu'elle déborde sur la réunion déjà présente
@@ -156,10 +156,10 @@ public class MeetingApiServiceTest {
 
         List<String> listRoomsAvailable = service.filterAvailableRooms(mMeetingList, mRooms, mDateTest, mStartTimeTest, mEndTimeTest);
         // "Peach" ne fera pas partie des salles disponibles
-        assertFalse(listRoomsAvailable.contains(service.getMeetings().get(3).getRoom().getNom()));
+        assertFalse(listRoomsAvailable.contains(service.getMeetings().get(3).getRoom().getName()));
         // "Mario" et "Luigi" feront partie des salles disponibles
-        assertTrue(listRoomsAvailable.contains(service.getMeetings().get(0).getRoom().getNom()));
-        assertTrue(listRoomsAvailable.contains(service.getMeetings().get(1).getRoom().getNom()));
+        assertTrue(listRoomsAvailable.contains(service.getMeetings().get(0).getRoom().getName()));
+        assertTrue(listRoomsAvailable.contains(service.getMeetings().get(1).getRoom().getName()));
     }
 
     // Si la réunion choisie commence pendant une réunion déjà présente à la même heure de départ
@@ -178,10 +178,10 @@ public class MeetingApiServiceTest {
 
         List<String> listRoomsAvailable = service.filterAvailableRooms(mMeetingList, mRooms, mDateTest, mStartTimeTest, mEndTimeTest);
         // "Peach" ne fera pas partie des salles disponibles
-        assertFalse(listRoomsAvailable.contains(service.getMeetings().get(3).getRoom().getNom()));
+        assertFalse(listRoomsAvailable.contains(service.getMeetings().get(3).getRoom().getName()));
         // "Mario" et "Luigi" feront partie des salles disponibles
-        assertTrue(listRoomsAvailable.contains(service.getMeetings().get(0).getRoom().getNom()));
-        assertTrue(listRoomsAvailable.contains(service.getMeetings().get(1).getRoom().getNom()));
+        assertTrue(listRoomsAvailable.contains(service.getMeetings().get(0).getRoom().getName()));
+        assertTrue(listRoomsAvailable.contains(service.getMeetings().get(1).getRoom().getName()));
     }
 
     // Si la réunion commence pendant une réunion déjà présente à une heure de départ différente
@@ -200,10 +200,10 @@ public class MeetingApiServiceTest {
 
         List<String> listRoomsAvailable = service.filterAvailableRooms(mMeetingList, mRooms, mDateTest, mStartTimeTest, mEndTimeTest);
         // "Peach" ne fera pas partie des salles disponibles
-        assertFalse(listRoomsAvailable.contains(service.getMeetings().get(3).getRoom().getNom()));
+        assertFalse(listRoomsAvailable.contains(service.getMeetings().get(3).getRoom().getName()));
         // "Mario" et "Luigi" feront partie des salles disponibles
-        assertTrue(listRoomsAvailable.contains(service.getMeetings().get(0).getRoom().getNom()));
-        assertTrue(listRoomsAvailable.contains(service.getMeetings().get(1).getRoom().getNom()));
+        assertTrue(listRoomsAvailable.contains(service.getMeetings().get(0).getRoom().getName()));
+        assertTrue(listRoomsAvailable.contains(service.getMeetings().get(1).getRoom().getName()));
     }
 
     // Si la réunion choisie commence avant une réunion déjà présente et finit après
@@ -222,10 +222,10 @@ public class MeetingApiServiceTest {
 
         List<String> listRoomsAvailable = service.filterAvailableRooms(mMeetingList, mRooms, mDateTest, mStartTimeTest, mEndTimeTest);
         // "Peach" ne fera pas partie des salles disponibles
-        assertFalse(listRoomsAvailable.contains(service.getMeetings().get(3).getRoom().getNom()));
+        assertFalse(listRoomsAvailable.contains(service.getMeetings().get(3).getRoom().getName()));
         // "Mario" et "Luigi" feront partie des salles disponibles
-        assertTrue(listRoomsAvailable.contains(service.getMeetings().get(0).getRoom().getNom()));
-        assertTrue(listRoomsAvailable.contains(service.getMeetings().get(1).getRoom().getNom()));
+        assertTrue(listRoomsAvailable.contains(service.getMeetings().get(0).getRoom().getName()));
+        assertTrue(listRoomsAvailable.contains(service.getMeetings().get(1).getRoom().getName()));
     }
 
     // Si la réunion choisie commence avant une réunion déjà présente et finit à la même heure que l'heure de départ(dela réunion déjà présente), mais quelques minutes plus tard
@@ -244,9 +244,9 @@ public class MeetingApiServiceTest {
 
         List<String> listRoomsAvailable = service.filterAvailableRooms(mMeetingList, mRooms, mDateTest, mStartTimeTest, mEndTimeTest);
         // "Peach" ne fera pas partie des salles disponibles
-        assertFalse(listRoomsAvailable.contains(service.getMeetings().get(3).getRoom().getNom()));
+        assertFalse(listRoomsAvailable.contains(service.getMeetings().get(3).getRoom().getName()));
         // "Mario" et "Luigi" feront partie des salles disponibles
-        assertTrue(listRoomsAvailable.contains(service.getMeetings().get(0).getRoom().getNom()));
-        assertTrue(listRoomsAvailable.contains(service.getMeetings().get(1).getRoom().getNom()));
+        assertTrue(listRoomsAvailable.contains(service.getMeetings().get(0).getRoom().getName()));
+        assertTrue(listRoomsAvailable.contains(service.getMeetings().get(1).getRoom().getName()));
     }
 }
