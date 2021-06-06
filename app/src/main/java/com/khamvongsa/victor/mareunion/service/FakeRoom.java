@@ -1,7 +1,7 @@
 package com.khamvongsa.victor.mareunion.service;
 
 
-import com.khamvongsa.victor.mareunion.controller.ExampleRoom;
+import com.khamvongsa.victor.mareunion.model.ExampleRoom;
 
 import java.util.ArrayList;
 import java.util.Arrays;

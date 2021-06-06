@@ -1,7 +1,7 @@
 package com.khamvongsa.victor.mareunion.service;
 
-import com.khamvongsa.victor.mareunion.controller.ExampleMeeting;
-import com.khamvongsa.victor.mareunion.controller.ExampleRoom;
+import com.khamvongsa.victor.mareunion.model.ExampleMeeting;
+import com.khamvongsa.victor.mareunion.model.ExampleRoom;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,10 +16,10 @@ import static android.graphics.Color.RED;
 
 public final class FakeMeeting {
 
-    static ExampleRoom mMario = new ExampleRoom(0, "Mario", RED);
-    static ExampleRoom mLuigi = new ExampleRoom(1, "Luigi", GREEN);
-    static ExampleRoom mPeach = new ExampleRoom(2, "Peach", BLUE);
-    static List<String> mParticipants = Arrays.asList("Jean", "Baptiste");
+    static final ExampleRoom mMario = new ExampleRoom(0, "Mario", RED);
+    static final ExampleRoom mLuigi = new ExampleRoom(1, "Luigi", GREEN);
+    static final ExampleRoom mPeach = new ExampleRoom(2, "Peach", BLUE);
+    static final List<String> mParticipants = Arrays.asList("Jean", "Baptiste");
 
     public static final List<ExampleMeeting> EXEMPLE_REUNIONS = Arrays.asList(
     new ExampleMeeting(0, Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), mMario, "Arbre", mParticipants ),

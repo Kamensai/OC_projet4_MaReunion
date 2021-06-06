@@ -1,4 +1,4 @@
-package com.khamvongsa.victor.mareunion.controller;
+package com.khamvongsa.victor.mareunion.model;
 
 
 import android.os.Parcel;

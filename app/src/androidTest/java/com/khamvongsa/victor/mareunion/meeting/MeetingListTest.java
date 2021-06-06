@@ -44,7 +44,7 @@ public class MeetingListTest {
     public ActivityTestRule<MainActivity> mActivityRule =
             new ActivityTestRule<>(MainActivity.class);
     /**
-     * We ensure that our recyclerview is displaying at least one item
+     * Vérifie que le recyclerview affiche au moins un item
      */
     @Test
     public void myMeetingList_shouldNotBeEmpty() {
@@ -54,15 +54,32 @@ public class MeetingListTest {
     }
 
     /**
-     * When we click on AddBtn, AddMeetingActivity is launched.
+     * Quand on clique sur add_Reunion, AddMeetingActivity est lancé.
      */
     @Test
-    public void clickOnAddMeetingBtnToAddMeetingActivity() {
+    public void clickOnAddMeetingBtn_ToAddMeetingActivity() {
         Intents.init();
-        onView(withId(R.id.add_Reunion)).perform(click());
+        onView(withId(R.id.add_Meeting)).perform(click());
         intended(hasComponent(AddMeetingActivity.class.getName()));
     }
 
+    /**
+     * Quand je supprime un item, celui-ci n'est plus affiché
+     */
+
+    @Test
+    public void meetingList_deleteAction_shouldRemoveItem() {
+        // Given : We remove the element at position 2
+        onView(allOf(withId(R.id.list_meeting), withParentIndex(0))).check(withItemCount(ITEMS_COUNT));
+        // When perform a click on a delete icon
+        onView(allOf(withId(R.id.list_meeting), withParentIndex(0))).perform(RecyclerViewActions.actionOnItemAtPosition(1, new DeleteMeetingViewAction()));
+        // Then : the number of element is 11
+        onView(allOf(withId(R.id.list_meeting), withParentIndex(0))).check(withItemCount(ITEMS_COUNT - 1));
+    }
+
+    /**
+     * Lorsuq'on choisit de filtrer par salle ou par Date
+     */
     @Test
     public void showOnlyChosenRoomMario() {
 
@@ -116,17 +133,5 @@ public class MeetingListTest {
         onView(allOf(withId(R.id.list_meeting), withParentIndex(0))).check(withItemCount(ITEMS_COUNT - 4));
     }
 
-    /**
-     * When we delete an item, the item is no more shown
-     */
 
-    @Test
-    public void meetingList_deleteAction_shouldRemoveItem() {
-        // Given : We remove the element at position 2
-        onView(allOf(withId(R.id.list_meeting), withParentIndex(0))).check(withItemCount(ITEMS_COUNT));
-        // When perform a click on a delete icon
-        onView(allOf(withId(R.id.list_meeting), withParentIndex(0))).perform(RecyclerViewActions.actionOnItemAtPosition(1, new DeleteMeetingViewAction()));
-        // Then : the number of element is 11
-        onView(allOf(withId(R.id.list_meeting), withParentIndex(0))).check(withItemCount(ITEMS_COUNT - 1));
-    }
 }

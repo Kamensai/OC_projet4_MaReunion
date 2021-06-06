@@ -1,8 +1,8 @@
 package com.khamvongsa.victor.mareunion.service;
 
 
-import com.khamvongsa.victor.mareunion.controller.ExampleMeeting;
-import com.khamvongsa.victor.mareunion.controller.ExampleRoom;
+import com.khamvongsa.victor.mareunion.model.ExampleMeeting;
+import com.khamvongsa.victor.mareunion.model.ExampleRoom;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -14,17 +14,16 @@ public class FakeMeetingApiService implements MeetingApiService {
     private final List<ExampleRoom> rooms = FakeRoom.getSallesDisponibles();
     private final static String TAG = FakeMeetingApiService.class.getSimpleName();
 
-
+    /**
+     * Ces deux méthodes servent à protéger les données dans la partie service
+     */
     @Override
     public List<ExampleRoom> getRooms() {
         return new ArrayList<>(rooms) ;
     }
 
     @Override
-    public List<ExampleMeeting> getMeetings() {
-        return new ArrayList<>(meetings) ;
-        // pour protéger les données dans la partie service
-    }
+    public List<ExampleMeeting> getMeetings() { return new ArrayList<>(meetings) ; }
 
     @Override
     public List<ExampleMeeting> getMeetingsByRooms(String roomChosen) {

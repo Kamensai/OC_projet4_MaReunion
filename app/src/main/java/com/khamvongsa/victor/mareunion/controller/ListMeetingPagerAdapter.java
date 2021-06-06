@@ -9,14 +9,14 @@ public class ListMeetingPagerAdapter extends FragmentPagerAdapter {
 
 
     public ListMeetingPagerAdapter(@NonNull FragmentManager fm) {
-        super(fm);
+        super(fm,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
     }
 
+    @NonNull
     @Override
     public Fragment getItem(int position) {
         return MeetingFragment.newInstance();
     }
-
 
     @Override
     public int getCount() {

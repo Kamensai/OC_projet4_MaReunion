@@ -5,8 +5,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
-import com.khamvongsa.victor.mareunion.controller.ExampleRoom;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -32,13 +30,13 @@ public class AddMeetingViewModel implements Parcelable {
         }
 
         if (in.readBoolean()) {
-            // Tentative de récupération de startDate
+            // Tentative de récupération de startHour
             startHour = Calendar.getInstance();
             startHour.setTimeInMillis(in.readLong());
         }
 
         if (in.readBoolean()) {
-            // Tentative de récupération de startDate
+            // Tentative de récupération de endHour
             endHour = Calendar.getInstance();
             endHour.setTimeInMillis(in.readLong());
         }
@@ -59,49 +57,21 @@ public class AddMeetingViewModel implements Parcelable {
         }
     };
 
-
-
     public boolean isSubjectFilled() {
-        if(!TextUtils.isEmpty(subject)) {
-            return true;
-        }
-        return false;
+        return !TextUtils.isEmpty(subject);
     }
 
     public boolean isStartDateFilled() {
-        if(startDate != null) {
-            return true;
-        }
-        return false;
+        return startDate != null;
     }
 
-    public boolean isStartHourFilled() {
-        if(startHour != null) {
-            return true;
-        }
-        return false;
-    }
+    public boolean isStartHourFilled() { return startHour != null; }
 
-    public boolean isEndHourFilled() {
-        if(endHour != null) {
-            return true;
-        }
-        return false;
-    }
+    public boolean isEndHourFilled() { return endHour != null; }
 
-    public boolean isRoomFilled() {
-        if(room != null) {
-            return true;
-        }
-        return false;
-    }
+    public boolean isRoomFilled() { return room != null; }
 
-    public boolean isListParticipantsFilled() {
-        if(listParticipants.size() > 0) {
-            return true;
-        }
-        return false;
-    }
+    public boolean isListParticipantsFilled() { return listParticipants.size() > 0; }
 
     public void setStartDate(Calendar date) {
         this.startDate = date;
@@ -115,9 +85,7 @@ public class AddMeetingViewModel implements Parcelable {
         this.endHour = endHour;
     }
 
-    public void setWrittenParticipant(String writtenParticipant) {
-        this.writtenParticipant = writtenParticipant;
-    }
+    public void setWrittenParticipant(String writtenParticipant) { this.writtenParticipant = writtenParticipant; }
 
     public void setRoom(ExampleRoom room) {
         this.room = room;
@@ -147,9 +115,7 @@ public class AddMeetingViewModel implements Parcelable {
         return endHour;
     }
 
-    public String getWrittenParticipant() {
-        return writtenParticipant;
-    }
+    public String getWrittenParticipant() { return writtenParticipant; }
 
     public ExampleRoom getRoom() {
         return room;

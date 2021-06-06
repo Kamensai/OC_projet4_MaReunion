@@ -1,7 +1,7 @@
 package com.khamvongsa.victor.mareunion.service;
 
-import com.khamvongsa.victor.mareunion.controller.ExampleMeeting;
-import com.khamvongsa.victor.mareunion.controller.ExampleRoom;
+import com.khamvongsa.victor.mareunion.model.ExampleMeeting;
+import com.khamvongsa.victor.mareunion.model.ExampleRoom;
 
 import java.util.Calendar;
 import java.util.List;

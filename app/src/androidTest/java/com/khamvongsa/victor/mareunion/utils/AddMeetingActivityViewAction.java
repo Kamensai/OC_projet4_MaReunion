@@ -23,7 +23,7 @@ public class AddMeetingActivityViewAction implements ViewAction {
 
         @Override
         public void perform(UiController uiController, View view) {
-            View itemView = view.findViewById(R.id.add_Reunion);
+            View itemView = view.findViewById(R.id.add_Meeting);
             // Maybe check for null
             itemView.performClick();
         }

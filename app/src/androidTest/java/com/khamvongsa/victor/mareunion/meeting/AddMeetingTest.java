@@ -41,10 +41,9 @@ import static org.hamcrest.Matchers.instanceOf;
 public class AddMeetingTest {
 
     private static final String SUBJECT = "Subject";
-    private static final String PARTICIPANT = "participant@hotmail.com";
+    private static final String PARTICIPANT = "participant@hotmail.fr";
     private static final int PARTICIPANT_COUNT = 0;
     private static final int MEETING_ITEMS_COUNT = 5;
-
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule =
@@ -52,9 +51,9 @@ public class AddMeetingTest {
 
     @Test
     public void writeTextSubjectMeeting() {
-        // On va sur AddMeetingActivity
-        onView(withId(R.id.add_Reunion)).perform(click());
-        // On écrit dans l'EditText
+        // On va sur 'AddMeetingActivity'
+        onView(withId(R.id.add_Meeting)).perform(click());
+        // On écrit dans l'activity_add_meeting_editSubjectMeeting
         onView(withId(R.id.activity_add_meeting_editSubjectMeeting)).perform(typeText(SUBJECT));
         // Check if the value is true
         onView(withId(R.id.activity_add_meeting_editSubjectMeeting)).check(matches(withText(SUBJECT)));
@@ -62,36 +61,80 @@ public class AddMeetingTest {
 
     @Test
     public void writeTextParticipantToAdd() {
-        // On va sur AddMeetingActivity
-        onView(withId(R.id.add_Reunion)).perform(click());
-        // On écrit dans l'EditText
+        // On va sur 'AddMeetingActivity'
+        onView(withId(R.id.add_Meeting)).perform(click());
+        // On écrit dans l'activity_add_meeting_editText_participant
         onView(withId(R.id.activity_add_meeting_editText_participant)).perform(typeText(PARTICIPANT));
         // Check if the value is true
         onView(withId(R.id.activity_add_meeting_editText_participant)).check(matches(withText(PARTICIPANT)));
     }
 
-    // TODO : A tester pour tous les champs une fois le ViewModel bien utilisé
+    /**
+     * Lors du click sur le bouton "add_Meeting", envoie un message d'erreur à l'endroit où le champ est vide.
+     */
     @Test
-    public void errorMessageSubject(){
-        // On va sur AddMeetingActivity
-        onView(withId(R.id.add_Reunion)).perform(click());
+    public void errorMessagesShown(){
+        // On va sur 'AddMeetingActivity'
+        onView(withId(R.id.add_Meeting)).perform(click());
         // Cliquer pour créer une réunion alors que tous les champs sont vides
         onView(withId(R.id.activity_add_meeting_btn_createMeeting)).perform(click());
-        // Vérifie si le message d'erreur s'affiche correctement
+        // Vérifie si le message d'erreur s'affiche correctement dans 'activity_add_meeting_editSubjectMeeting'
         onView(withId(R.id.activity_add_meeting_editSubjectMeeting)).check(matches(hasErrorText("Veuillez choisir un sujet de réunion.")));
+
+        // On écrit dans 'activity_add_meeting_editSubjectMeeting'
+        onView(withId(R.id.activity_add_meeting_editSubjectMeeting)).perform(typeText(SUBJECT), closeSoftKeyboard());
+        // Cliquer pour créer une réunion alors que certains champs sont vides
+        onView(withId(R.id.activity_add_meeting_btn_createMeeting)).perform(click());
+        // Vérifie si le message d'erreur s'affiche correctement dans 'activity_add_meeting_editDate'
+        onView(withId(R.id.activity_add_meeting_editDate)).check(matches(hasErrorText("Veuillez choisir une date.")));
+
+
+        // Clique sur DatePickerButton
+        onView(withId(R.id.activity_add_meeting_btnAdd_Date)).perform(click());
+        // Set Date
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2022,8,10));
+        // Clique sur ok pour confirmer et fermer le dialog
+        onView(anyOf(withText(android.R.string.ok), withId(android.R.id.button1))).inRoot(isDialog()).perform(click());
+        // Cliquer pour créer une réunion alors que certains champs sont vides
+        onView(withId(R.id.activity_add_meeting_btn_createMeeting)).perform(click());
+        // Vérifie si le message d'erreur s'affiche correctement dans 'activity_add_meeting_editStartHour'
+        onView(withId(R.id.activity_add_meeting_editStartHour)).check(matches(hasErrorText("Veuillez choisir une heure de début.")));
+
+        // Clique sur StartTimePickerButton
+        onView(withId(R.id.activity_add_meeting_btnAdd_StartHour)).perform(click());
+        //Set StartTime
+        onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(14,30));
+        // Clique sur ok pour confirmer et fermer le dialog
+        onView(anyOf(withText(android.R.string.ok), withId(android.R.id.button1))).inRoot(isDialog()).perform(click());
+        // Cliquer pour créer une réunion alors que certains champs sont vides
+        onView(withId(R.id.activity_add_meeting_btn_createMeeting)).perform(click());
+        // Vérifie si le message d'erreur s'affiche correctement dans 'activity_add_meeting_editStartHour'
+        onView(withId(R.id.activity_add_meeting_editEndHour)).check(matches(hasErrorText("Veuillez choisir une heure de fin.")));
+
+        // Clique sur EndTimePickerButton
+        onView(withId(R.id.activity_add_meeting_btnAdd_EndHour)).perform(click());
+        //Set EndTime
+        onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(15,40));
+        // Clique sur ok pour confirmer et fermer le dialog
+        onView(anyOf(withText(android.R.string.ok), withId(android.R.id.button1))).inRoot(isDialog()).perform(click());
+        // Cliquer pour créer une réunion alors que certains champs sont vides
+        onView(withId(R.id.activity_add_meeting_btn_createMeeting)).perform(click());
+        // Vérifie si le message d'erreur s'affiche correctement dans 'activity_add_meeting_editStartHour
+        onView(withId(R.id.activity_add_meeting_editText_participant)).check(matches(hasErrorText("Veuillez ajouter un participant.")));
     }
 
-        // TODO : Changer le nom de la méthode
-    // Vérifier si le spinner est lancé, une fois les champs remplis
+    /**
+     * Vérifier si le spinner est lancé, une fois les champs remplis
+     */
     @Test
-    public void showSpinnerSelection() {
+    public void showSpinnerSelectionAvailable() {
         final String dateChosen = "10/8/2022";
         final String startTimeChosen = "14:30";
         final String endTimeChosen = "15:40";
         final String roomMario = "Mario";
 
-        // On va sur AddMeetingActivity
-        onView(withId(R.id.add_Reunion)).perform(click());
+        // On va sur 'AddMeetingActivity'
+        onView(withId(R.id.add_Meeting)).perform(click());
 
         // Clique sur DatePickerButton
         onView(withId(R.id.activity_add_meeting_btnAdd_Date)).perform(click());
@@ -107,7 +150,7 @@ public class AddMeetingTest {
         onView(withId(R.id.activity_add_meeting_btnAdd_StartHour)).perform(click());
         //Set StartTime
         onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(14,30));
-        // Clique sur ok pour confirmer et fermier le dialog
+        // Clique sur ok pour confirmer et fermer le dialog
         onView(anyOf(withText(android.R.string.ok), withId(android.R.id.button1))).inRoot(isDialog()).perform(click());
         // vérifie que le startTime est bien notée
         onView(withId(R.id.activity_add_meeting_editStartHour)).check(matches(withText(startTimeChosen)));
@@ -116,7 +159,7 @@ public class AddMeetingTest {
         onView(withId(R.id.activity_add_meeting_btnAdd_EndHour)).perform(click());
         //Set EndTime
         onView(withClassName(Matchers.equalTo(TimePicker.class.getName()))).perform(PickerActions.setTime(15,40));
-        // Clique sur ok pour confirmer et fermier le dialog
+        // Clique sur ok pour confirmer et fermer le dialog
         onView(anyOf(withText(android.R.string.ok), withId(android.R.id.button1))).inRoot(isDialog()).perform(click());
         // vérifie que le endTime est bien notée
         onView(withId(R.id.activity_add_meeting_editEndHour)).check(matches(withText(endTimeChosen)));
@@ -125,12 +168,13 @@ public class AddMeetingTest {
         onView(withId(R.id.activity_add_meeting_spinnerRoom)).check(matches(withSpinnerText(roomMario)));
     }
 
-    // TODO : Tester l'ajout et la suppression d'un mail
-
+    /**
+     * Vérifie l'ajout d'un mail
+     */
     @Test
     public void showAddParticipantWithSuccess(){
-        // On va sur AddMeetingActivity
-        onView(withId(R.id.add_Reunion)).perform(click());
+        // On va sur 'AddMeetingActivity'
+        onView(withId(R.id.add_Meeting)).perform(click());
 
         // On écrit dans l'EditText et on ferme le clavier
         onView(withId(R.id.activity_add_meeting_editText_participant)).perform(typeText(PARTICIPANT), closeSoftKeyboard());
@@ -141,10 +185,13 @@ public class AddMeetingTest {
         onView(withId(R.id.activity_add_meeting_chipGroup)).check(matches(withChild(withText(PARTICIPANT))));
     }
 
+    /**
+     * Vérifie la suppression d'un mail
+     */
     @Test
     public void showDeleteParticipantWithSuccess(){
-        // On va sur AddMeetingActivity
-        onView(withId(R.id.add_Reunion)).perform(click());
+        // On va sur 'AddMeetingActivity'
+        onView(withId(R.id.add_Meeting)).perform(click());
         // On écrit dans l'EditText et on ferme le clavier
         onView(withId(R.id.activity_add_meeting_editText_participant)).perform(typeText(PARTICIPANT), closeSoftKeyboard());
         // Cliquer sur le bouton ajouter un participant
@@ -158,8 +205,11 @@ public class AddMeetingTest {
         onView(withId(R.id.activity_add_meeting_chipGroup)).check(matches(hasChildCount(PARTICIPANT_COUNT)));
     }
 
+    /**
+     * Créé une réunion.
+     */
     @Test
-    public void clickOnCreateMeetingBtnToMeetingLit(){
+    public void clickOnCreateMeetingBtn_ToMeetingLit(){
         final String dateChosen = "10/8/2022";
         final String startTimeChosen = "14:30";
         final String endTimeChosen = "15:40";
@@ -168,7 +218,7 @@ public class AddMeetingTest {
         onView(allOf(withId(R.id.list_meeting), withParentIndex(0))).check(withItemCount(MEETING_ITEMS_COUNT));
 
         // On va sur AddMeetingActivity
-        onView(withId(R.id.add_Reunion)).perform(click());
+        onView(withId(R.id.add_Meeting)).perform(click());
 
         // On écrit dans l'EditText
         onView(withId(R.id.activity_add_meeting_editSubjectMeeting)).perform(typeText(SUBJECT));
@@ -204,7 +254,7 @@ public class AddMeetingTest {
         onView(withId(R.id.activity_add_meeting_spinnerRoom)).perform(click());
         onData(allOf((instanceOf(String.class)))).atPosition(1).perform(click());
 
-        // simulate user action to input some value into EditText et on ferme le clavier
+        // On écrit dans 'activity_add_meeting_editText_participant' et on ferme le clavier
         onView(withId(R.id.activity_add_meeting_editText_participant)).perform(typeText(PARTICIPANT), closeSoftKeyboard());
         // Cliquer sur le bouton ajouter un participant
         onView(withId(R.id.activity_add_meeting_btnAdd_participant)).perform(click());

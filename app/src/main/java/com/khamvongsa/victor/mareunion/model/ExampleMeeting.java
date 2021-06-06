@@ -1,4 +1,4 @@
-package com.khamvongsa.victor.mareunion.controller;
+package com.khamvongsa.victor.mareunion.model;
 
 import java.util.Comparator;
 import java.util.Date;
@@ -34,20 +34,7 @@ public class ExampleMeeting {
         this.participant = participant;
     }
 
-    public static Comparator<ExampleMeeting> MeetingRoomNameComparator = new Comparator<ExampleMeeting>() {
-        @Override
-        public int compare(ExampleMeeting r1, ExampleMeeting r2) {
-
-            return r1.getRoom().getName().compareTo(r2.getRoom().getName());
-        }
-    };
-
-    public static Comparator<ExampleMeeting> MeetingDateComparator = new Comparator<ExampleMeeting>() {
-        @Override
-        public int compare(ExampleMeeting r1, ExampleMeeting r2) {
-            return r1.getStartDate().compareTo(r2.getStartDate());
-        }
-    };
+    public final static Comparator<ExampleMeeting> MeetingDateComparator = (r1, r2) -> r1.getStartDate().compareTo(r2.getStartDate());
 
     public long getId() {
         return id;

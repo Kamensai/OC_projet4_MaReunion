@@ -1,7 +1,7 @@
 package com.khamvongsa.victor.mareunion;
 
-import com.khamvongsa.victor.mareunion.controller.ExampleMeeting;
-import com.khamvongsa.victor.mareunion.controller.ExampleRoom;
+import com.khamvongsa.victor.mareunion.model.ExampleMeeting;
+import com.khamvongsa.victor.mareunion.model.ExampleRoom;
 import com.khamvongsa.victor.mareunion.di.DI;
 import com.khamvongsa.victor.mareunion.service.FakeMeeting;
 import com.khamvongsa.victor.mareunion.service.FakeRoom;

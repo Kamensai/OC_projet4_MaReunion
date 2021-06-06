@@ -40,10 +40,8 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-
-    @OnClick(R.id.add_Reunion)
+    @OnClick(R.id.add_Meeting)
     void addReunion() {
         AddMeetingActivity.navigate(this);
     }
-
 }

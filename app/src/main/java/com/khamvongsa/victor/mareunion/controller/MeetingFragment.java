@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.khamvongsa.victor.mareunion.R;
 import com.khamvongsa.victor.mareunion.di.DI;
+import com.khamvongsa.victor.mareunion.model.ExampleMeeting;
 import com.khamvongsa.victor.mareunion.service.MeetingApiService;
 
 import java.util.Calendar;
@@ -40,7 +41,7 @@ public class MeetingFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mMeetingApiService = DI.getReunionApiService();
+        mMeetingApiService = DI.getMeetingApiService();
         setHasOptionsMenu(true);
     }
 
@@ -76,13 +77,10 @@ public class MeetingFragment extends Fragment {
                 int year = cldr.get(Calendar.YEAR);
                 // date picker dialog
                 mDatePicker = new DatePickerDialog(this.getContext(),
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                mStartDate.set(year,monthOfYear, dayOfMonth);
-                                filterByDate(mStartDate);
-                                Toast.makeText(requireContext(),"Réunions à la Date : "+mStartDate.get(Calendar.DAY_OF_MONTH)+"/"+(mStartDate.get(Calendar.MONTH)+1)+"/"+mStartDate.get(Calendar.YEAR), Toast.LENGTH_SHORT).show();
-                            }
+                        (view, year1, monthOfYear, dayOfMonth) -> {
+                            mStartDate.set(year1,monthOfYear, dayOfMonth);
+                            filterByDate(mStartDate);
+                            Toast.makeText(requireContext(),"Réunions à la Date : "+mStartDate.get(Calendar.DAY_OF_MONTH)+"/"+(mStartDate.get(Calendar.MONTH)+1)+"/"+mStartDate.get(Calendar.YEAR), Toast.LENGTH_SHORT).show();
                         }, year, month, day);
                 mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
                 mDatePicker.show();
@@ -90,20 +88,20 @@ public class MeetingFragment extends Fragment {
             case R.id.menu_Salle_Mario:
                 Toast.makeText(this.getContext(),"Réunions à la salle Mario", Toast.LENGTH_SHORT).show();
                 mListFiltered = mMeetingApiService.getMeetingsByRooms("Mario");
-                mRecyclerView.setAdapter(new MyMeetingRecyclerViewAdapter(mListFiltered, meeting -> clickOnDeleteListener(meeting)));
+                mRecyclerView.setAdapter(new MyMeetingRecyclerViewAdapter(mListFiltered, this::clickOnDeleteListener));
                 return true;
             case R.id.menu_Salle_Luigi:
                 Toast.makeText(this.getContext(),"Réunions à la salle Luigi", Toast.LENGTH_SHORT).show();
                 mListFiltered = mMeetingApiService.getMeetingsByRooms("Luigi");
-                mRecyclerView.setAdapter(new MyMeetingRecyclerViewAdapter(mListFiltered, meeting -> clickOnDeleteListener(meeting)));
+                mRecyclerView.setAdapter(new MyMeetingRecyclerViewAdapter(mListFiltered, this::clickOnDeleteListener));
                 return true;
             case R.id.menu_Salle_Peach:
                 Toast.makeText(this.getContext(),"Réunions à la salle Peach", Toast.LENGTH_SHORT).show();
                 mListFiltered = mMeetingApiService.getMeetingsByRooms("Peach");
-                mRecyclerView.setAdapter(new MyMeetingRecyclerViewAdapter(mListFiltered, meeting -> clickOnDeleteListener(meeting)));
+                mRecyclerView.setAdapter(new MyMeetingRecyclerViewAdapter(mListFiltered, this::clickOnDeleteListener));
                 return true;
             case R.id.menu_All:
-                mRecyclerView.setAdapter(new MyMeetingRecyclerViewAdapter(mReunions, meeting -> clickOnDeleteListener(meeting)));
+                mRecyclerView.setAdapter(new MyMeetingRecyclerViewAdapter(mReunions, this::clickOnDeleteListener));
                 return true;
 
         }
@@ -118,7 +116,7 @@ public class MeetingFragment extends Fragment {
             adapter.updateList(mReunions);
         }
         else {
-            mRecyclerView.setAdapter(new MyMeetingRecyclerViewAdapter(mReunions, meeting -> clickOnDeleteListener(meeting)));
+            mRecyclerView.setAdapter(new MyMeetingRecyclerViewAdapter(mReunions, this::clickOnDeleteListener));
         }
     }
 
@@ -136,6 +134,6 @@ public class MeetingFragment extends Fragment {
     private void filterByDate(Calendar dateChosen) {
         List<ExampleMeeting> mListFiltered;
         mListFiltered = mMeetingApiService.getMeetingsByDate(dateChosen);
-        mRecyclerView.setAdapter(new MyMeetingRecyclerViewAdapter(mListFiltered, meeting -> clickOnDeleteListener(meeting)));
+        mRecyclerView.setAdapter(new MyMeetingRecyclerViewAdapter(mListFiltered, this::clickOnDeleteListener));
     }
 }

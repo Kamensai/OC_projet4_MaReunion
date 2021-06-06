@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.khamvongsa.victor.mareunion.R;
+import com.khamvongsa.victor.mareunion.model.ExampleMeeting;
 import com.khamvongsa.victor.mareunion.service.DeleteListener;
 
 import java.text.SimpleDateFormat;
@@ -21,10 +22,10 @@ import butterknife.ButterKnife;
 public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeetingRecyclerViewAdapter.ViewHolder> {
 
 
-    private List<ExampleMeeting> mMeetings;
+    private final List<ExampleMeeting> mMeetings;
     private final DeleteListener mDeleteListener;
-    SimpleDateFormat mFormat = new SimpleDateFormat("dd-MM-yy");
-    SimpleDateFormat mFormatHour = new SimpleDateFormat("HH'h ' mm'm'");
+    final SimpleDateFormat mFormat = new SimpleDateFormat("dd-MM-yy");
+    final SimpleDateFormat mFormatHour = new SimpleDateFormat("HH'h ' mm'm'");
 
     public MyMeetingRecyclerViewAdapter(List<ExampleMeeting> item, DeleteListener mDeleteListener) { mMeetings = item;
     this.mDeleteListener = mDeleteListener;
@@ -56,12 +57,7 @@ public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeeting
         holder.mParticipants.setText(meeting.getParticipant().toString());
         holder.mParticipants.setText(meeting.getParticipant().toString());
 
-        holder.mDeleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            mDeleteListener.clickOnDeleteListener(meeting);
-            }
-        });
+        holder.mDeleteButton.setOnClickListener(v -> mDeleteListener.clickOnDeleteListener(meeting));
     }
 
     @Override
@@ -69,7 +65,7 @@ public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeeting
         return mMeetings.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.item_list_color)
         public ImageView mRoomColor;
         @BindView(R.id.item_list_room)
