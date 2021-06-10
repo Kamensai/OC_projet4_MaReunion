@@ -86,7 +86,7 @@ public class AddMeetingTest {
         // Cliquer pour créer une réunion alors que certains champs sont vides
         onView(withId(R.id.activity_add_meeting_btn_createMeeting)).perform(click());
         // Vérifie si le message d'erreur s'affiche correctement dans 'activity_add_meeting_editDate'
-        onView(withId(R.id.activity_add_meeting_editDate)).check(matches(hasErrorText("Veuillez choisir une date.")));
+        onView(withId(R.id.activity_add_meeting_editDate)).check(matches(hasErrorText("Veuillez choisir une date de départ.")));
 
 
         // Clique sur DatePickerButton
@@ -98,7 +98,7 @@ public class AddMeetingTest {
         // Cliquer pour créer une réunion alors que certains champs sont vides
         onView(withId(R.id.activity_add_meeting_btn_createMeeting)).perform(click());
         // Vérifie si le message d'erreur s'affiche correctement dans 'activity_add_meeting_editStartHour'
-        onView(withId(R.id.activity_add_meeting_editStartHour)).check(matches(hasErrorText("Veuillez choisir une heure de début.")));
+        onView(withId(R.id.activity_add_meeting_editStartHour)).check(matches(hasErrorText("Veuillez choisir une heure de départ.")));
 
         // Clique sur StartTimePickerButton
         onView(withId(R.id.activity_add_meeting_btnAdd_StartHour)).perform(click());

@@ -34,7 +34,7 @@ public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeeting
     public void updateList(List<ExampleMeeting> item) {
         mMeetings.clear();
         mMeetings.addAll(item);
-       notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 
     @NonNull

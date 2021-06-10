@@ -12,11 +12,8 @@ public class FakeMeetingApiService implements MeetingApiService {
 
     private final List<ExampleMeeting> meetings = FakeMeeting.generateExempleReunions();
     private final List<ExampleRoom> rooms = FakeRoom.getSallesDisponibles();
-    private final static String TAG = FakeMeetingApiService.class.getSimpleName();
 
-    /**
-     * Ces deux méthodes servent à protéger les données dans la partie service
-     */
+    // Ces deux méthodes servent à protéger les données dans la partie service
     @Override
     public List<ExampleRoom> getRooms() {
         return new ArrayList<>(rooms) ;
@@ -83,10 +80,7 @@ public class FakeMeetingApiService implements MeetingApiService {
                 mEnd.setTime(meeting.getEndHour());
 
                 // Même heure, mais la réunion choisie commence en même temps ou pendant l'heure d'une réunion déjà présente
-                if (room.equalsIgnoreCase(meeting.getRoom().getName())
-                        && startDate.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH)
-                        && startDate.get(Calendar.MONTH) == date.get(Calendar.MONTH)
-                        && startDate.get(Calendar.YEAR) == date.get(Calendar.YEAR)
+                if (sameRoomAndDate(meeting, room, startDate, date)
                         && mStartHourChosen == mStart.get(Calendar.HOUR_OF_DAY)
                         && mStartHourChosen == mEnd.get(Calendar.HOUR_OF_DAY)
                         && mEndHourChosen == mStart.get(Calendar.HOUR_OF_DAY)
@@ -96,10 +90,7 @@ public class FakeMeetingApiService implements MeetingApiService {
                     listRooms.remove(room); }
 
                 // Même heure de départ et de fin, mais la réunion choisie commence avant, mais déborde sur la réunion déjà présente.
-                else if (room.equalsIgnoreCase(meeting.getRoom().getName())
-                        && startDate.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH)
-                        && startDate.get(Calendar.MONTH) == date.get(Calendar.MONTH)
-                        && startDate.get(Calendar.YEAR) == date.get(Calendar.YEAR)
+                else if (sameRoomAndDate(meeting, room, startDate, date)
                         && mStartHourChosen == mStart.get(Calendar.HOUR_OF_DAY)
                         && mStartHourChosen == mEnd.get(Calendar.HOUR_OF_DAY)
                         && mEndHourChosen == mStart.get(Calendar.HOUR_OF_DAY)
@@ -111,40 +102,28 @@ public class FakeMeetingApiService implements MeetingApiService {
                 }
 
                 // Si la réunion choisie commence avant mais qu'elle déborde sur la réunion déjà présente
-                else if (room.equalsIgnoreCase(meeting.getRoom().getName())
-                        && startDate.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH)
-                        && startDate.get(Calendar.MONTH) == date.get(Calendar.MONTH)
-                        && startDate.get(Calendar.YEAR) == date.get(Calendar.YEAR)
+                else if (sameRoomAndDate(meeting, room, startDate, date)
                         && mStartHourChosen < mStart.get(Calendar.HOUR_OF_DAY)
                         && mEndHourChosen >= mStart.get(Calendar.HOUR_OF_DAY)
                         && mEndMinuteChosen > mStart.get(Calendar.MINUTE)) {
                     listRooms.remove(room); }
 
                 // Si la réunion choisie commence pendant une réunion déjà présente à la même heure de départ
-                else if (room.equalsIgnoreCase(meeting.getRoom().getName())
-                        && startDate.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH)
-                        && startDate.get(Calendar.MONTH) == date.get(Calendar.MONTH)
-                        && startDate.get(Calendar.YEAR) == date.get(Calendar.YEAR)
+                else if (sameRoomAndDate(meeting, room, startDate, date)
                         && mStartHourChosen == mStart.get(Calendar.HOUR_OF_DAY)
                         && mStartHourChosen < mEnd.get(Calendar.HOUR_OF_DAY)
                         && mStartMinuteChosen >= mStart.get(Calendar.MINUTE)) {
                     listRooms.remove(room); }
 
                 // Si la réunion commence pendant une réunion déjà présente à une heure de départ différente et inférieure à l'heure de fin
-                else if (room.equalsIgnoreCase(meeting.getRoom().getName())
-                        && startDate.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH)
-                        && startDate.get(Calendar.MONTH) == date.get(Calendar.MONTH)
-                        && startDate.get(Calendar.YEAR) == date.get(Calendar.YEAR)
+                else if (sameRoomAndDate(meeting, room, startDate, date)
                         && mStartHourChosen > mStart.get(Calendar.HOUR_OF_DAY)
                         && mStartHourChosen < mEnd.get(Calendar.HOUR_OF_DAY)) {
                     listRooms.remove(room);
                 }
 
                 // Si la réunion commence pendant une réunion déjà présente à une heure de départ différente, mais la même heure de fin
-                else if (room.equalsIgnoreCase(meeting.getRoom().getName())
-                        && startDate.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH)
-                        && startDate.get(Calendar.MONTH) == date.get(Calendar.MONTH)
-                        && startDate.get(Calendar.YEAR) == date.get(Calendar.YEAR)
+                else if (sameRoomAndDate(meeting, room, startDate, date)
                         && mStartHourChosen > mStart.get(Calendar.HOUR_OF_DAY)
                         && mStartHourChosen == mEnd.get(Calendar.HOUR_OF_DAY)
                         && mEndHourChosen == mEnd.get(Calendar.HOUR_OF_DAY)
@@ -153,30 +132,21 @@ public class FakeMeetingApiService implements MeetingApiService {
                 }
 
                 // Si la réunion choisie commence avant une réunion déjà présente et finit après
-                else if (room.equalsIgnoreCase(meeting.getRoom().getName())
-                        && startDate.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH)
-                        && startDate.get(Calendar.MONTH) == date.get(Calendar.MONTH)
-                        && startDate.get(Calendar.YEAR) == date.get(Calendar.YEAR)
+                else if (sameRoomAndDate(meeting, room, startDate, date)
                         && mStartHourChosen < mStart.get(Calendar.HOUR_OF_DAY)
                         && mEndHourChosen > mEnd.get(Calendar.HOUR_OF_DAY)) {
                     listRooms.remove(room);
                 }
 
                 // Si la réunion choisie commence avant une réunion déjà présente et finit à la même heure, mais plus tard
-                else if (room.equalsIgnoreCase(meeting.getRoom().getName())
-                        && startDate.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH)
-                        && startDate.get(Calendar.MONTH) == date.get(Calendar.MONTH)
-                        && startDate.get(Calendar.YEAR) == date.get(Calendar.YEAR)
+                else if (sameRoomAndDate(meeting, room, startDate, date)
                         && mStartHourChosen < mStart.get(Calendar.HOUR_OF_DAY)
                         && mEndHourChosen == mEnd.get(Calendar.HOUR_OF_DAY)) {
                     listRooms.remove(room);
                 }
 
                 // Si la réunion choisie commence avant une réunion déjà présente et finit après
-                else if (room.equalsIgnoreCase(meeting.getRoom().getName())
-                        && startDate.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH)
-                        && startDate.get(Calendar.MONTH) == date.get(Calendar.MONTH)
-                        && startDate.get(Calendar.YEAR) == date.get(Calendar.YEAR)
+                else if (sameRoomAndDate(meeting, room, startDate, date)
                         && mStartHourChosen < mStart.get(Calendar.HOUR_OF_DAY)
                         && mEndHourChosen > mStart.get(Calendar.HOUR_OF_DAY)
                         && mEndHourChosen < mEnd.get(Calendar.HOUR_OF_DAY)) {
@@ -185,6 +155,13 @@ public class FakeMeetingApiService implements MeetingApiService {
             }
         }
         return listRooms;
+    }
+
+    public boolean sameRoomAndDate(ExampleMeeting meeting, String room, Calendar startDate, Calendar date ){
+        return (room.equalsIgnoreCase(meeting.getRoom().getName())
+                && startDate.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH)
+                && startDate.get(Calendar.MONTH) == date.get(Calendar.MONTH)
+                && startDate.get(Calendar.YEAR) == date.get(Calendar.YEAR));
     }
 
     @Override

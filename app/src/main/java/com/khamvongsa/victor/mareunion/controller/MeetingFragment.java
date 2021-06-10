@@ -9,8 +9,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
-import android.widget.Toast;
 
 import com.khamvongsa.victor.mareunion.R;
 import com.khamvongsa.victor.mareunion.di.DI;
@@ -33,6 +31,13 @@ public class MeetingFragment extends Fragment {
 
     private MeetingApiService mMeetingApiService;
     private RecyclerView mRecyclerView;
+    private String mItemChosen;
+    private Calendar mDateChosen;
+    private final static String CHOSEN_DATE = "CHOSEN_DATE";
+    private final static String MARIO = "Mario";
+    private final static String LUIGI = "Luigi";
+    private final static String PEACH = "Peach";
+    private final static String ALL = "All";
 
     public static MeetingFragment newInstance() {
         return new MeetingFragment();
@@ -60,63 +65,79 @@ public class MeetingFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
     }
-
+    // TODO : vérifier que la liste ne change pas après avoir supprimé une réunion dans les dates
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        List<ExampleMeeting> mReunions = mMeetingApiService.getMeetings();
+        List<ExampleMeeting> mMeetings = mMeetingApiService.getMeetings();
         List<ExampleMeeting> mListFiltered;
         DatePickerDialog mDatePicker;
-        Calendar mStartDate = Calendar.getInstance();
         switch (item.getItemId()){
             case R.id.menu_Date:
                 //Filtrer par Date
-
+                mItemChosen = CHOSEN_DATE;
+                Calendar mStartDate = Calendar.getInstance();
                 final Calendar cldr = Calendar.getInstance();
                 int day = cldr.get(Calendar.DAY_OF_MONTH);
                 int month = cldr.get(Calendar.MONTH);
                 int year = cldr.get(Calendar.YEAR);
-                // date picker dialog
                 mDatePicker = new DatePickerDialog(this.getContext(),
                         (view, year1, monthOfYear, dayOfMonth) -> {
                             mStartDate.set(year1,monthOfYear, dayOfMonth);
                             filterByDate(mStartDate);
-                            Toast.makeText(requireContext(),"Réunions à la Date : "+mStartDate.get(Calendar.DAY_OF_MONTH)+"/"+(mStartDate.get(Calendar.MONTH)+1)+"/"+mStartDate.get(Calendar.YEAR), Toast.LENGTH_SHORT).show();
+                            mDateChosen = mStartDate;
                         }, year, month, day);
                 mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
                 mDatePicker.show();
                 return true;
             case R.id.menu_Salle_Mario:
-                Toast.makeText(this.getContext(),"Réunions à la salle Mario", Toast.LENGTH_SHORT).show();
-                mListFiltered = mMeetingApiService.getMeetingsByRooms("Mario");
+                mItemChosen = MARIO;
+                mListFiltered = mMeetingApiService.getMeetingsByRooms(MARIO);
                 mRecyclerView.setAdapter(new MyMeetingRecyclerViewAdapter(mListFiltered, this::clickOnDeleteListener));
                 return true;
             case R.id.menu_Salle_Luigi:
-                Toast.makeText(this.getContext(),"Réunions à la salle Luigi", Toast.LENGTH_SHORT).show();
-                mListFiltered = mMeetingApiService.getMeetingsByRooms("Luigi");
+                mItemChosen = LUIGI;
+                mListFiltered = mMeetingApiService.getMeetingsByRooms(LUIGI);
                 mRecyclerView.setAdapter(new MyMeetingRecyclerViewAdapter(mListFiltered, this::clickOnDeleteListener));
                 return true;
             case R.id.menu_Salle_Peach:
-                Toast.makeText(this.getContext(),"Réunions à la salle Peach", Toast.LENGTH_SHORT).show();
-                mListFiltered = mMeetingApiService.getMeetingsByRooms("Peach");
+                mItemChosen = PEACH;
+                mListFiltered = mMeetingApiService.getMeetingsByRooms(PEACH);
                 mRecyclerView.setAdapter(new MyMeetingRecyclerViewAdapter(mListFiltered, this::clickOnDeleteListener));
                 return true;
             case R.id.menu_All:
-                mRecyclerView.setAdapter(new MyMeetingRecyclerViewAdapter(mReunions, this::clickOnDeleteListener));
+                mItemChosen = ALL;
+                Collections.sort(mMeetings, ExampleMeeting.MeetingDateComparator);
+                mRecyclerView.setAdapter(new MyMeetingRecyclerViewAdapter(mMeetings, this::clickOnDeleteListener));
                 return true;
-
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void initList() {
-        List<ExampleMeeting> mReunions = mMeetingApiService.getMeetings();
+        List<ExampleMeeting> mMeetings = mMeetingApiService.getMeetings();
         final MyMeetingRecyclerViewAdapter adapter = (MyMeetingRecyclerViewAdapter) mRecyclerView.getAdapter();
-        Collections.sort(mReunions, ExampleMeeting.MeetingDateComparator);
-        if (adapter != null) {
-            adapter.updateList(mReunions);
+        Collections.sort(mMeetings, ExampleMeeting.MeetingDateComparator);
+        if (adapter != null && mItemChosen != null) {
+            if (mItemChosen.equals(CHOSEN_DATE) && mDateChosen != null){
+                List<ExampleMeeting> listFilteredByDate = mMeetingApiService.getMeetingsByDate(mDateChosen);
+                mRecyclerView.setAdapter(new MyMeetingRecyclerViewAdapter(listFilteredByDate, this::clickOnDeleteListener));
+            }
+            if (mItemChosen.equals(MARIO)){
+                List<ExampleMeeting> listFilteredMario = mMeetingApiService.getMeetingsByRooms(MARIO);
+                adapter.updateList(listFilteredMario);
+            }
+            if (mItemChosen.equals(LUIGI)){
+                List<ExampleMeeting> listFilteredLuigi = mMeetingApiService.getMeetingsByRooms(LUIGI);
+                adapter.updateList(listFilteredLuigi);
+            }
+            if (mItemChosen.equals(PEACH)){
+                List<ExampleMeeting> listFilteredPeach = mMeetingApiService.getMeetingsByRooms(PEACH);
+                adapter.updateList(listFilteredPeach);
+            }
+            else { adapter.updateList(mMeetings); }
         }
         else {
-            mRecyclerView.setAdapter(new MyMeetingRecyclerViewAdapter(mReunions, this::clickOnDeleteListener));
+            mRecyclerView.setAdapter(new MyMeetingRecyclerViewAdapter(mMeetings, this::clickOnDeleteListener));
         }
     }
 

@@ -86,7 +86,7 @@
                 app:tint="@null"
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlayExtended"
                 app:elevation="12dp"
-                tools:ignore="ContentDescription" />
+                tools:ignore="ContentDescription"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/activity_add_meeting_inputDate"

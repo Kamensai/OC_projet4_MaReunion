@@ -11,7 +11,7 @@ public class DI {
         private static final MeetingApiService service = new FakeMeetingApiService();
 
         /**
-         * Get an instance on @{@link MeetingApiService}
+         * Créé une instance de @{@link MeetingApiService}
          * @return @{@link MeetingApiService}
          */
         public static MeetingApiService getMeetingApiService() {
@@ -19,7 +19,7 @@ public class DI {
         }
 
     /**
-     * Get always a new instance on @{@link MeetingApiService}. Useful for tests, so we ensure the context is clean.
+     * Créé une instanced de @{@link MeetingApiService}. Utile pour les tests, afin d'être sûr que le contexte est propre.
      * @return @{@link MeetingApiService}
      */
     public static MeetingApiService getNewInstanceApiService() {

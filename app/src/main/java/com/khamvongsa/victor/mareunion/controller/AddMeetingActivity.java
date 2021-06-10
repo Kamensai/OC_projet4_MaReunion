@@ -23,6 +23,7 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
+import com.khamvongsa.victor.mareunion.BuildConfig;
 import com.khamvongsa.victor.mareunion.R;
 import com.khamvongsa.victor.mareunion.di.DI;
 import com.khamvongsa.victor.mareunion.model.AddMeetingViewModel;
@@ -51,26 +52,20 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
 
     // UI COMPONENTS
     // DATE
-    @BindView(R.id.activity_add_meeting_inputDate)
-    TextInputLayout mDateInput;
     @BindView(R.id.activity_add_meeting_editDate)
-    EditText mEditDate;
+    TextView mEditDate;
     @BindView(R.id.activity_add_meeting_btnAdd_Date)
     FloatingActionButton mBtnDate;
 
     // HEURE DEBUT
-    @BindView(R.id.activity_add_meeting_inputStartHour)
-    TextInputLayout mStartHourInput;
     @BindView(R.id.activity_add_meeting_editStartHour)
-    EditText mEditStartHour;
+    TextView mEditStartHour;
     @BindView(R.id.activity_add_meeting_btnAdd_StartHour)
     FloatingActionButton mBtnStartHour;
 
     // HEURE FIN
-    @BindView(R.id.activity_add_meeting_inputEndHour)
-    TextInputLayout mEndHourInput;
     @BindView(R.id.activity_add_meeting_editEndHour)
-    EditText mEditEndHour;
+    TextView mEditEndHour;
     @BindView(R.id.activity_add_meeting_btnAdd_EndHour)
     FloatingActionButton mBtnEndHour;
 
@@ -204,7 +199,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
     public void hourStart() {
         mBtnStartHour.setOnClickListener(v -> {
             if (!mAddMeetingViewModel.isStartDateFilled()) {
-                mEditDate.setError("Veuillez choisir une date de départ.");
+                mEditDate.setError(getString(R.string.error_startDate_empty));
                 return;
             }
             mStartHour = null;
@@ -226,12 +221,12 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
                                 && (mStartDate.get(Calendar.DAY_OF_MONTH) == Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
                                 && (mStartDate.get(Calendar.MONTH) == Calendar.getInstance().get(Calendar.MONTH))
                                 && (mStartDate.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR)))  {
-                            mEditStartHour.setError("Veuillez choisir une heure de début inférieure.");
+                            mEditStartHour.setError(getString(R.string.error_startHour_inferior));
                         }
                         else if (mAddMeetingViewModel.getEndHour() != null){
                         if (sHour > mAddMeetingViewModel.getEndHour().get(Calendar.HOUR_OF_DAY)
                             || (sHour == mAddMeetingViewModel.getEndHour().get(Calendar.HOUR_OF_DAY) && sMinute > mAddMeetingViewModel.getEndHour().get(Calendar.HOUR))){
-                            mEditStartHour.setError("Veuillez choisir une heure de début inférieure.");
+                            mEditStartHour.setError(getString(R.string.error_startHour_superior));
                             availableRoom();
                         }}
                         else {
@@ -245,7 +240,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
     public void endHour() {
         mBtnEndHour.setOnClickListener(v -> {
             if (!mAddMeetingViewModel.isStartHourFilled()) {
-                mEditStartHour.setError("Veuillez choisir une heure de fin.");
+                mEditStartHour.setError(getString(R.string.error_startHour_empty));
                 return;
             }
             mEndHour = null;
@@ -262,7 +257,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
                         mEndHour.set(0,0,0,sHour,sMinute);
                         mAddMeetingViewModel.setEndHour(mEndHour);
                         if (mStartReunionHourChosen > sHour || (mStartReunionHourChosen == sHour && mStartReunionMinuteChosen > sMinute)) {
-                            mEditEndHour.setError("Veuillez choisir une heure de fin supérieure.");
+                            mEditEndHour.setError(getString(R.string.error_endHour_inferior));
                             availableRoom();
                         }
                         else {
@@ -292,7 +287,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
             if ((mReunionHourTimeLeft == 0 && mReunionMinuteTimeLeft > 0)
                     || (mReunionHourTimeLeft > 0 && mReunionMinuteTimeLeft > 0)
                     || (mReunionHourTimeLeft > 0 && mReunionMinuteTimeLeft == 0)) {
-                Toast.makeText(this, "Temps de réunion : " + mReunionHourTimeLeft + "h " + mReunionMinuteTimeLeft, LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.meeting_time, mReunionHourTimeLeft,mReunionMinuteTimeLeft), LENGTH_SHORT).show();
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, listRooms);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -327,11 +322,11 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
     // PARTICIPANT CHIP
     private void addNewChip(String participant) {
         if (participant == null || participant.isEmpty()) {
-            Toast.makeText(this, "Veuillez ajouter un participant", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.editText_participant_empty), Toast.LENGTH_LONG).show();
             return;
         }
         if (!isEmailValid(participant)){
-            Toast.makeText(this, "Veuillez entrer une adresse mail valide.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.editText_participant_notEmail), Toast.LENGTH_LONG).show();
             return;
         }
         try {
@@ -348,7 +343,10 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         }
         catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            // Ne s'affiche qu'en mode Debug.
+            if(BuildConfig.DEBUG) {
+                Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -422,27 +420,27 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
     @OnClick(R.id.activity_add_meeting_btn_createMeeting)
     void addReunion() {
         if (!mAddMeetingViewModel.isSubjectFilled()) {
-            mEditSubjectReunion.setError("Veuillez choisir un sujet de réunion.");
+            mEditSubjectReunion.setError(getString(R.string.error_subject_empty));
             return;
         }
         if (!mAddMeetingViewModel.isStartDateFilled()) {
-            mEditDate.setError("Veuillez choisir une date.");
+            mEditDate.setError(getString(R.string.error_startDate_empty));
             return;
         }
         if (!mAddMeetingViewModel.isStartHourFilled()) {
-            mEditStartHour.setError("Veuillez choisir une heure de début.");
+            mEditStartHour.setError(getString(R.string.error_startHour_empty));
             return;
         }
         if (!mAddMeetingViewModel.isEndHourFilled()) {
-            mEditEndHour.setError("Veuillez choisir une heure de fin.");
+            mEditEndHour.setError(getString(R.string.error_endHour_empty));
             return;
         }
         if (!mAddMeetingViewModel.isRoomFilled()) {
-            mTextViewRoom.setError("Veuillez choisir une salle.");
+            mTextViewRoom.setError(getString(R.string.error_room_empty));
             return;
         }
         if (!mAddMeetingViewModel.isListParticipantsFilled()) {
-            mEditTextParticipant.setError("Veuillez ajouter un participant.");
+            mEditTextParticipant.setError(getString(R.string.error_lisParticipant_empty));
             return;
         }
         ExampleMeeting reunion = new ExampleMeeting(System.currentTimeMillis(), mAddMeetingViewModel.getStartDate().getTime(), mAddMeetingViewModel.getStartHour().getTime(), mAddMeetingViewModel.getEndHour().getTime(), mAddMeetingViewModel.getRoom(), mAddMeetingViewModel.getSubject(), mAddMeetingViewModel.getListParticipants());

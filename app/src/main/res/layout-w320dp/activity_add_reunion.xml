@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:context=".controller.AddMeetingActivity">
+
+        <RelativeLayout
+            android:id="@+id/activity_add_meeting_Date"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/activity_add_meeting_inputSubjectMeeting"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="20dp"
+                android:layout_marginTop="40dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/activity_add_meeting_editSubjectMeeting"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:ems="10"
+                    android:hint="@string/reunion_name"
+                    android:inputType="text"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/activity_add_meeting_btnAdd_Date"
+                android:layout_width="59dp"
+                android:layout_height="56dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="50dp"
+                android:layout_below="@+id/activity_add_meeting_inputSubjectMeeting"
+                android:layout_alignParentStart="true"
+                app:backgroundTint="@color/white"
+                app:srcCompat="@drawable/ic_calendar"
+                app:tint="@null"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlayExtended"
+                app:elevation="12dp"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="ContentDescription"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/activity_add_meeting_btnAdd_StartHour"
+                android:layout_width="59dp"
+                android:layout_height="56dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginTop="30dp"
+                android:layout_below="@+id/activity_add_meeting_inputSubjectMeeting"
+                android:layout_centerHorizontal="true"
+                app:backgroundTint="@color/colorWhite"
+                app:srcCompat="@drawable/ic_start_time"
+                app:tint="@null"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlayExtended"
+                app:elevation="12dp"
+                tools:ignore="ContentDescription"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/activity_add_meeting_btnAdd_EndHour"
+                android:layout_width="59dp"
+                android:layout_height="56dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="50dp"
+                android:layout_below="@+id/activity_add_meeting_inputSubjectMeeting"
+                android:layout_alignParentEnd="true"
+                app:backgroundTint="@color/colorWhite"
+                app:srcCompat="@drawable/ic_end_time"
+                app:tint="@null"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlayExtended"
+                app:elevation="12dp"
+                tools:ignore="ContentDescription"/>
+
+            <TextView
+                android:id="@+id/activity_add_meeting_editDate"
+                android:layout_below="@+id/activity_add_meeting_btnAdd_Date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:ems="5"
+                android:hint="@string/date" />
+
+            <TextView
+                android:id="@+id/activity_add_meeting_editStartHour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_below="@+id/activity_add_meeting_btnAdd_StartHour"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_toStartOf="@id/activity_add_meeting_editEndHour"
+                android:layout_toEndOf="@id/activity_add_meeting_editDate"
+                android:ems="5"
+                android:hint="@string/depart" />
+
+            <TextView
+                android:id="@+id/activity_add_meeting_editEndHour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/activity_add_meeting_btnAdd_EndHour"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="20dp"
+                android:ems="5"
+                android:hint="@string/fin"
+                />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/activity_add_meeting_Room"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_add_meeting_editDate"
+                android:layout_marginTop="40dp"
+                android:layout_centerHorizontal="true"
+                android:text="@string/room_name"
+                android:textStyle="bold"
+                android:textSize="15sp"/>
+
+            <Spinner
+                android:id="@+id/activity_add_meeting_spinnerRoom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/activity_add_meeting_Room"
+                android:layout_toEndOf="@+id/activity_add_meeting_Room" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/activity_add_meeting_editText_participant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_add_meeting_spinnerRoom"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="30dp"
+                android:ems="9"
+                android:inputType="textPersonName"/>
+
+            <Button
+                android:id="@+id/activity_add_meeting_btnAdd_participant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_add_meeting_editText_participant"
+                android:layout_marginTop="35dp"
+                android:layout_centerHorizontal="true"
+                android:text="@string/ajouter"/>
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/activity_add_meeting_chipGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/activity_add_meeting_btnAdd_participant"
+                android:layout_marginTop="30dp"
+                android:backgroundTint="#F3EEEE"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/activity_add_meeting_btn_createMeeting"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_add_meeting_chipGroup"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                app:cornerRadius="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="20dp"
+                android:text="@string/add_reunion"/>
+
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
+

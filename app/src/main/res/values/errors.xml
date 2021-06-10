@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_startDate_empty">Veuillez choisir une date de départ.</string>
+    <string name="error_startHour_inferior">Veuillez choisir une heure de début supérieur.</string>
+    <string name="error_startHour_superior">Veuillez choisir une heure de début inférieure.</string>
+    <string name="error_startHour_empty">Veuillez choisir une heure de départ.</string>
+    <string name="error_endHour_inferior">Veuillez choisir une heure de fin supérieure.</string>
+    <string name="error_subject_empty">Veuillez choisir un sujet de réunion.</string>
+    <string name="error_endHour_empty">Veuillez choisir une heure de fin.</string>
+    <string name="error_room_empty">Veuillez choisir une salle.</string>
+    <string name="error_lisParticipant_empty">Veuillez ajouter un participant.</string>
+
+</resources>
