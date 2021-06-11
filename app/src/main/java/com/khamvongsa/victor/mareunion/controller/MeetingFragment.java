@@ -33,7 +33,11 @@ public class MeetingFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private String mItemChosen;
     private Calendar mDateChosen;
+    private final static String CHOSEN_ITEM = "CHOSEN_ITEM";
     private final static String CHOSEN_DATE = "CHOSEN_DATE";
+    private final static String CHOSEN_DATE_YEAR = "CHOSEN_DATE_YEAR";
+    private final static String CHOSEN_DATE_MONTH = "CHOSEN_DATE_MONTH";
+    private final static String CHOSEN_DATE_DAY = "CHOSEN_DATE_DAY";
     private final static String MARIO = "Mario";
     private final static String LUIGI = "Luigi";
     private final static String PEACH = "Peach";
@@ -47,6 +51,13 @@ public class MeetingFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mMeetingApiService = DI.getMeetingApiService();
+        if (savedInstanceState != null) {
+            mItemChosen = savedInstanceState.getString(CHOSEN_ITEM);
+            if (mItemChosen != null && mItemChosen.equalsIgnoreCase(CHOSEN_DATE) ){
+                mDateChosen = Calendar.getInstance();
+                mDateChosen.set(savedInstanceState.getInt(CHOSEN_DATE_YEAR), savedInstanceState.getInt(CHOSEN_DATE_MONTH), savedInstanceState.getInt(CHOSEN_DATE_DAY));
+            }
+        }
         setHasOptionsMenu(true);
     }
 
@@ -65,44 +76,27 @@ public class MeetingFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
     }
-    // TODO : vérifier que la liste ne change pas après avoir supprimé une réunion dans les dates
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         List<ExampleMeeting> mMeetings = mMeetingApiService.getMeetings();
-        List<ExampleMeeting> mListFiltered;
-        DatePickerDialog mDatePicker;
         switch (item.getItemId()){
             case R.id.menu_Date:
                 //Filtrer par Date
                 mItemChosen = CHOSEN_DATE;
-                Calendar mStartDate = Calendar.getInstance();
-                final Calendar cldr = Calendar.getInstance();
-                int day = cldr.get(Calendar.DAY_OF_MONTH);
-                int month = cldr.get(Calendar.MONTH);
-                int year = cldr.get(Calendar.YEAR);
-                mDatePicker = new DatePickerDialog(this.getContext(),
-                        (view, year1, monthOfYear, dayOfMonth) -> {
-                            mStartDate.set(year1,monthOfYear, dayOfMonth);
-                            filterByDate(mStartDate);
-                            mDateChosen = mStartDate;
-                        }, year, month, day);
-                mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
-                mDatePicker.show();
+                showDatePickerDialog();
                 return true;
             case R.id.menu_Salle_Mario:
                 mItemChosen = MARIO;
-                mListFiltered = mMeetingApiService.getMeetingsByRooms(MARIO);
-                mRecyclerView.setAdapter(new MyMeetingRecyclerViewAdapter(mListFiltered, this::clickOnDeleteListener));
+                updateListFiltered();
                 return true;
             case R.id.menu_Salle_Luigi:
                 mItemChosen = LUIGI;
-                mListFiltered = mMeetingApiService.getMeetingsByRooms(LUIGI);
-                mRecyclerView.setAdapter(new MyMeetingRecyclerViewAdapter(mListFiltered, this::clickOnDeleteListener));
+                updateListFiltered();
                 return true;
             case R.id.menu_Salle_Peach:
                 mItemChosen = PEACH;
-                mListFiltered = mMeetingApiService.getMeetingsByRooms(PEACH);
-                mRecyclerView.setAdapter(new MyMeetingRecyclerViewAdapter(mListFiltered, this::clickOnDeleteListener));
+                updateListFiltered();
                 return true;
             case R.id.menu_All:
                 mItemChosen = ALL;
@@ -111,6 +105,29 @@ public class MeetingFragment extends Fragment {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void updateListFiltered() {
+        List<ExampleMeeting> mListFiltered;
+        mListFiltered = mMeetingApiService.getMeetingsByRooms(mItemChosen);
+        mRecyclerView.setAdapter(new MyMeetingRecyclerViewAdapter(mListFiltered, this::clickOnDeleteListener));
+    }
+
+    private void showDatePickerDialog() {
+        DatePickerDialog mDatePicker;
+        Calendar mStartDate = Calendar.getInstance();
+        final Calendar cldr = Calendar.getInstance();
+        int day = cldr.get(Calendar.DAY_OF_MONTH);
+        int month = cldr.get(Calendar.MONTH);
+        int year = cldr.get(Calendar.YEAR);
+        mDatePicker = new DatePickerDialog(this.getContext(),
+                (view, year1, monthOfYear, dayOfMonth) -> {
+                    mStartDate.set(year1,monthOfYear, dayOfMonth);
+                    filterByDate(mStartDate);
+                    mDateChosen = mStartDate;
+                }, year, month, day);
+        mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
+        mDatePicker.show();
     }
 
     private void initList() {
@@ -122,17 +139,8 @@ public class MeetingFragment extends Fragment {
                 List<ExampleMeeting> listFilteredByDate = mMeetingApiService.getMeetingsByDate(mDateChosen);
                 mRecyclerView.setAdapter(new MyMeetingRecyclerViewAdapter(listFilteredByDate, this::clickOnDeleteListener));
             }
-            if (mItemChosen.equals(MARIO)){
-                List<ExampleMeeting> listFilteredMario = mMeetingApiService.getMeetingsByRooms(MARIO);
-                adapter.updateList(listFilteredMario);
-            }
-            if (mItemChosen.equals(LUIGI)){
-                List<ExampleMeeting> listFilteredLuigi = mMeetingApiService.getMeetingsByRooms(LUIGI);
-                adapter.updateList(listFilteredLuigi);
-            }
-            if (mItemChosen.equals(PEACH)){
-                List<ExampleMeeting> listFilteredPeach = mMeetingApiService.getMeetingsByRooms(PEACH);
-                adapter.updateList(listFilteredPeach);
+            else if (mItemChosen.equals(MARIO) || mItemChosen.equals(LUIGI) || mItemChosen.equals(PEACH)){
+                adapter.updateList(mMeetingApiService.getMeetingsByRooms(mItemChosen));
             }
             else { adapter.updateList(mMeetings); }
         }
@@ -156,5 +164,18 @@ public class MeetingFragment extends Fragment {
         List<ExampleMeeting> mListFiltered;
         mListFiltered = mMeetingApiService.getMeetingsByDate(dateChosen);
         mRecyclerView.setAdapter(new MyMeetingRecyclerViewAdapter(mListFiltered, this::clickOnDeleteListener));
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle out) {
+        super.onSaveInstanceState(out);
+        if (mItemChosen != null) {
+            out.putString(CHOSEN_ITEM, mItemChosen);
+        }
+        if (mDateChosen != null) {
+            out.putInt(CHOSEN_DATE_YEAR, mDateChosen.get(Calendar.YEAR));
+            out.putInt(CHOSEN_DATE_MONTH, mDateChosen.get(Calendar.MONTH));
+            out.putInt(CHOSEN_DATE_DAY, mDateChosen.get(Calendar.DAY_OF_MONTH));
+        }
     }
 }

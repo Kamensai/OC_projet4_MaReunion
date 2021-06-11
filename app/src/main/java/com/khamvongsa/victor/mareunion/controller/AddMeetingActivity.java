@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -111,7 +112,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_reunion);
+        setContentView(R.layout.activity_add_meeting);
         ButterKnife.bind(this);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -119,19 +120,27 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         mMeetingApiService = DI.getMeetingApiService();
         mCalculTimeService = new CalculTime();
 
+        final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        final float tailleLargeur =  displayMetrics.widthPixels;
+        final float densiteDuTelephone =  displayMetrics.density;
+        final float smallestWidth =  (displayMetrics.widthPixels / displayMetrics.density);
+
         // REUNION SUBJECT
         writtenSubject();
 
         // DATE
         mEditDate.setInputType(InputType.TYPE_NULL);
+        mEditDate.setText(""+tailleLargeur);
         dateStart();
 
         //HOUR START
         mEditStartHour.setInputType(InputType.TYPE_NULL);
+        mEditStartHour.setText(""+densiteDuTelephone);
         hourStart();
 
         // HOUR END
         mEditEndHour.setInputType(InputType.TYPE_NULL);
+        mEditEndHour.setText(""+smallestWidth);
         endHour();
 
         // PARTICIPANTS
