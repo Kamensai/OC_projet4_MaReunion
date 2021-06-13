@@ -209,7 +209,7 @@ public class AddMeetingTest {
      * Créé une réunion.
      */
     @Test
-    public void clickOnCreateMeetingBtn_ToMeetingLit(){
+    public void clickOnCreateMeetingBtn_ToMeetingList(){
         final String dateChosen = "10/8/2022";
         final String startTimeChosen = "14:30";
         final String endTimeChosen = "15:40";

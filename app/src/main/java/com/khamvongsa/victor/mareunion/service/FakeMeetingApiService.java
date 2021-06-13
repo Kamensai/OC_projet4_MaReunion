@@ -59,9 +59,16 @@ public class FakeMeetingApiService implements MeetingApiService {
         int mStartMinuteChosen = startHour.get(Calendar.MINUTE);
         int mEndHourChosen = endHour.get(Calendar.HOUR_OF_DAY);
         int mEndMinuteChosen = endHour.get(Calendar.MINUTE);
+        final Calendar cldr = Calendar.getInstance();
+        int todayHour = cldr.get(Calendar.HOUR_OF_DAY);
+        int todayMinutes = cldr.get(Calendar.MINUTE);
 
-        // Si l'heure de départ dépasse l'heure de fin de réunion, retourne une liste vide
-        if (mStartHourChosen > mEndHourChosen || (mStartHourChosen == mEndHourChosen && mStartMinuteChosen > mEndMinuteChosen)) {
+        // Si l'heure de départ est inférieure à l'heure actuelle.
+        if (startDate == cldr && mStartHourChosen < todayHour || startDate == cldr && (mStartHourChosen == todayHour && mStartMinuteChosen < todayMinutes)) {
+            return listRooms;
+        }
+            // Si l'heure de départ dépasse l'heure de fin de réunion, retourne une liste vide
+        else if (mStartHourChosen > mEndHourChosen || (mStartHourChosen == mEndHourChosen && mStartMinuteChosen > mEndMinuteChosen)) {
             return listRooms;
         }
 
@@ -163,6 +170,13 @@ public class FakeMeetingApiService implements MeetingApiService {
                 && startDate.get(Calendar.MONTH) == date.get(Calendar.MONTH)
                 && startDate.get(Calendar.YEAR) == date.get(Calendar.YEAR));
     }
+
+    public boolean sameDate(Calendar startDate, Calendar date ){
+        return (startDate.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH)
+                && startDate.get(Calendar.MONTH) == date.get(Calendar.MONTH)
+                && startDate.get(Calendar.YEAR) == date.get(Calendar.YEAR));
+    }
+
 
     @Override
     public void createMeeting(ExampleMeeting meeting) {

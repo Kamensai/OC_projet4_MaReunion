@@ -17,4 +17,5 @@
     <string name="meeting_time">Temps de réunion : %1$dh%2$d</string>
     <string name="editText_participant_empty">Veuillez ajouter un participant</string>
     <string name="editText_participant_notEmail">Veuillez entrer une adresse mail valide.</string>
+    <string name="email_participant">Email du participant</string>
 </resources>

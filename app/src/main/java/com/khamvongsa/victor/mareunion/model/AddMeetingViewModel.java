@@ -73,6 +73,10 @@ public class AddMeetingViewModel implements Parcelable {
 
     public boolean isListParticipantsFilled() { return listParticipants.size() > 0; }
 
+    public boolean isAllFieldsFilled() {
+        return isSubjectFilled() && isStartDateFilled() && isStartHourFilled() && isEndHourFilled() && isRoomFilled() && isListParticipantsFilled();
+    }
+
     public void setStartDate(Calendar date) {
         this.startDate = date;
     }

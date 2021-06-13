@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -120,27 +119,19 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         mMeetingApiService = DI.getMeetingApiService();
         mCalculTimeService = new CalculTime();
 
-        final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        final float tailleLargeur =  displayMetrics.widthPixels;
-        final float densiteDuTelephone =  displayMetrics.density;
-        final float smallestWidth =  (displayMetrics.widthPixels / displayMetrics.density);
-
         // REUNION SUBJECT
         writtenSubject();
 
         // DATE
         mEditDate.setInputType(InputType.TYPE_NULL);
-        mEditDate.setText(""+tailleLargeur);
-        dateStart();
+        startDate();
 
         //HOUR START
         mEditStartHour.setInputType(InputType.TYPE_NULL);
-        mEditStartHour.setText(""+densiteDuTelephone);
-        hourStart();
+        startHour();
 
         // HOUR END
         mEditEndHour.setInputType(InputType.TYPE_NULL);
-        mEditEndHour.setText(""+smallestWidth);
         endHour();
 
         // PARTICIPANTS
@@ -182,7 +173,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         });
     }
 
-    public void dateStart() {
+    public void startDate() {
         mBtnDate.setOnClickListener(v -> {
             mStartDate = null;
             final Calendar cldr = Calendar.getInstance();
@@ -205,7 +196,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         });
     }
 
-    public void hourStart() {
+    public void startHour() {
         mBtnStartHour.setOnClickListener(v -> {
             if (!mAddMeetingViewModel.isStartDateFilled()) {
                 mEditDate.setError(getString(R.string.error_startDate_empty));
@@ -222,24 +213,27 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
                         mEditStartHour.setText(getResources().getString(R.string.hour_string,sHour,sMinute));
                         mStartHour.set(0, 0, 0, sHour, sMinute);
                         mAddMeetingViewModel.setStartHour(mStartHour);
-                        if (sHour < hour
-                                && (mStartDate.get(Calendar.DAY_OF_MONTH) == Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
-                                && (mStartDate.get(Calendar.MONTH) == Calendar.getInstance().get(Calendar.MONTH))
-                                && (mStartDate.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR))
-                            || (sHour == hour && sMinute < minutes)
-                                && (mStartDate.get(Calendar.DAY_OF_MONTH) == Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
-                                && (mStartDate.get(Calendar.MONTH) == Calendar.getInstance().get(Calendar.MONTH))
-                                && (mStartDate.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR)))  {
+                        if (!sameDateTimeinferior(mAddMeetingViewModel.getStartDate(), sHour, sMinute, hour, minutes)){
+                            mEditStartHour.setError(null);
+                        }
+                        if(sameDateTimeinferior(mAddMeetingViewModel.getStartDate(), sHour, sMinute, hour, minutes) && mAddMeetingViewModel.getEndHour() != null) {
+                            mEditStartHour.setError(getString(R.string.error_startHour_inferior));
+                            availableRoom();
+                        }
+                        else if (sameDateTimeinferior(mAddMeetingViewModel.getStartDate(), sHour, sMinute, hour, minutes)) {
                             mEditStartHour.setError(getString(R.string.error_startHour_inferior));
                         }
-                        else if (mAddMeetingViewModel.getEndHour() != null){
-                        if (sHour > mAddMeetingViewModel.getEndHour().get(Calendar.HOUR_OF_DAY)
-                            || (sHour == mAddMeetingViewModel.getEndHour().get(Calendar.HOUR_OF_DAY) && sMinute > mAddMeetingViewModel.getEndHour().get(Calendar.HOUR))){
+                        else if (mAddMeetingViewModel.getEndHour() != null && sameDateTimeinferior(mAddMeetingViewModel.getStartDate(), mAddMeetingViewModel.getEndHour().get(Calendar.HOUR), mAddMeetingViewModel.getEndHour().get(Calendar.MINUTE), hour, minutes)){
+                            if (sHour < mAddMeetingViewModel.getEndHour().get(Calendar.HOUR_OF_DAY)
+                                    || (sHour == mAddMeetingViewModel.getEndHour().get(Calendar.HOUR_OF_DAY) && sMinute < mAddMeetingViewModel.getEndHour().get(Calendar.HOUR))){
+                                mEditStartHour.setError(null);
+                                availableRoom();
+                            }
+                            else if (sHour > mAddMeetingViewModel.getEndHour().get(Calendar.HOUR_OF_DAY) && sameDateTimeinferior(mAddMeetingViewModel.getStartDate(), sHour, sMinute, hour, minutes)
+                                    || (sHour == mAddMeetingViewModel.getEndHour().get(Calendar.HOUR_OF_DAY) && sMinute > mAddMeetingViewModel.getEndHour().get(Calendar.HOUR))
+                                    && sameDateTimeinferior(mAddMeetingViewModel.getStartDate(), sHour, sMinute, hour, minutes)){
                             mEditStartHour.setError(getString(R.string.error_startHour_superior));
-                            availableRoom();
-                        }}
-                        else {
-                            mEditStartHour.setError(null);
+                            }
                         }
                     }, hour, minutes, true);
             mTimePicker.show();
@@ -267,16 +261,36 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
                         mAddMeetingViewModel.setEndHour(mEndHour);
                         if (mStartReunionHourChosen > sHour || (mStartReunionHourChosen == sHour && mStartReunionMinuteChosen > sMinute)) {
                             mEditEndHour.setError(getString(R.string.error_endHour_inferior));
-                            availableRoom();
                         }
                         else {
-                            mEditStartHour.setError(null);
-                            mEditEndHour.setError(null);
+                            if(!sameDateTimeinferior(mAddMeetingViewModel.getStartDate(), mAddMeetingViewModel.getStartHour().get(Calendar.HOUR), mAddMeetingViewModel.getStartHour().get(Calendar.MINUTE), hour, minutes)) {
+                                mEditStartHour.setError(null);
+                            }
+                            if(sameDateTimeinferior(mAddMeetingViewModel.getStartDate(), mAddMeetingViewModel.getEndHour().get(Calendar.HOUR), mAddMeetingViewModel.getEndHour().get(Calendar.MINUTE), hour, minutes)) {
+                                mEditEndHour.setError(null);
+                            }
+                            else if (mAddMeetingViewModel.getEndHour().get(Calendar.HOUR) > mAddMeetingViewModel.getStartHour().get(Calendar.HOUR)
+                                || (mAddMeetingViewModel.getEndHour().get(Calendar.HOUR) == mAddMeetingViewModel.getStartHour().get(Calendar.HOUR)
+                                    && mAddMeetingViewModel.getEndHour().get(Calendar.MINUTE) > mAddMeetingViewModel.getStartHour().get(Calendar.MINUTE))){
+                                mEditEndHour.setError(null);
+                            }
+
                         }
                         availableRoom();
                     }, hour, minutes, true);
             mTimePicker.show();
         });
+    }
+
+    public boolean sameDateTimeinferior(Calendar startDate, int chosenHour, int chosenMinute, int hourOfTheDay, int minutesOfTheDay) {
+        return (chosenHour < hourOfTheDay
+                && (startDate.get(Calendar.DAY_OF_MONTH) == Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
+                && (startDate.get(Calendar.MONTH) == Calendar.getInstance().get(Calendar.MONTH))
+                && (startDate.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR))
+                || (chosenHour == hourOfTheDay && chosenMinute < minutesOfTheDay)
+                && (startDate.get(Calendar.DAY_OF_MONTH) == Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
+                && (startDate.get(Calendar.MONTH) == Calendar.getInstance().get(Calendar.MONTH))
+                && (startDate.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR)));
     }
 
     // SPINNER AVAILABLE_ROOM
@@ -289,7 +303,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
             int mReunionMinuteTimeLeft = mCalculTimeService.calculMinuteLeft(mReunionMinuteTime, mReunionHourTime, mStartReunionMinuteChosen, mEndReunionMinuteChosen);
             int mReunionHourTimeLeft = mCalculTimeService.calculHourLeft(mReunionMinuteTime, mReunionHourTime, mStartReunionMinuteChosen, mEndReunionMinuteChosen);
 
-        List<ExampleMeeting> meetings = mMeetingApiService.getMeetings();
+            List<ExampleMeeting> meetings = mMeetingApiService.getMeetings();
             mAvailableRooms = mMeetingApiService.getRooms();
             listRooms = mMeetingApiService.filterAvailableRooms(meetings, mAvailableRooms, mAddMeetingViewModel.getStartDate(), mAddMeetingViewModel.getStartHour(), mAddMeetingViewModel.getEndHour());
 
@@ -297,6 +311,12 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
                     || (mReunionHourTimeLeft > 0 && mReunionMinuteTimeLeft > 0)
                     || (mReunionHourTimeLeft > 0 && mReunionMinuteTimeLeft == 0)) {
                 Toast.makeText(this, getString(R.string.meeting_time, mReunionHourTimeLeft,mReunionMinuteTimeLeft), LENGTH_SHORT).show();
+            }
+            if (listRooms.size() > 0) {
+            mTextViewRoom.setError(null);
+            }
+            else {
+                mTextViewRoom.setError(getString(R.string.error_room_empty));
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, listRooms);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -428,33 +448,29 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
 
     @OnClick(R.id.activity_add_meeting_btn_createMeeting)
     void addReunion() {
+        if (mAddMeetingViewModel.isAllFieldsFilled()) {
+            ExampleMeeting reunion = new ExampleMeeting(System.currentTimeMillis(), mAddMeetingViewModel.getStartDate().getTime(), mAddMeetingViewModel.getStartHour().getTime(), mAddMeetingViewModel.getEndHour().getTime(), mAddMeetingViewModel.getRoom(), mAddMeetingViewModel.getSubject(), mAddMeetingViewModel.getListParticipants());
+            mMeetingApiService.createMeeting(reunion);
+            finish();
+        }
         if (!mAddMeetingViewModel.isSubjectFilled()) {
             mEditSubjectReunion.setError(getString(R.string.error_subject_empty));
-            return;
         }
         if (!mAddMeetingViewModel.isStartDateFilled()) {
             mEditDate.setError(getString(R.string.error_startDate_empty));
-            return;
         }
         if (!mAddMeetingViewModel.isStartHourFilled()) {
             mEditStartHour.setError(getString(R.string.error_startHour_empty));
-            return;
         }
         if (!mAddMeetingViewModel.isEndHourFilled()) {
             mEditEndHour.setError(getString(R.string.error_endHour_empty));
-            return;
         }
         if (!mAddMeetingViewModel.isRoomFilled()) {
             mTextViewRoom.setError(getString(R.string.error_room_empty));
-            return;
         }
         if (!mAddMeetingViewModel.isListParticipantsFilled()) {
             mEditTextParticipant.setError(getString(R.string.error_lisParticipant_empty));
-            return;
         }
-        ExampleMeeting reunion = new ExampleMeeting(System.currentTimeMillis(), mAddMeetingViewModel.getStartDate().getTime(), mAddMeetingViewModel.getStartHour().getTime(), mAddMeetingViewModel.getEndHour().getTime(), mAddMeetingViewModel.getRoom(), mAddMeetingViewModel.getSubject(), mAddMeetingViewModel.getListParticipants());
-        mMeetingApiService.createMeeting(reunion);
-        finish();
     }
     //
     public static void navigate (FragmentActivity activity){
