@@ -170,14 +170,7 @@ public class FakeMeetingApiService implements MeetingApiService {
                 && startDate.get(Calendar.MONTH) == date.get(Calendar.MONTH)
                 && startDate.get(Calendar.YEAR) == date.get(Calendar.YEAR));
     }
-
-    public boolean sameDate(Calendar startDate, Calendar date ){
-        return (startDate.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH)
-                && startDate.get(Calendar.MONTH) == date.get(Calendar.MONTH)
-                && startDate.get(Calendar.YEAR) == date.get(Calendar.YEAR));
-    }
-
-
+    
     @Override
     public void createMeeting(ExampleMeeting meeting) {
         meetings.add(meeting);
