@@ -107,7 +107,6 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
 
     private final static String MEETING_VIEWMODEL = "MEETING_VIEWMODEL";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -213,7 +212,11 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
                         mEditStartHour.setText(getResources().getString(R.string.hour_string,sHour,sMinute));
                         mStartHour.set(0, 0, 0, sHour, sMinute);
                         mAddMeetingViewModel.setStartHour(mStartHour);
-                        if (!sameDateTimeinferior(mAddMeetingViewModel.getStartDate(), sHour, sMinute, hour, minutes)){
+                        if (!sameDateTimeinferior(mAddMeetingViewModel.getStartDate(), sHour, sMinute, hour, minutes ) && mAddMeetingViewModel.getEndHour() != null ){
+                            mEditStartHour.setError(null);
+                            availableRoom();
+                        }
+                        else if (!sameDateTimeinferior(mAddMeetingViewModel.getStartDate(), sHour, sMinute, hour, minutes )) {
                             mEditStartHour.setError(null);
                         }
                         if(sameDateTimeinferior(mAddMeetingViewModel.getStartDate(), sHour, sMinute, hour, minutes) && mAddMeetingViewModel.getEndHour() != null) {
@@ -227,12 +230,20 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
                             if (sHour < mAddMeetingViewModel.getEndHour().get(Calendar.HOUR_OF_DAY)
                                     || (sHour == mAddMeetingViewModel.getEndHour().get(Calendar.HOUR_OF_DAY) && sMinute < mAddMeetingViewModel.getEndHour().get(Calendar.HOUR))){
                                 mEditStartHour.setError(null);
+                                mEditEndHour.setError(null);
                                 availableRoom();
                             }
                             else if (sHour > mAddMeetingViewModel.getEndHour().get(Calendar.HOUR_OF_DAY) && !sameDateTimeinferior(mAddMeetingViewModel.getStartDate(), sHour, sMinute, hour, minutes)
                                     || (sHour == mAddMeetingViewModel.getEndHour().get(Calendar.HOUR_OF_DAY) && sMinute > mAddMeetingViewModel.getEndHour().get(Calendar.MINUTE))
                                     && !sameDateTimeinferior(mAddMeetingViewModel.getStartDate(), sHour, sMinute, hour, minutes)){
                             mEditStartHour.setError(getString(R.string.error_startHour_superior));
+                            }
+                            if ((!sameDateTimeinferior(mAddMeetingViewModel.getStartDate(), mAddMeetingViewModel.getEndHour().get(Calendar.HOUR), mAddMeetingViewModel.getEndHour().get(Calendar.MINUTE), hour, minutes)
+                                    && mAddMeetingViewModel.getEndHour().get(Calendar.HOUR) < mAddMeetingViewModel.getStartHour().get(Calendar.HOUR))
+                                    || ((!sameDateTimeinferior(mAddMeetingViewModel.getStartDate(), mAddMeetingViewModel.getEndHour().get(Calendar.HOUR), mAddMeetingViewModel.getEndHour().get(Calendar.MINUTE), hour, minutes))
+                                    && mAddMeetingViewModel.getEndHour().get(Calendar.HOUR) == mAddMeetingViewModel.getStartHour().get(Calendar.HOUR)
+                                    && mAddMeetingViewModel.getEndHour().get(Calendar.MINUTE) < mAddMeetingViewModel.getStartHour().get(Calendar.MINUTE))){
+                                mEditEndHour.setError(getString(R.string.error_endHour_inferior));
                             }
                         }
                     }, hour, minutes, true);
@@ -259,22 +270,23 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
                         mEditEndHour.setText(getResources().getString(R.string.hour_string,sHour,sMinute));
                         mEndHour.set(0,0,0,sHour,sMinute);
                         mAddMeetingViewModel.setEndHour(mEndHour);
+                        if (!sameDateTimeinferior(mAddMeetingViewModel.getStartDate(), sHour, sMinute, hour, minutes)) {
+                            mEditEndHour.setError(null);
+                        }
+                        if ((!sameDateTimeinferior(mAddMeetingViewModel.getStartDate(), sHour, sMinute, hour, minutes)
+                                && sHour > mAddMeetingViewModel.getStartHour().get(Calendar.HOUR))
+                                || ((!sameDateTimeinferior(mAddMeetingViewModel.getStartDate(), sHour, sMinute, hour, minutes))
+                                && sHour == mAddMeetingViewModel.getStartHour().get(Calendar.HOUR)
+                                && sMinute > mAddMeetingViewModel.getStartHour().get(Calendar.MINUTE))){
+                            mEditEndHour.setError(null);
+                        }
                         if (mStartReunionHourChosen > sHour || (mStartReunionHourChosen == sHour && mStartReunionMinuteChosen > sMinute)) {
                             mEditEndHour.setError(getString(R.string.error_endHour_inferior));
                         }
                         else {
-                            if(!sameDateTimeinferior(mAddMeetingViewModel.getStartDate(), mAddMeetingViewModel.getStartHour().get(Calendar.HOUR), mAddMeetingViewModel.getStartHour().get(Calendar.MINUTE), hour, minutes)) {
+                            if (!sameDateTimeinferior(mAddMeetingViewModel.getStartDate(), mAddMeetingViewModel.getStartHour().get(Calendar.HOUR), mAddMeetingViewModel.getStartHour().get(Calendar.MINUTE), hour, minutes)) {
                                 mEditStartHour.setError(null);
                             }
-                            if(!sameDateTimeinferior(mAddMeetingViewModel.getStartDate(), mAddMeetingViewModel.getEndHour().get(Calendar.HOUR), mAddMeetingViewModel.getEndHour().get(Calendar.MINUTE), hour, minutes)) {
-                                mEditEndHour.setError(null);
-                            }
-                            else if (mAddMeetingViewModel.getEndHour().get(Calendar.HOUR) > mAddMeetingViewModel.getStartHour().get(Calendar.HOUR)
-                                || (mAddMeetingViewModel.getEndHour().get(Calendar.HOUR) == mAddMeetingViewModel.getStartHour().get(Calendar.HOUR)
-                                    && mAddMeetingViewModel.getEndHour().get(Calendar.MINUTE) > mAddMeetingViewModel.getStartHour().get(Calendar.MINUTE))){
-                                mEditEndHour.setError(null);
-                            }
-
                         }
                         availableRoom();
                     }, hour, minutes, true);
