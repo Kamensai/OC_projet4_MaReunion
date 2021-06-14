@@ -64,7 +64,7 @@ public class FakeMeetingApiService implements MeetingApiService {
         int todayMinutes = cldr.get(Calendar.MINUTE);
 
         // Si l'heure de départ est inférieure à l'heure actuelle.
-        if (startDate == cldr && mStartHourChosen < todayHour || startDate == cldr && (mStartHourChosen == todayHour && mStartMinuteChosen < todayMinutes)) {
+        if ((startDate == cldr && mStartHourChosen < todayHour) || (startDate == cldr && (mStartHourChosen == todayHour && mStartMinuteChosen < todayMinutes))) {
             return listRooms;
         }
             // Si l'heure de départ dépasse l'heure de fin de réunion, retourne une liste vide
