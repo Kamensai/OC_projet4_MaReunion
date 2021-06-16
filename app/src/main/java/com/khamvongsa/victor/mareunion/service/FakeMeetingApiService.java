@@ -65,20 +65,14 @@ public class FakeMeetingApiService implements MeetingApiService {
 
         // Si l'heure de départ est inférieure à l'heure actuelle.
         if ((sameDate(startDate, cldr) && mStartHourChosen < todayHour)
-                || (sameDate(startDate, cldr) && (mStartHourChosen == todayHour && mStartMinuteChosen < todayMinutes))) {
-            return listRooms;
-        }
+                || (sameDate(startDate, cldr) && (mStartHourChosen == todayHour && mStartMinuteChosen < todayMinutes))) { return listRooms; }
         // Si l'heure de départ dépasse l'heure de fin de réunion, retourne une liste vide
-        else if (mStartHourChosen > mEndHourChosen || (mStartHourChosen == mEndHourChosen && mStartMinuteChosen > mEndMinuteChosen)) {
-            return listRooms;
-        }
+        else if (mStartHourChosen > mEndHourChosen || (mStartHourChosen == mEndHourChosen && mStartMinuteChosen > mEndMinuteChosen)) { return listRooms; }
 
         for (int i = 0; i < rooms.size(); i++) {
             String room = rooms.get(i).getName();
             listRooms.add(room);
-
             for (int y = 0; y < meetings.size(); y++) {
-
                 ExampleMeeting meeting = meetings.get(y);
                 final Calendar date = Calendar.getInstance();
                 final Calendar mStart = Calendar.getInstance();
@@ -88,76 +82,31 @@ public class FakeMeetingApiService implements MeetingApiService {
                 mEnd.setTime(meeting.getEndHour());
 
                 // Même heure, mais la réunion choisie commence en même temps ou pendant l'heure d'une réunion déjà présente
-                if (sameRoomAndDate(meeting, room, startDate, date)
-                        && mStartHourChosen == mStart.get(Calendar.HOUR_OF_DAY)
-                        && mStartHourChosen == mEnd.get(Calendar.HOUR_OF_DAY)
-                        && mEndHourChosen == mStart.get(Calendar.HOUR_OF_DAY)
-                        && mEndHourChosen == mEnd.get(Calendar.HOUR_OF_DAY)
-                        && mStartMinuteChosen >= mStart.get(Calendar.MINUTE)
-                        && mStartMinuteChosen < mEnd.get(Calendar.MINUTE)) {
+                if (sameRoomAndDate(meeting, room, startDate, date) && sameHourButStartDuringMeeting(mStart,mEnd,mStartHourChosen,mEndHourChosen,mStartMinuteChosen)) {
                     listRooms.remove(room); }
-
                 // Même heure de départ et de fin, mais la réunion choisie commence avant, mais déborde sur la réunion déjà présente.
-                else if (sameRoomAndDate(meeting, room, startDate, date)
-                        && mStartHourChosen == mStart.get(Calendar.HOUR_OF_DAY)
-                        && mStartHourChosen == mEnd.get(Calendar.HOUR_OF_DAY)
-                        && mEndHourChosen == mStart.get(Calendar.HOUR_OF_DAY)
-                        && mEndHourChosen == mEnd.get(Calendar.HOUR_OF_DAY)
-                        && mStartMinuteChosen < mEnd.get(Calendar.MINUTE)
-                        && mStartMinuteChosen < mStart.get(Calendar.MINUTE)
-                        && mEndMinuteChosen > mStart.get(Calendar.MINUTE)) {
-                    listRooms.remove(room);
-                }
-
+                else if (sameRoomAndDate(meeting, room, startDate, date) && sameStartHourAndEndHourButStartBefore(mStart, mEnd, mStartHourChosen, mEndHourChosen, mStartMinuteChosen, mEndMinuteChosen)) {
+                    listRooms.remove(room); }
                 // Si la réunion choisie commence avant mais qu'elle déborde sur la réunion déjà présente
-                else if (sameRoomAndDate(meeting, room, startDate, date)
-                        && mStartHourChosen < mStart.get(Calendar.HOUR_OF_DAY)
-                        && mEndHourChosen >= mStart.get(Calendar.HOUR_OF_DAY)
-                        && mEndMinuteChosen > mStart.get(Calendar.MINUTE)) {
+                else if (sameRoomAndDate(meeting, room, startDate, date) && startBeforeButOverflowMeeting( mStart,  mEnd,  mStartHourChosen,  mEndHourChosen,  mEndMinuteChosen )) {
                     listRooms.remove(room); }
-
-                // Si la réunion choisie commence pendant une réunion déjà présente à la même heure de départ
-                else if (sameRoomAndDate(meeting, room, startDate, date)
-                        && mStartHourChosen == mStart.get(Calendar.HOUR_OF_DAY)
-                        && mStartHourChosen < mEnd.get(Calendar.HOUR_OF_DAY)
-                        && mStartMinuteChosen >= mStart.get(Calendar.MINUTE)) {
+                // Si la réunion choisie commence pendant une réunion déjà présente à la même heure et minute de départ
+                else if (sameRoomAndDate(meeting, room, startDate, date) && sameHourAndStartDuringMeeting( mStart, mEnd, mStartHourChosen, mStartMinuteChosen)) {
                     listRooms.remove(room); }
-
                 // Si la réunion commence pendant une réunion déjà présente à une heure de départ différente et inférieure à l'heure de fin
-                else if (sameRoomAndDate(meeting, room, startDate, date)
-                        && mStartHourChosen > mStart.get(Calendar.HOUR_OF_DAY)
-                        && mStartHourChosen < mEnd.get(Calendar.HOUR_OF_DAY)) {
-                    listRooms.remove(room);
-                }
-
-                // Si la réunion commence pendant une réunion déjà présente à une heure de départ différente, mais la même heure de fin
-                else if (sameRoomAndDate(meeting, room, startDate, date)
-                        && mStartHourChosen > mStart.get(Calendar.HOUR_OF_DAY)
-                        && mStartHourChosen == mEnd.get(Calendar.HOUR_OF_DAY)
-                        && mEndHourChosen == mEnd.get(Calendar.HOUR_OF_DAY)
-                        && mStartMinuteChosen < mEnd.get(Calendar.MINUTE)) {
-                    listRooms.remove(room);
-                }
-
+                else if (sameRoomAndDate(meeting, room, startDate, date) && differentHourAndStartDuringMeeting(mStart, mEnd, mStartHourChosen)) {
+                    listRooms.remove(room); }
+                // Si la réunion commence pendant une réunion déjà présente à une heure de départ différente, mais la même heure de fin mais minute inférieure
+                else if (sameRoomAndDate(meeting, room, startDate, date) && differentStartHourAndStartDuringMeeting(mStart, mEnd, mStartHourChosen, mStartMinuteChosen, mEndHourChosen)) {
+                    listRooms.remove(room); }
                 // Si la réunion choisie commence avant une réunion déjà présente et finit après
-                else if (sameRoomAndDate(meeting, room, startDate, date)
-                        && mStartHourChosen < mStart.get(Calendar.HOUR_OF_DAY)
-                        && mEndHourChosen > mEnd.get(Calendar.HOUR_OF_DAY)) {
-                    listRooms.remove(room);
-                }
-
-                // Si la réunion choisie commence avant une réunion déjà présente et finit à la même heure, mais plus tard
-                else if (sameRoomAndDate(meeting, room, startDate, date)
-                        && mStartHourChosen < mStart.get(Calendar.HOUR_OF_DAY)
-                        && mEndHourChosen == mEnd.get(Calendar.HOUR_OF_DAY)) {
-                    listRooms.remove(room);
-                }
-
-                // Si la réunion choisie commence avant une réunion déjà présente et finit après
-                else if (sameRoomAndDate(meeting, room, startDate, date)
-                        && mStartHourChosen < mStart.get(Calendar.HOUR_OF_DAY)
-                        && mEndHourChosen > mStart.get(Calendar.HOUR_OF_DAY)
-                        && mEndHourChosen < mEnd.get(Calendar.HOUR_OF_DAY)) {
+                else if (sameRoomAndDate(meeting, room, startDate, date) && startBeforeAndEndAfterMeeting(mStart,  mEnd, mStartHourChosen, mEndHourChosen)) {
+                    listRooms.remove(room); }
+                // Si la réunion choisie commence avant une réunion déjà présente et finit à la même heure
+                else if (sameRoomAndDate(meeting, room, startDate, date) && startBeforeAndSameEndHour(mStart, mEnd, mStartHourChosen, mEndHourChosen)) {
+                    listRooms.remove(room); }
+                // Si la réunion choisie commence avant une réunion déjà présente et finit pendant une réunion présente
+                else if (sameRoomAndDate(meeting, room, startDate, date) && startBeforeAndEndDuringMeeting(mStart, mEnd, mStartHourChosen, mEndHourChosen)) {
                     listRooms.remove(room);
                 }
             }
@@ -177,7 +126,66 @@ public class FakeMeetingApiService implements MeetingApiService {
                 && startDate.get(Calendar.MONTH) == date.get(Calendar.MONTH)
                 && startDate.get(Calendar.YEAR) == date.get(Calendar.YEAR));
     }
-    
+
+    public boolean sameHourButStartDuringMeeting(Calendar mStart, Calendar mEnd, int mStartHourChosen, int mEndHourChosen, int mStartMinuteChosen){
+        return (mStartHourChosen == mStart.get(Calendar.HOUR_OF_DAY)
+                && mStartHourChosen == mEnd.get(Calendar.HOUR_OF_DAY)
+                && mEndHourChosen == mStart.get(Calendar.HOUR_OF_DAY)
+                && mEndHourChosen == mEnd.get(Calendar.HOUR_OF_DAY)
+                && mStartMinuteChosen >= mStart.get(Calendar.MINUTE)
+                && mStartMinuteChosen < mEnd.get(Calendar.MINUTE));
+    }
+
+    public boolean sameStartHourAndEndHourButStartBefore(Calendar mStart, Calendar mEnd, int mStartHourChosen, int mEndHourChosen, int mStartMinuteChosen, int mEndMinuteChosen){
+        return (mStartHourChosen == mStart.get(Calendar.HOUR_OF_DAY)
+                && mStartHourChosen == mEnd.get(Calendar.HOUR_OF_DAY)
+                && mEndHourChosen == mStart.get(Calendar.HOUR_OF_DAY)
+                && mEndHourChosen == mEnd.get(Calendar.HOUR_OF_DAY)
+                && mStartMinuteChosen < mEnd.get(Calendar.MINUTE)
+                && mStartMinuteChosen < mStart.get(Calendar.MINUTE)
+                && mEndMinuteChosen > mStart.get(Calendar.MINUTE));
+    }
+
+    public boolean startBeforeButOverflowMeeting(Calendar mStart, Calendar mEnd, int mStartHourChosen, int mEndHourChosen, int mEndMinuteChosen){
+        return (mStartHourChosen < mStart.get(Calendar.HOUR_OF_DAY)
+                && mEndHourChosen >= mStart.get(Calendar.HOUR_OF_DAY)
+                && mEndMinuteChosen > mStart.get(Calendar.MINUTE));
+    }
+
+    public boolean sameHourAndStartDuringMeeting(Calendar mStart, Calendar mEnd, int mStartHourChosen, int mStartMinuteChosen){
+        return (mStartHourChosen == mStart.get(Calendar.HOUR_OF_DAY)
+                && mStartHourChosen < mEnd.get(Calendar.HOUR_OF_DAY)
+                && mStartMinuteChosen >= mStart.get(Calendar.MINUTE));
+    }
+
+    public boolean differentHourAndStartDuringMeeting(Calendar mStart, Calendar mEnd, int mStartHourChosen){
+        return (mStartHourChosen > mStart.get(Calendar.HOUR_OF_DAY)
+                && mStartHourChosen < mEnd.get(Calendar.HOUR_OF_DAY));
+    }
+
+    public boolean differentStartHourAndStartDuringMeeting(Calendar mStart, Calendar mEnd, int mStartHourChosen, int mStartMinuteChosen, int mEndHourChosen){
+        return (mStartHourChosen > mStart.get(Calendar.HOUR_OF_DAY)
+                && mStartHourChosen == mEnd.get(Calendar.HOUR_OF_DAY)
+                && mEndHourChosen == mEnd.get(Calendar.HOUR_OF_DAY)
+                && mStartMinuteChosen < mEnd.get(Calendar.MINUTE));
+    }
+
+    public boolean startBeforeAndEndAfterMeeting(Calendar mStart, Calendar mEnd, int mStartHourChosen, int mEndHourChosen){
+        return (mStartHourChosen < mStart.get(Calendar.HOUR_OF_DAY)
+                && mEndHourChosen > mEnd.get(Calendar.HOUR_OF_DAY));
+    }
+
+    public boolean startBeforeAndSameEndHour(Calendar mStart, Calendar mEnd, int mStartHourChosen, int mEndHourChosen){
+        return (mStartHourChosen < mStart.get(Calendar.HOUR_OF_DAY)
+                && mEndHourChosen == mEnd.get(Calendar.HOUR_OF_DAY));
+    }
+
+    public boolean startBeforeAndEndDuringMeeting(Calendar mStart, Calendar mEnd, int mStartHourChosen, int mEndHourChosen){
+        return (mStartHourChosen < mStart.get(Calendar.HOUR_OF_DAY)
+                && mEndHourChosen > mStart.get(Calendar.HOUR_OF_DAY)
+                && mEndHourChosen < mEnd.get(Calendar.HOUR_OF_DAY));
+    }
+
     @Override
     public void createMeeting(ExampleMeeting meeting) {
         meetings.add(meeting);
@@ -187,6 +195,4 @@ public class FakeMeetingApiService implements MeetingApiService {
     public void deleteMeeting(ExampleMeeting meeting) {
          meetings.remove(meeting);
     }
-
-
 }
